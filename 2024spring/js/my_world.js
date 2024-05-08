@@ -101,53 +101,56 @@ function p3_drawBefore() { }
 function p3_drawTile(i, j) {
 
   noStroke();
+  // Time, apply this change noise  
+  let t = millis() / 1000.0
   //terrain code - Luke
   let zoom = 0.1;
   let noiseVal = noise(i * zoom, j * zoom);
   let terrainType;
   let colorVal;
-  if (noiseVal < .6) {
+  let onIsland = false;
+  if(noiseVal<.6){
     terrainType = 'water';
-    colorVal = color(0, map(noiseVal, 0, 1, 20, 100), map(noiseVal, 0, 1, 50, 255));
+    colorVal = color(100, 150, 233, 64+256*noise(-t+i/5,j/5,t));
     fill(colorVal);
   }
   else {
     terrainType = 'sand'
-    colorVal = color(252, map(noiseVal, .5, 1, 240, 180), 0);
+    // colorVal = color(252,map(noiseVal,.5,1,240,180),0);
+    let lerpValue = map(noiseVal, .6, 1, 0, 1) + map
+    let islandHighColor = color(252, 240, 0);// Bright Yellow
+    let islandLowColor = color(252, 180, 0); // Bright Orange
+    colorVal = lerpColor(islandHighColor, islandLowColor, map(noiseVal, .5, 1, 0, 1));
     fill(colorVal);
+    onIsland = true;
+
+    // Height adjustingsh    
+    // translate(
   }
 
-
-  //let boatWidth = 5;
-
-  // Old code for drawing lawn chair
-  let onBoat = false;
-
-  // // Draws the water1 *
-  // if (true/*on island*/) {
-  //   // water
-  //   let t = millis()/1000.0
-  //   fill(100, 150, 233, 64+256*noise(-t+i/5,j/5,t));
-  //   //
-  // }
-  // else {//on island
-
-  // }
-
-  // calling boat function
+  // Draw Boat
+  if(!onIsland){
   let n = clicks[[i, j]] | 0;
-  if (n % 2 == 1) {
-    // drawBoat()
+     if (n % 2 == 1) {
+      //drawBoat()
+      fill(139,69,19);
+     }
   }
-
+  
   push();
 
-  beginShape();
+  // function to elevate islands
+  if (terrainType == 'sand') {
+    translate(0, -5);
+  }
+  
+ beginShape();
   vertex(-tw, 0);
   vertex(0, th);
   vertex(tw, 0);
   vertex(0, -th);
   endShape(CLOSE);
+
 
   pop();
 }
@@ -168,29 +171,29 @@ function drawBoat() {
 
   fill(boatColor);
   beginShape();
-  vertex(-50, 0, 0);
-  vertex(50, 0, 0);
-  vertex(40, -30, 0);
-  vertex(-40, -30, 0);
+  vertex(-5, 0, 0);
+  vertex(5, 0, 0);
+  vertex(4, -3, 0);
+  vertex(-4, -3, 0);
   endShape(CLOSE);
 
   // Draw boat base
   fill(boatColor);
   beginShape();
-  vertex(-50, 0, 0);
-  vertex(50, 0, 0);
-  vertex(50, 0, 20);
-  vertex(-50, 0, 20);
+  vertex(-5, 0, 0);
+  vertex(5, 0, 0);
+  vertex(5, 0, 2);
+  vertex(-5, 0, 2);
   endShape(CLOSE);
 
   // Draw sail
   fill(255);
   beginShape();
-  vertex(0, -50);
-  vertex(0, 50);
-  vertex(0, 50);
-  vertex(50, 0);
-  vertex(0, -50);
+  vertex(0, -5);
+  vertex(0, 5);
+  vertex(0, 5);
+  vertex(5, 0);
+  vertex(0, -5);
   endShape(CLOSE);
 }
 

@@ -1,0 +1,46 @@
+/*
+  } else {
+    // Draws either the boat or the strips
+    onBoat = true;
+    if (j == -boatWidth || j == boatWidth) {
+      
+      translate(0,-th/2);
+
+      fill(trimColor);
+    } else {
+      fill(200);
+      
+    }
+    
+  }
+  */
+
+   // if(onBoat) {
+  //   let n = clicks[[i, j]] | 0;
+  //   if (n % 2 == 1) {
+  //     fill(0, 0, 0, 32);
+  //     rect(0, 0, 10, 5);
+  //     translate(0, -10);
+  //     fill(0, 0, 0, 128);
+  //     rect(0, 0, 10, 10);
+  //   }
+  // }
+  
+  //let boatWidth = 5;
+  
+  // Old code for drawing lawn chair
+  //let onBoat = false;
+  
+
+
+  // // Draws the water1 *
+  // if (true/*on island*/) {
+  //   // water
+  //   let t = millis()/1000.0
+  //   fill(100, 150, 233, 64+256*noise(-t+i/5,j/5,t));
+  //   //
+  // }
+  // else {//on island
+    
+  // }
+  // calling boat function
