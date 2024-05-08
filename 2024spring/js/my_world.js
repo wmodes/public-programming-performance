@@ -8,7 +8,6 @@
 
 "use strict";
 
-
 //world seed declaration
 let worldSeed;
 
@@ -90,7 +89,7 @@ function isIsland(i, j) {
  * @function p3_drawBefore any prerendering can be done here
  * @returns {void}
  */
-function p3_drawBefore() { }
+function p3_drawBefore() {}
 
 /**
  * @function p3_drawTile renders a tile at the appropriate x,y coordinate in the array
@@ -109,9 +108,9 @@ function p3_drawTile(i, j) {
   let terrainType;
   let colorVal;
   let onIsland = false;
-  if(noiseVal<.6){
+  if (noiseVal < .6) {
     terrainType = 'water';
-    colorVal = color(100, 150, 233, 64+256*noise(-t+i/5,j/5,t));
+    colorVal = color(100, 150, 233, 64 + 256 * noise(-t + i / 5, j / 5, t));
     fill(colorVal);
   }
   else {
@@ -125,32 +124,29 @@ function p3_drawTile(i, j) {
     onIsland = true;
 
     // Height adjustingsh    
-    // translate(
   }
 
   // Draw Boat
-  if(!onIsland){
-  let n = clicks[[i, j]] | 0;
-     if (n % 2 == 1) {
+  if (!onIsland) {
+    let n = clicks[[i, j]] | 0;
+    if (n % 2 == 1) {
       //drawBoat()
-      fill(139,69,19);
-     }
+      fill(139, 69, 19);
+    }
   }
-  
-  push();
 
+  push();
   // function to elevate islands
   if (terrainType == 'sand') {
     translate(0, -5);
   }
-  
- beginShape();
+
+  beginShape();
   vertex(-tw, 0);
   vertex(0, th);
   vertex(tw, 0);
   vertex(0, -th);
   endShape(CLOSE);
-
 
   pop();
 }
