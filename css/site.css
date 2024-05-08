@@ -47,7 +47,7 @@ h1 {
 
 /* Set the image to be responsive */
 .image-wrapper img {
-  max-width: 100%;
+  max-width: calc(100% - 40px);
   height: auto;
 }
 

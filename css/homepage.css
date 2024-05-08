@@ -8,7 +8,7 @@
 
 .portrait img {
   /* filter: grayscale(100%) contrast(1.1) sepia(0.4) blur(0.0px); */
-  border: solid 4px black;
+  /* border: solid 4px black; */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   /* transform: rotate(-1deg); */
   margin: 20px;
