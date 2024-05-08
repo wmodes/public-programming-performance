@@ -1,0 +1,34 @@
+/* style.css */
+
+/* Set the canvas element to be the full size of the container */
+canvas {
+    width: 100%;
+    height: 100%;
+}
+
+/* Center the canvas element on the page */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#canvas-container {
+    width: 100%;
+    height: 600px;
+}
+
+.instructions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.showcase-img img {
+  width: 550px;
+  height: auto;
+}
+
+.two-columns {
+  display: flex;
+  gap: 20px;
+}

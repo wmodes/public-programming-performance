@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- This title is used for tabs and bookmarks -->
+	<title>Spring 2024 - Island Archipelago</title>
+
+	<!-- Use UTF character set, a good idea with any webpage -->
+	<meta charset="UTF-8" />
+	<!-- Set viewport so page remains consistently scaled w narrow devices -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+	<!-- Include CSS file, including a site-wide CSS and for this particular page -->
+	<link rel="stylesheet" type="text/css" href="../css/site.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+
+	<!-- Load jQuery library -->
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+        crossorigin="anonymous"></script>
+	<!-- Load p5.js library -->
+	<script src="https://cdn.jsdelivr.net/npm/p5@1.9.2/lib/p5.js"></script>
+
+	<!-- Link to javascript files - DEFER waits until all elements are rendered -->    <script type="text/javascript" src="../js/site.js" DEFER></script>   
+    <script src="js/xxhash.min.js" defer></script>
+    <script src="js/engine.js" defer></script>
+    <script src="js/my_world.js" defer></script>
+</head>
+<body>
+	<!-- Style this page by changing the CSS in ../css/site.css or css/experiment.css -->
+	<main id="content">
+		<section>
+
+			<h1>Spring 2024 - "Boaty McLongBoat" => "Island Archipelago"</h1>
+
+			<div class="minor-section">
+				<div id="canvas-container">
+					<!-- canvas will be added here -->
+				</div>
+                <div class="fullscreen-box instructions">
+                    <div>
+                        Arrow keys scroll. Clicking changes tiles.
+                    </div>
+                    <div>
+                        World seed: <input type="text" id="world-seed" value="Boaty McLongBoat">
+                    </div>
+                    <button id="fullscreen">Fullscreen</button>
+                </div>
+			</div>
+
+			<div class="minor-section two-columns">
+                <div class="showcase-img">
+                    <img src="img/ocean.png" alt="Open Ocean" />
+                </div>
+                <div>
+                    <h2>Description</h2>
+                    <p>We're starting with a simple "Infinite Worlds" sketch derived from Experiment 04. <a href="https://glitch.com/~cmpm147-playful-public-programming" target="_new">Boaty McLongBoat</a> is an infinite boat in which users can rearrange the deck chairs.</p>
+                    
+                    <p>We'll be removing McLongBoat and creating an island archipelago. Features:</p>
+                    <ol>
+                        <li>Islands with colored geography</li>
+                        <li>Users can navigate this infinite world with arrow keys.</li>
+                        <li>Users can place boats in the water.</li>
+                    </ol>
+                    
+                    <p>Stretch goals:</p>
+                    <ol>
+                        <li>Boats move around on the water?</li>
+                        <li>Adjacent boats make longer, wider, bigger boats?</li>
+                        <li>People can be placed on the islands?</li>
+                        <li>People move around on the islands?</li>
+                        <li>Splash animations when boats are placed or removed?</li>
+                        <li>What happens when you click on an island?</li>
+                    </ol>
+                </div>
+			</div>
+
+			<div class="minor-section">
+				<h2>Technical</h2>
+				<p>It remains to be seen, but watch this space for technical details.</p>
+			</div>
+
+			<div class="minor-section">
+				<h2>Reflection</h2>
+				<p>This is a total experiment. Will it work? Will it bomb? Teaching like programming is sometimes an experiment.</p>
+			</div>
+
+		</section>
+		<nav id="links" class="minor-section">
+			<!-- Put link back to homepage here. -->
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+            </ul>
+		</nav>
+	</main>
+</body>
+</html>
