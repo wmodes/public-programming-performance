@@ -1,0 +1,7 @@
+{
+    "compilerOptions": {
+      "allowJs": true,
+      "types": ["./2024spring/defs/p5"],
+      "noEmit": true
+    }
+}
