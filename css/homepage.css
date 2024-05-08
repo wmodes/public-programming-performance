@@ -1,0 +1,21 @@
+
+.image-wrapper {
+  width: 100%x;
+  padding: 0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.portrait img {
+  /* filter: grayscale(100%) contrast(1.1) sepia(0.4) blur(0.0px); */
+  border: solid 4px black;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  /* transform: rotate(-1deg); */
+  margin: 20px;
+}
+
+.right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;    
+}
