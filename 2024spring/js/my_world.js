@@ -14,6 +14,13 @@
     p3_drawAfter
 */
 
+
+
+
+
+
+
+
 function p3_preload() {}
 
 function p3_setup() {}
@@ -46,33 +53,55 @@ function p3_tileClicked(i, j) {
   clicks[key] = 1 + (clicks[key] | 0);
 }
 
+// Will's Island Noise
+function isIsland(i, j) {
+  return noise(i * 0.001, j * 0.001) > 0.5
+}
+
 function p3_drawBefore() {}
 
 function p3_drawTile(i, j) {
   
   noStroke();
-  let boatWidth = 5;
-  
-  
-  let onBoat = false;
-  if (j < -boatWidth || j > boatWidth) {
-    // water
-    let t = millis()/1000.0;
-    fill(100, 150, 233, 64+256*noise(-t+i/5,j/5,t));
-    
-  } else {
-    onBoat = true;
-    if (j == -boatWidth || j == boatWidth) {
-      
-      translate(0,-th/2);
-
-      fill(trimColor);
-    } else {
-      fill(200);
-      
-    }
+  //terrain code - Luke
+  let zoom = 0.1;
+  let noiseVal = noise(i*zoom,j*zoom);
+  let terrainType;
+  let colorVal;
+  if(noiseVal<.6){
+    terrainType = 'water';
+    colorVal = color(0,map(noiseVal,0,1,20,100),map(noiseVal,0,1,50,255));
+    fill(colorVal);
+  }
+  else{
+    terrainType = 'sand'
+    colorVal = color(252,map(noiseVal,.5,1,240,180),0);
+    fill(colorVal);
   }
 
+  
+  //let boatWidth = 5;
+  
+  // Old code for drawing lawn chair
+  let onBoat = false;
+  
+
+
+  // // Draws the water1 *
+  // if (true/*on island*/) {
+  //   // water
+  //   let t = millis()/1000.0
+  //   fill(100, 150, 233, 64+256*noise(-t+i/5,j/5,t));
+  //   //
+  // }
+  // else {//on island
+    
+  // }
+  // calling boat function
+  let n = clicks[[i, j]] | 0;
+     if (n % 2 == 1) {
+      drawBoat()
+     }
   
   push();
 
@@ -83,20 +112,45 @@ function p3_drawTile(i, j) {
   vertex(0, -th);
   endShape(CLOSE);
 
-  if(onBoat) {
-    let n = clicks[[i, j]] | 0;
-    if (n % 2 == 1) {
-      fill(0, 0, 0, 32);
-      rect(0, 0, 10, 5);
-      translate(0, -10);
-      fill(0, 0, 0, 128);
-      rect(0, 0, 10, 10);
-    }
-  }
-  
-
   pop();
 }
+
+
+
+// James is here!
+// Lets start with drawing the new boats instead of the lawn chairs
+// I'm gonna try to make a 1 tile boat here:
+function drawBoat(){
+  // this code is straight from chat gpt
+  // I'm gonna try to make it smaller and map it to a tile. 
+  fill(boatColor);
+  beginShape();
+  vertex(-50, 0, 0);
+  vertex(50, 0, 0);
+  vertex(40, -30, 0);
+  vertex(-40, -30, 0);
+  endShape(CLOSE);
+
+  // Draw boat base
+  fill(boatColor);
+  beginShape();
+  vertex(-50, 0, 0);
+  vertex(50, 0, 0);
+  vertex(50, 0, 20);
+  vertex(-50, 0, 20);
+  endShape(CLOSE);
+
+  // Draw sail
+  fill(255);
+  beginShape();
+  vertex(0, -50);
+  vertex(0, 50);
+  vertex(0, 50);
+  vertex(50, 0);
+  vertex(0, -50);
+  endShape(CLOSE);
+}
+
 
 function p3_drawSelectedTile(i, j) {
   noFill();
@@ -107,11 +161,25 @@ function p3_drawSelectedTile(i, j) {
   vertex(0, th);
   vertex(tw, 0);
   vertex(0, -th);
-  endShape(CLOSE);
-
+  endShape(CLOSE); 
+  
   noStroke();
   fill(0);
   text("tile " + [i, j], 0, 0);
 }
 
+function extruded_tile(height,color){
+  //luke
+  //top face
+  beginShape();
+  vertex(-tw, 0+height);
+  vertex(0, th+height);
+  vertex(tw, 0+height);
+  vertex(0, -th+height);
+  endShape(CLOSE);
+  //left face
+  
+  //right face
+  
+}
 function p3_drawAfter() {}
