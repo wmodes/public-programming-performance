@@ -1,10 +1,10 @@
 /**
- * 
- * Created initally by Wes Modes and CMPM department for CMPM 147
- * 
- * Modified by CMPM 147 class on 5/8/2024
- * 
- */
+* 
+* Created initally by Wes Modes and CMPM department for CMPM 147
+* 
+* Modified by CMPM 147 class on 5/8/2024
+* 
+*/
 
 "use strict";
 
@@ -89,7 +89,7 @@ function isIsland(i, j) {
  * @function p3_drawBefore any prerendering can be done here
  * @returns {void}
  */
-function p3_drawBefore() {}
+function p3_drawBefore() { }
 
 /**
  * @function p3_drawTile renders a tile at the appropriate x,y coordinate in the array
@@ -100,8 +100,41 @@ function p3_drawBefore() {}
 function p3_drawTile(i, j) {
 
   noStroke();
+
+  //refactored most of the body here to a function for legibility
+  let onIsland = renderTerrain(i, j);
+
+  let n = clicks[[i, j]] | 0;
+  if (n % 2 == 1) { //click logic
+    if (!onIsland) { //base boat drawing logic
+      fill(139, 69, 19);
+    } else {
+      //TODO: clicking on island...
+    }
+  }
+
+  //tile rendering
+  push();
+  beginShape();
+  vertex(-tw, 0);
+  vertex(0, th);
+  vertex(tw, 0);
+  vertex(0, -th);
+  endShape(CLOSE);
+  pop();
+}
+
+/**
+ * @function renderTerrain render islands across the water, elevates the islands slightly. Sets boolean flag for ship placement.
+ * @param {number} i the x coordinate of given tile
+ * @param {number} j the y coordinate of given tile
+ * @returns {boolean} boolean value for given i and j
+ */
+function renderTerrain(i, j) {
+
   // Time, apply this change noise  
   let t = millis() / 1000.0
+
   //terrain code - Luke
   let zoom = 0.1;
   let noiseVal = noise(i * zoom, j * zoom);
@@ -115,40 +148,20 @@ function p3_drawTile(i, j) {
   }
   else {
     terrainType = 'sand'
-    // colorVal = color(252,map(noiseVal,.5,1,240,180),0);
-    let lerpValue = map(noiseVal, .6, 1, 0, 1) + map
+    // let lerpValue = map(noiseVal, .6, 1, 0, 1) + map           *declared but never read
     let islandHighColor = color(252, 240, 0);// Bright Yellow
     let islandLowColor = color(252, 180, 0); // Bright Orange
     colorVal = lerpColor(islandHighColor, islandLowColor, map(noiseVal, .5, 1, 0, 1));
     fill(colorVal);
     onIsland = true;
-
-    // Height adjustingsh    
   }
 
-  // Draw Boat
-  if (!onIsland) {
-    let n = clicks[[i, j]] | 0;
-    if (n % 2 == 1) {
-      //drawBoat()
-      fill(139, 69, 19);
-    }
-  }
-
-  push();
-  // function to elevate islands
+  // elevate islands
   if (terrainType == 'sand') {
     translate(0, -5);
   }
 
-  beginShape();
-  vertex(-tw, 0);
-  vertex(0, th);
-  vertex(tw, 0);
-  vertex(0, -th);
-  endShape(CLOSE);
-
-  pop();
+  return onIsland
 }
 
 
