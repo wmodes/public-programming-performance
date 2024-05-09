@@ -14,6 +14,57 @@ let worldSeed;
 //color declaration, only used once
 let trimColor;
 
+//array to encapsulate boat objext
+var boats = [];
+
+/**
+ * boat object
+ * @class 
+ */
+class Boat {
+
+  /**
+   * @constructor 
+   * @param {number} x x coordinate to render to
+   * @param {number} y y coordinate to rener to 
+   */
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.tiles = [];
+    thi
+  }
+
+  /**
+   * @returns {undefined}
+   */
+  draw() {
+
+  }
+
+  /**
+   * 
+   * @param {number} i x coordinate to add to
+   * @param {number} j y coordinate to add to
+   * @returns {void}
+   */
+  addTile(i, j) {
+    this.tiles.push({ i: i, j: j, sqDist: sqDist(this.x, this) });
+  }
+}
+
+/*
+var sqDist = function(x1, y1, x2, y2){
+  return (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1);
+};
+*/
+
+var addBoat = function (i, j) {
+  //for(let o = 0; o < boats.length; o++){
+  //  if() 
+  //})
+}
+
 /**
  * @function p3_preload preload any required content before setup
  * @returns {void}
