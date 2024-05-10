@@ -1,5 +1,5 @@
-/*
-  } else {
+
+  else {
     // Draws either the boat or the strips
     onBoat = true;
     if (j == -boatWidth || j == boatWidth) {
