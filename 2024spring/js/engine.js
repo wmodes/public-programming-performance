@@ -101,7 +101,10 @@ function setup() {
 
   $(window).resize(function() {
     resizeScreen();
+    //let inputKey = $("#world-seed");
+    //rebuildWorld(inputKey.val());
   });
+
   resizeScreen();
 }
 
@@ -132,7 +135,7 @@ function draw() {
   if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) {
     camera_velocity.x -= 1;
   }
-  if (keyIsDown(RIGHT_ARROW) || keyIsDown(88)) {
+  if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) {
     camera_velocity.x += 1;
   }
   if (keyIsDown(DOWN_ARROW) || keyIsDown(83)) {
@@ -162,7 +165,7 @@ function draw() {
     window.p3_drawBefore();
   }
 
-  let overdraw = 0.1;
+  let overdraw = 0.2;
 
   let y0 = Math.floor((0 - overdraw) * tile_rows);
   let y1 = Math.floor((1 + overdraw) * tile_rows);
