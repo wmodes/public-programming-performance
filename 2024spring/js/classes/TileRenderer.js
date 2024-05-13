@@ -23,16 +23,19 @@ class TileRenderer {
   getTerrainNoise(x, y) {
     // Constants
     const tileConfig = CONFIG.tiles;
-    const scale = tileConfig.terrainNoiseScale;
+    const terrainScale = tileConfig.terrainNoiseScale;
 
-    let noiseVal = noise((x + 100) * scale, (y + 100) * scale);
+    let noiseVal = noise((x + 100) * terrainScale, (y + 100) * terrainScale);
 
     return noiseVal;
   }
 
   getWaveNoise(x,y) {
+    // Constants
+    const tileConfig = CONFIG.tiles;
+    const waveScale = tileConfig.waveNoiseScale;
     let t = millis() / 1000.0
-    let noiseVal = noise(-t + x / 5, y / 5, t);
+    let noiseVal = noise(-t + x  * waveScale, y  * waveScale, t);
     return noiseVal;
   }
   

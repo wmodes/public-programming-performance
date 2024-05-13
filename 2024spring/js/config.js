@@ -4,10 +4,11 @@
 CONFIG = {
   tiles: {
     terrainNoiseScale: 0.1,
+    waveNoiseScale: 0.1,
     zoom: 0.1,
-    oceanHeightMultiplier: 20,
-    islandHeightMultiplier: 100,
-    islandHeightMin: 5,
+    oceanHeightMultiplier: 30,
+    islandHeightMultiplier: 150,
+    islandHeightMin: 10,
     islandColors: [
       "#F9EDE3", // Light Sand
       "#E3D2B5", // Dark Sand
