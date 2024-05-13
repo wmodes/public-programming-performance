@@ -3,6 +3,7 @@
 // put configuration parameters here and reference them in this config object
 CONFIG = {
   tiles: {
+    terrainNoiseScale: 0.1,
     zoom: 0.1,
     oceanHeightMultiplier: 20,
     islandHeightMultiplier: 100,
