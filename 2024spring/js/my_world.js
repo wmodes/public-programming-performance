@@ -97,7 +97,7 @@ let [tw, th] = [p3_tileWidth(), p3_tileHeight()];
 function p3_tileClicked(i, j) {
   let key = [i, j];
   clicks[key] = 1 + (clicks[key] | 0);
-  if(!tile.isIsland(i, j)){
+  if(!tiles.isIsland(i, j)){
     addBoat(i, j);
   } else {
     addPerson(i,j)

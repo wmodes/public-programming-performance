@@ -70,7 +70,7 @@ class Boat {
   
   checkMove(di, dj){
     for(let key in this.tiles){
-      if(tile.isIsland(this.x + this.tiles[key].i + di, this.y + this.tiles[key].j + dj)){
+      if(tiles.isIsland(this.x + this.tiles[key].i + di, this.y + this.tiles[key].j + dj)){
         return false;
       }
     }

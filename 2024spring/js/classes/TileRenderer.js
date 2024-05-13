@@ -45,7 +45,6 @@ class TileRenderer {
 
     // Constants
     const tileConfig = CONFIG.tiles;
-    const scale = tileConfig.terrainNoiseScale;
     const islandColors = tileConfig.islandColors;
     const oceanColors = tileConfig.oceanColors;
     const waveColor = tileConfig.waveColor;
