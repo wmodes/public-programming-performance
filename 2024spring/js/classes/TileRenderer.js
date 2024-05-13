@@ -30,6 +30,14 @@ class TileRenderer {
     return noiseVal;
   }
 
+  /**
+   * Function to return wave noise at coordinate
+   * @function getWaveNoise
+   * @param {number} x the x coordinate of given tile
+   * @param {number} y the y coordinate of given tile
+   * @returns {number} noise value at given x and y coordinates
+   * @author {Wes}
+   */
   getWaveNoise(x,y) {
     // Constants
     const tileConfig = CONFIG.tiles;
@@ -63,6 +71,7 @@ class TileRenderer {
   
     //terrain code - Luke
     let noiseVal = this.getTerrainNoise(x, y);
+    // clamp noiseVal to 0-1
     let islandMap = map(noiseVal,0.5,0.8,0,1);
     
     let colorVal;
@@ -89,8 +98,15 @@ class TileRenderer {
     return onIsland
   }
 
+  /**
+   * Function to get island color
+   * @function getIslandColor
+   * @param {number} x the x coordinate of given tile
+   * @param {number} y the y coordinate of given tile
+   * @returns {p5.color} color value at given x and y coordinates
+   * @author {Wes}
+   */
   getIslandColor(x, y) {
-
     // Constants
     const tileConfig = CONFIG.tiles;
     const islandColors = tileConfig.islandColors;
@@ -120,7 +136,7 @@ class TileRenderer {
    * @param {number} height the height to raise the tile by
    * @param {number} colorVal color value to fill extruded tile with
    * @returns {void}
-   * @author Luke
+   * @author {Luke}
    */
   drawExtrudedTile(height, colorVal) {
     const colorChangePercent = 0.2;
@@ -162,6 +178,7 @@ class TileRenderer {
    * @param {number} factor scalar number to modify color by
    * @param {number} type number used as refrence to typee of tile?
    * @returns {p5.color}
+   * @author {Luke}
    */
   determineTileEdgeColor(col, factor, type) {
       //luke
