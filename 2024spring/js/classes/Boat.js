@@ -70,7 +70,7 @@ class Boat {
   
   checkMove(di, dj){
     for(let key in this.tiles){
-      if(tiles.isIsland(this.x + this.tiles[key].i + di, this.y + this.tiles[key].j + dj)){
+      if(window.tiles.isIsland(this.x + this.tiles[key].i + di, this.y + this.tiles[key].j + dj)){
         return false;
       }
     }
@@ -112,13 +112,13 @@ class Boat {
       //for(let O = 0; O < boats[I].tiles.length; O++){
       for(let key in boats[I].tiles){
         if(i === boats[I].x + boats[I].tiles[key].i && j === boats[I].y + boats[I].tiles[key].j){
-          fill( boats[I].color * 255);
-          beginShape();
-          vertex(-tw, 0);
-          vertex(0, th);
-          vertex(tw, 0);
-          vertex(0, -th);
-          endShape(CLOSE);
+          // fill( boats[I].color * 255);
+          // beginShape();
+          // vertex(-tw, 0);
+          // vertex(0, th);
+          // vertex(tw, 0);
+          // vertex(0, -th);
+          // endShape(CLOSE);
           let r = boats[I].color;
           // temp
           drawBoat(color(101*r, 53*r, 15*r), color(60*r, 40*r, 13*r), color(63*r, 48*r, 29*r));
@@ -171,6 +171,7 @@ var addBoat = function (i, j) {
       for (let key in boats[o].tiles) {
         if (isOn(i, j, boats[o].x + boats[o].tiles[key].i, boats[o].y + boats[o].tiles[key].j)) {
           delete boats[o].tiles[key];
+          splitBoat(o);
           let tmp = Object.keys(boats[o].tiles);
           if(tmp.length === 0){
             console.log("test");
@@ -197,6 +198,98 @@ var addBoat = function (i, j) {
   tmp.addBoatTile(i, j);
   tmp.index = boats.length;
   boats.push(tmp);
+
+}
+
+var splitBoat = function(I){
+  let boat = boats[I];
+
+
+  let tmp = Object.keys(boat.tiles);
+  if(tmp.length === 0){
+    return;
+  }
+
+let chunks = [];
+let chunkIndex = 0;
+
+
+for(let currentKey of tmp){
+
+  let flag = false;
+  for(let chunk of chunks){
+    if(currentKey in chunk){
+      flag = true;
+      break;
+    }
+  }
+  if(flag){
+    continue;
+  }
+  
+  let stack = {};
+  stack[currentKey] = boat.tiles[currentKey];
+  let skeys = Object.keys(stack);
+  let slen = skeys.length;
+
+  chunks.push({});
+  chunkIndex = chunks.length - 1;
+
+  while(slen !== 0){
+    skeys = Object.keys(stack);
+    for(let key of skeys){
+      let tile = boat.tiles[key];
+      let k = [];
+      k.push([tile.i + 1, tile.j]);
+      k.push([tile.i - 1, tile.j]);
+      k.push([tile.i, tile.j + 1]);
+      k.push([tile.i, tile.j - 1]);
+
+
+      for(let K of k){
+        if(boat.tiles[K] && !stack[K] && !chunks[chunkIndex][K]){
+          stack[K] = boat.tiles[K];
+        }
+      }
+      chunks[chunkIndex][key] = stack[key];
+      delete stack[key];
+    }
+    skeys = Object.keys(stack);
+    slen = skeys.length;
+  }
+
+  for(let key in boat.tiles){
+    boat.tiles[key].flag = false;
+  }
+  for(let chunk of chunks){
+    for(let key in chunk){
+      boat.tiles[key].flag = true;
+    }
+  }
+}
+
+if(chunks.length > 1){
+  for(let chunk of chunks){
+    let ckeys = Object.keys(chunk);
+    clen = ckeys.length;
+    if(clen <= 0){
+      continue;
+    }
+    let startTile = chunk[ckeys[0]];
+    let newBoat = new Boat(boat.x + startTile.i, boat.y + startTile.j);
+    for(let key in chunk){
+      let tile = chunk[key];
+      newBoat.addBoatTile(boat.x + tile.i, boat.y + tile.j);
+    }
+    newBoat.index = boats.length;
+    boats.push(newBoat);
+  }
+  boats.splice(I, 1);
+  for(let i = 0; i < boats.length; i++){
+    boats[i].index = i;
+  }
+}
+console.log(boats.length);
 
 }
 
@@ -241,75 +334,3 @@ function drawBoat() {
   vertex(1 / 8 * tw, 5 / 8 * th - bh); // 3
   endShape();
 }
-
-
-var splitBoat = function(I){
-  let boat = boats[I];
-  let tmp = Object.keys(boat.tiles);
-  if(tmp.length === 0){
-    return;
-  }
-  let current = tmp[0];
-
-  let stack = {};
-
-}
-
-/*
-var splitBoat = function(I){
-  let boat = boats[I];
-  let key = 0;
-  let newTiles = [];
-  let tmp = Object.keys(boat.tiles);
-  if(tmp.length === 0){
-    return;
-  }
-  let current = tmp[0];
-  let c = boat.tiles[current];
-
-  let stack = {};
-  stack[current] = c;
-
-  let stackLen = 1;
-
-
-  while(stackLen > 0){
-    let stackKeys = Object.keys(stack);
-    stackLen = stackKeys.length
-    
-
-
-
-
-
-    let stackKeys = Object.keys(stack);
-    stackLen = stackKeys.length
-  }
-
-
-
-
-
-
-
-  let flag = false;
-  let obj = {};
-  let s = {};
-  obj[current] = c;
-  do
-  {
-    let k1 = [x.i + 1, x.j];
-    let k2 = [x.i - 1, x.j];
-    let k3 = [x.i, x.j + 1];
-    let k4 = [x.i, x.j - 1];
-
-    if(!obj[k1] && boat.tiles[k1]){
-      obj[k1] = boat.tiles[k1];
-      flag = true;
-    }
-
-
-  } while (flag)
-
-}
-*/
