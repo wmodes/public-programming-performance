@@ -54,15 +54,7 @@ function p3_preload() { }
  * @returns {void}
  */
 function p3_setup() {
-  islandHighColor = color(252, 240, 0);// Bright Yellow
-  islandLowColor = color(252, 180, 0); // Bright Orange
-  islandColors = [
-    color("#F9EDE3"), // Light Sand
-    color("#E3D2B5"), // Dark Sand
-    color("#BCD817"), // light vegetation
-    color("#686D35"), // Dark vegetation
-    color("#B7A487"), // Rock
-  ];
+  // space available for lease
 }
 
 /**
