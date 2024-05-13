@@ -20,13 +20,19 @@ class TileRenderer {
    * @returns {number} noise value at given x and y coordinates
    * @author {Wes}
    */
-  terrainNoise(x, y) {
+  getTerrainNoise(x, y) {
     // Constants
     const tileConfig = CONFIG.tiles;
     const scale = tileConfig.terrainNoiseScale;
 
-    let noiseVal = noise(x * scale, y * scale);
+    let noiseVal = noise((x + 100) * scale, (y + 100) * scale);
 
+    return noiseVal;
+  }
+
+  getWaveNoise(x,y) {
+    let t = millis() / 1000.0
+    let noiseVal = noise(-t + x / 5, y / 5, t);
     return noiseVal;
   }
   
@@ -53,14 +59,15 @@ class TileRenderer {
     const islandHeightMin = tileConfig.islandHeightMin;
   
     //terrain code - Luke
-    let noiseVal = this.terrainNoise(x, y);
+    let noiseVal = this.getTerrainNoise(x, y);
+    let islandMap = map(noiseVal,0.5,0.8,0,1);
     
     let colorVal;
     let onIsland = false;
   
     // if this tile is ocean
     if (!this.isIsland(x, y)) {
-      const waveNoise = noise(-t + x / 5, y / 5, t);
+      const waveNoise = this.getWaveNoise(x, y);
       const waterLowColor = color(oceanColors.low)
       const waterHighColor = color(oceanColors.high)
       colorVal = lerpColor(waterLowColor, waterHighColor, map(waveNoise, .1, 1, 0, 1));
@@ -69,21 +76,7 @@ class TileRenderer {
     }
     // if this tile is island
     else {
-      let islandMap = map(noiseVal,0.5,0.8,0,1);
-      colorVal = color('yellow');    
-      if(islandMap<.1){
-        colorVal = lerpColor(color(islandColors[(0)]), color(islandColors[(1)]), islandMap);
-      }
-      else if(islandMap<.2){
-        colorVal = lerpColor(color(islandColors[(1)]), color(islandColors[(2)]), islandMap);
-      }
-      else if(islandMap<.8){
-        colorVal = lerpColor(color(islandColors[(2)]), color(islandColors[(3)]), islandMap);
-      }
-      else{
-        colorVal = lerpColor(color(islandColors[(3)]), color(islandColors[(4)]), islandMap);
-      }
-      
+      colorVal = this.getIslandColor(x, y);   
       fill(colorVal);
       onIsland = true;
       const thisTileHeight = (islandMap * islandVertMultiplier) + islandHeightMin;
@@ -91,6 +84,31 @@ class TileRenderer {
     }
   
     return onIsland
+  }
+
+  getIslandColor(x, y) {
+
+    // Constants
+    const tileConfig = CONFIG.tiles;
+    const islandColors = tileConfig.islandColors;
+    const noiseVal = this.getTerrainNoise(x, y);
+
+    // Ensure noiseVal is within the interpolation range
+    let normNoiseVal = map(noiseVal, 0.5, 0.8, 0, 1);
+    // Calculate which two colors to interpolate between
+    let numColors = islandColors.length;
+    let scale = (numColors - 1) * normNoiseVal;
+    let firstColorIndex = Math.floor(scale);
+    let secondColorIndex = firstColorIndex + 1;
+    // Calculate how far to interpolate between the two selected colors
+    let lerpFactor = scale - firstColorIndex;
+  
+    // Handle edge case where noiseVal maps to the end of the array
+    if (secondColorIndex >= numColors) {
+      secondColorIndex = firstColorIndex;
+    }
+  
+    return lerpColor(color(islandColors[firstColorIndex]), color(islandColors[secondColorIndex]), lerpFactor);
   }
 
   /**
@@ -172,7 +190,7 @@ class TileRenderer {
    */
   isIsland(x, y) {
     let zoom = 0.1;
-    let noiseVal = this.terrainNoise(x, y);
+    let noiseVal = this.getTerrainNoise(x, y);
     return noiseVal > .5;
   }
 
