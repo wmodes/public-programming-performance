@@ -4,6 +4,9 @@
 CONFIG = {
   tiles: {
     zoom: 0.1,
+    oceanHeightMultiplier: 20,
+    islandHeightMultiplier: 100,
+    islandHeightMin: 5,
     islandColors: [
       "#F9EDE3", // Light Sand
       "#E3D2B5", // Dark Sand

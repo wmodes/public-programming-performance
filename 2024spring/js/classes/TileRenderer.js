@@ -30,6 +30,9 @@ class TileRenderer {
     const islandColors = tileConfig.islandColors;
     const oceanColors = tileConfig.oceanColors;
     const waveColor = tileConfig.waveColor;
+    const oceanHeightMultiplier = tileConfig.oceanHeightMultiplier;
+    const islandVertMultiplier = tileConfig.islandHeightMultiplier;
+    const islandHeightMin = tileConfig.islandHeightMin;
   
     //terrain code - Luke
     let noiseVal = noise(xCoord * tileConfig.zoom, yCoord * tileConfig.zoom);
@@ -43,7 +46,7 @@ class TileRenderer {
       const waterHighColor = color(oceanColors.high)
       colorVal = lerpColor(waterLowColor, waterHighColor, map(waveNoise, .1, 1, 0, 1));
       fill(colorVal);
-      this.drawExtrudedTile(waveNoise * 25, colorVal)
+      this.drawExtrudedTile(waveNoise * oceanHeightMultiplier, colorVal)
     }
     // if this tile is island
     else {
@@ -64,7 +67,8 @@ class TileRenderer {
       
       fill(colorVal);
       onIsland = true;
-      this.drawExtrudedTile((islandMap*30)+5, colorVal);
+      const thisTileHeight = (islandMap * islandVertMultiplier) + islandHeightMin;
+      this.drawExtrudedTile(thisTileHeight, colorVal);
     }
   
     return onIsland
