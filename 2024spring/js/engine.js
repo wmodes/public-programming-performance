@@ -129,7 +129,7 @@ window.addEventListener("keydown", function (e) {
 // draw() function is called repeatedly, it's the main animation loop
 function draw() {
   // GARRETT adding WASD to controls
-
+  Boat.moveBoats();
   // Keyboard controls!
   if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) {
     camera_velocity.x -= 1;
