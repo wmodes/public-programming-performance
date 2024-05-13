@@ -44,3 +44,113 @@
     
   // }
   // calling boat function
+
+
+
+
+
+
+
+  
+/**
+ * 
+ *  var sqDist = function(x1, y1, x2, y2){
+ *  return (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1);
+ *  };
+ *
+ * 
+ * 
+ * 
+ * 
+ * 
+ * // 
+/*
+function checkboat(i,j){ // If there is a boat on this tile return true
+  if ( clicks[[i,j]] || 0 == true){
+    return(true)
+  }
+  return(false);
+}
+
+function boatCode i, j) { // returns 
+  // In the order: North, South, East, West
+  let n = checkboat( i - 1, j) ? 0 : 1;
+  let s = checkboat( i + 1, j) ? 0 : 1;
+  let e = checkboat( i , j + 1) ? 0 : 1;
+  let w = checkboat( i , j - 1) ? 0 : 1;
+  return (n << 0) + (s << 1) + (e << 2) + (w << 3);
+}
+
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * // function p3_drawAfter() {
+//   for (let ripple of activeRipples) {
+//     ripple.update();
+//   }
+// }
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ *  // for (let I = 0; I < boats.length; I++) {
+  //   //for(let O = 0; O < boats[I].tiles.length; O++){
+  //   for (let tile in boats[I].tiles) {
+  //     if (i === boats[I].x + tile.i && j === boats[I].y + tile.j) {
+  //       fill(boats[I].color);
+  //       beginShape();
+  //       vertex(-tw, 0);
+  //       vertex(0, th);
+  //       vertex(tw, 0);
+  //       vertex(0, -th);
+  //       endShape(CLOSE);
+  //       // temp 
+  //       //drawBoat();
+  //     }
+  //   }
+  // }
+ * 
+ * 
+ * 
+// 
+// function isIsland(i, j) {
+//   return noise(i * 0.001, j * 0.001) > 0.5
+// }
+
+// function drawOneBoat() {
+//   let boatColor = 'brown';
+//   fill(boatColor);
+//   beginShape();
+//   vertex(-5, 0, 0);
+//   vertex(5, 0, 0);
+//   vertex(4, -3, 0);
+//   vertex(-4, -3, 0);
+//   endShape(CLOSE);
+
+//   // Draw boat base
+//   fill(boatColor);
+//   beginShape();
+//   vertex(-5, 0, 2);
+//   vertex(5, 0, 2);
+//   vertex(5, 0, 0);
+//   vertex(-5, 0, 0);
+//   endShape(CLOSE);
+
+//   // Draw sail
+//   fill(255);
+//   beginShape();
+//   vertex(0, -12);
+//   vertex(0, -2);
+//   vertex(0, -2);
+//   vertex(5, -7);
+//   vertex(0, -12);
+//   endShape(CLOSE);
+// }
+
+/*

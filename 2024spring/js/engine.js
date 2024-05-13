@@ -99,7 +99,7 @@ function setup() {
 
   rebuildWorld(inputKey.val());
 
-  $(window).resize(function() {
+  $(window).resize(function () {
     resizeScreen();
     //let inputKey = $("#world-seed");
     //rebuildWorld(inputKey.val());
@@ -119,17 +119,16 @@ function rebuildWorld(key) {
 }
 
 // Alex: supress default WASD behavior
-// window.addEventListener("keydown", function(e) {
-//   // space and arrow keys
-//   if ([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
-//     e.preventDefault();
-//   }
-// }
+window.addEventListener("keydown", function (e) {
+  // space and arrow keys
+  if ([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+    e.preventDefault();
+  }
+})
 
 // draw() function is called repeatedly, it's the main animation loop
 function draw() {
   // GARRETT adding WASD to controls
-
 
   // Keyboard controls!
   if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) {
