@@ -37,12 +37,6 @@ let islandColor4
 let islandColor5
 let islandColors
 
-// instantiate some objects in the global state
-// ideally, this whole file would be its own manager class
-// and these would be instantiated in the constructor
-// but that's a can of worms for another day
-const tiles = new TileRenderer();
-
 /**
  * @function p3_preload preload any required content before setup
  * @returns {void}
@@ -55,6 +49,12 @@ function p3_preload() { }
  */
 function p3_setup() {
   // space available for lease
+
+  // instantiate some objects in the global state
+  // ideally, this whole file would be its own manager class
+  // and these would be instantiated in the constructor
+  // but that's a can of worms for another day
+  window.tiles = new TileRenderer();
 }
 
 /**
@@ -125,7 +125,7 @@ function p3_drawTile(i, j) {
   noStroke();
   push();
 
-  let onIsland = tile.renderTerrain(i, j);
+  let onIsland = tiles.renderTerrain(i, j);
   //click logic
   let n = clicks[[i, j]] | 0;
   if (n % 2 == 1) {
