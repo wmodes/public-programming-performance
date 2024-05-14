@@ -115,7 +115,7 @@ function rebuildWorld(key) {
   tile_width_step_main = window.p3_tileWidth ? window.p3_tileWidth() : 32;
   tile_height_step_main = window.p3_tileHeight ? window.p3_tileHeight() : 14.5;
   tile_columns = Math.ceil(width / (tile_width_step_main * 2));
-  tile_rows = Math.ceil(height / (tile_height_step_main * 2));
+  tile_rows = Math.ceil(height / (tile_height_step_main * 2)) + 5;
 }
 
 // Alex: supress default WASD behavior
