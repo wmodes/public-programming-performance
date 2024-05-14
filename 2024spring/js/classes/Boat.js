@@ -110,6 +110,7 @@ class Boat {
   static drawBoats(i, j){
     for(let I = 0; I < boats.length; I++){
       //for(let O = 0; O < boats[I].tiles.length; O++){
+
       for(let key in boats[I].tiles){
         if(i === boats[I].x + boats[I].tiles[key].i && j === boats[I].y + boats[I].tiles[key].j){
           // fill( boats[I].color * 255);
@@ -121,17 +122,78 @@ class Boat {
           // endShape(CLOSE);
           let r = boats[I].color;
           // temp
-          drawBoat(color(101*r, 53*r, 15*r), color(60*r, 40*r, 13*r), color(63*r, 48*r, 29*r));
+          boats[I].drawBoat(i, j);
         }
       }
     }
   }
+
+  /**
+   * Function to get a boats height
+   * @function GetBoatHeight gets a sum of tile heights and devides them by the number of tiles to get the average
+   * @returns {number} height of boat in pixels
+   * @author {Aidan}
+   */
+  getBoatHeight(){
+    let totalHeight = 0;
+    let count = 0;
+    for(let key in this.tiles){
+      let tile = this.tiles[key];
+      totalHeight += window.tiles.getHeight(this.x + tile.i, this.y + tile.j);
+      count++;
+    }
+    return totalHeight/count;
+  }
+
+  /**
+   * @function drawBoat renders a boat to the canvas
+   * @returns {void}
+   * @author James
+   * James is here!
+   * Lets start with drawing the new boats instead of the lawn chairs
+   * I'm gonna try to make a 1 tile boat here:
+   * This code is straight from chat gpt
+   * I'm gonna try to make it smaller and map it to a tile. 
+   */
+  drawBoat(i, j) {
+
+    let boatHeight = this.getBoatHeight();
+    // basic boat shape v1.0
+    let TopHeight = 20 + boatHeight; // boat height
+    let BottomHeight = window.tiles.getHeight(i, j); // boat height
+    // front face
+    fill("#65350f");
+    beginShape();
+    vertex(-10 / 16 * tw, -2 / 16 * th - BottomHeight); // 0
+    vertex(-10 / 16 * tw, -2 / 16 * th - TopHeight); // 0^
+    vertex(1 / 8 * tw, 5 / 8 * th - TopHeight); // 3^
+    vertex(1 / 8 * tw, 5 / 8 * th - BottomHeight); // 3
+    endShape();
   
+    // side face
+    fill("#3c280d")
+    beginShape();
+    vertex(10 / 16 * tw, 2 / 16 * th - BottomHeight); // 2
+    vertex(10 / 16 * tw, 2 / 16 * th - TopHeight); // 2^
+    vertex(1 / 8 * tw, 5 / 8 * th - TopHeight); // 3^
+    vertex(1 / 8 * tw, 5 / 8 * th - BottomHeight); // 3
+    endShape();
+  
+    // top face
+    fill("#3f301d")
+    beginShape();
+    vertex(-10 / 16 * tw, -2 / 16 * th - TopHeight); // 0
+    vertex(-1 / 8 * tw, -5 / 8 * th - TopHeight); // 1
+    vertex(10 / 16 * tw, 2 / 16 * th - TopHeight); // 2
+    vertex(1 / 8 * tw, 5 / 8 * th - TopHeight); // 3
+    endShape();
+  }
 
 }
 
 /**
-* @function isAdjacent
+* Function checks if two i,j coordanates are adjacent (no diagonals)
+* @function isAdjacent 
 * @param {number}
 * @param {number}
 * @param {number}
@@ -293,44 +355,47 @@ console.log(boats.length);
 
 }
 
+// /*
+// /**
+// * @function drawBoat renders a boat to the canvas
+// * @returns {void}
+// * @author James
+// *  James is here!
+// *  Lets start with drawing the new boats instead of the lawn chairs
+// *  I'm gonna try to make a 1 tile boat here:
+// *  This code is straight from chat gpt
+// *  I'm gonna try to make it smaller and map it to a tile. 
+// */
+// function drawBoat() {
 
-/**
-* @function drawBoat renders a boat to the canvas
-* @returns {void}
-* @author James
-*  James is here!
-*  Lets start with drawing the new boats instead of the lawn chairs
-*  I'm gonna try to make a 1 tile boat here:
-*  This code is straight from chat gpt
-*  I'm gonna try to make it smaller and map it to a tile. 
-*/
-function drawBoat() {
-  // basic boat shape v1.0
-  let bh = 20; // boat height
-  // front face
-  fill("#65350f");
-  beginShape();
-  vertex(-10 / 16 * tw, -2 / 16 * th); // 0
-  vertex(-10 / 16 * tw, -2 / 16 * th - bh); // 0^
-  vertex(1 / 8 * tw, 5 / 8 * th - bh); // 3^
-  vertex(1 / 8 * tw, 5 / 8 * th); // 3
-  endShape();
+//   let boatHeight = getBoatHeight();
+//   // basic boat shape v1.0
+//   let TopHeight = 20; // boat height
+//   // front face
+//   fill("#65350f");
+//   beginShape();
+//   vertex(-10 / 16 * tw, -2 / 16 * th); // 0
+//   vertex(-10 / 16 * tw, -2 / 16 * th - TopHeight); // 0^
+//   vertex(1 / 8 * tw, 5 / 8 * th - TopHeight); // 3^
+//   vertex(1 / 8 * tw, 5 / 8 * th); // 3
+//   endShape();
 
-  // side face
-  fill("#3c280d")
-  beginShape();
-  vertex(10 / 16 * tw, 2 / 16 * th); // 2
-  vertex(10 / 16 * tw, 2 / 16 * th - bh); // 2^
-  vertex(1 / 8 * tw, 5 / 8 * th - bh); // 3^
-  vertex(1 / 8 * tw, 5 / 8 * th); // 3
-  endShape();
+//   // side face
+//   fill("#3c280d")
+//   beginShape();
+//   vertex(10 / 16 * tw, 2 / 16 * th); // 2
+//   vertex(10 / 16 * tw, 2 / 16 * th - TopHeight); // 2^
+//   vertex(1 / 8 * tw, 5 / 8 * th - TopHeight); // 3^
+//   vertex(1 / 8 * tw, 5 / 8 * th); // 3
+//   endShape();
 
-  // top face
-  fill("#3f301d")
-  beginShape();
-  vertex(-10 / 16 * tw, -2 / 16 * th - bh); // 0
-  vertex(-1 / 8 * tw, -5 / 8 * th - bh); // 1
-  vertex(10 / 16 * tw, 2 / 16 * th - bh); // 2
-  vertex(1 / 8 * tw, 5 / 8 * th - bh); // 3
-  endShape();
-}
+//   // top face
+//   fill("#3f301d")
+//   beginShape();
+//   vertex(-10 / 16 * tw, -2 / 16 * th - TopHeight); // 0
+//   vertex(-1 / 8 * tw, -5 / 8 * th - TopHeight); // 1
+//   vertex(10 / 16 * tw, 2 / 16 * th - TopHeight); // 2
+//   vertex(1 / 8 * tw, 5 / 8 * th - TopHeight); // 3
+//   endShape();
+// }
+// */
