@@ -89,31 +89,33 @@ class Boat {
   
 
   static moveBoats = function(){
-    Boat.time++;
-    if(Boat.time %60 === 0){
-      for(let I = 0; I < boats.length; I++){
+    if (!keyIsDown(32)) {
+      Boat.time++;
+      if(Boat.time %60 === 0){
+        for(let I = 0; I < boats.length; I++){
 
-        let tx = boats[I].x + boats[I].dx*10;
-        let ty = boats[I].y + boats[I].dy*10;
+          let tx = boats[I].x + boats[I].dx*10;
+          let ty = boats[I].y + boats[I].dy*10;
 
-        let minDist = Infinity;
-        let rx = 0;
-        let ry = 0;
-        let sqDist = function(x1, y1, x2, y2){
-          return (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1);
-        }
-        for(let i = -1; i <= 1; i++){
-          for(let j = -1; j <= 1; j++){
-            let d = sqDist(boats[I].x + i, boats[I].y + j, tx, ty);
-            if(d < minDist && boats[I].checkMove(i, j)){
-              minDist = d;
-              rx = i;
-              ry = j;
+          let minDist = Infinity;
+          let rx = 0;
+          let ry = 0;
+          let sqDist = function(x1, y1, x2, y2){
+            return (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1);
+          }
+          for(let i = -1; i <= 1; i++){
+            for(let j = -1; j <= 1; j++){
+              let d = sqDist(boats[I].x + i, boats[I].y + j, tx, ty);
+              if(d < minDist && boats[I].checkMove(i, j)){
+                minDist = d;
+                rx = i;
+                ry = j;
+              }
             }
           }
+          boats[I].x += rx;
+          boats[I].y += ry;
         }
-        boats[I].x += rx;
-        boats[I].y += ry;
       }
     }
   }
