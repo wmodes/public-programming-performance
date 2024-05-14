@@ -87,6 +87,31 @@ class TileRenderer {
     let noiseVal = noise(-t + x  * waveScale, y  * waveScale, t);
     return noiseVal;
   }
+
+  /**
+   * Function to return tile height at coordinate
+   * @function getHeight
+   * @param {number} x the x coordinate of given tile
+   * @param {number} y the y coordinate of given tile
+   * @returns {number} height from default
+   * @author {Aidan}
+   */
+  getHeight(x, y){
+    const tileConfig = CONFIG.tiles;
+    if (this.isIsland(x, y)) {
+      const islandVertMultiplier = tileConfig.islandHeightMultiplier;
+      const islandHeightMin = tileConfig.islandHeightMin;
+      let noiseVal = this.getTerrainNoise(x, y);
+    // clamp noiseVal to 0-1
+      let islandMap = map(noiseVal,0.5,0.8,0,1);
+      const thisTileHeight = (islandMap * islandVertMultiplier) + islandHeightMin;
+      return thisTileHeight;
+    }
+
+    const oceanHeightMultiplier = tileConfig.oceanHeightMultiplier;
+    const waveNoise = this.getWaveNoise(x, y);
+    return waveNoise * oceanHeightMultiplier;
+  }
   
   /**
    * Function to render terrain

@@ -147,17 +147,18 @@ function p3_drawTile(i, j) {
 function p3_drawSelectedTile(i, j) {
   noFill();
   stroke(0, 255, 0, 128);
+  let height = window.tiles.getHeight(i, j);
 
   beginShape();
-  vertex(-tw, 0);
-  vertex(0, th);
-  vertex(tw, 0);
-  vertex(0, -th);
+  vertex(-tw, 0 - height);
+  vertex(0, th - height);
+  vertex(tw, 0 - height);
+  vertex(0, -th - height);
   endShape(CLOSE);
 
   noStroke();
   fill(0);
-  text("tile " + [i, j], 0, 0);
+  text("tile " + [i, j], 0, 0 - height);
 }
 
 /**
