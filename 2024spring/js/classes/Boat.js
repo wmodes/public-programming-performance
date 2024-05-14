@@ -4,8 +4,6 @@
  * @class 
  */
 class Boat {
-  static updateInterval = 250
-  static headingMomentum = 0.9
   static time = 0;
   /**
    * @constructor 
@@ -21,6 +19,7 @@ class Boat {
       this.lastUpdateTime = 0;
       this.heading = "N";
       this.index = -1;
+      this.updateDirection();
   }
 
   /**
@@ -29,22 +28,16 @@ class Boat {
   draw() {
 
   }
-
-  /**
-   * @returns {void}
-   */
-  update() {
-      if (millis() - this.lastUpdateTime > Boat.updateInterval) {
-          return;
-      }
-      this.lastUpdateTime = millis();
-      if (random() > Boat.headingMomentum) {
-          // Change Heading
-      }
-
-      // Move
-
+  updateDirection(){
+    let dx = random(-1, 1);
+    let dy = random(-1, 1);
+    let d = dist(0, 0, dx, dy);
+    if(d !== 0){
+      this.dx = dx/d;
+      this.dy = dy/d;
+    }
   }
+
 
   /**
    * @param {number} i x coordinate to add to
@@ -71,6 +64,7 @@ class Boat {
   checkMove(di, dj){
     for(let key in this.tiles){
       if(window.tiles.isIsland(this.x + this.tiles[key].i + di, this.y + this.tiles[key].j + dj)){
+        this.updateDirection();
         return false;
       }
     }
@@ -83,6 +77,7 @@ class Boat {
             let I2 = boats[o].x + boats[o].tiles[key2].i;
             let J2 = boats[o].y + boats[o].tiles[key2].j;
             if(I === I2 && J === J2){
+              this.updateDirection();
               return false;
             }
           }
@@ -97,12 +92,28 @@ class Boat {
     Boat.time++;
     if(Boat.time %60 === 0){
       for(let I = 0; I < boats.length; I++){
-        let rx = round(random(-1,1));
-        let ry = round(random(-1,1));
-        if(boats[I].checkMove(rx, ry)){
-          boats[I].x += rx;
-          boats[I].y += ry;
+
+        let tx = boats[I].x + boats[I].dx*10;
+        let ty = boats[I].y + boats[I].dy*10;
+
+        let minDist = Infinity;
+        let rx = 0;
+        let ry = 0;
+        let sqDist = function(x1, y1, x2, y2){
+          return (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1);
         }
+        for(let i = -1; i <= 1; i++){
+          for(let j = -1; j <= 1; j++){
+            let d = sqDist(boats[I].x + i, boats[I].y + j, tx, ty);
+            if(d < minDist && boats[I].checkMove(i, j)){
+              minDist = d;
+              rx = i;
+              ry = j;
+            }
+          }
+        }
+        boats[I].x += rx;
+        boats[I].y += ry;
       }
     }
   }
@@ -225,7 +236,7 @@ return j1 === j2 && i1 === i2;
 * @param {number}
 */
 var addBoat = function (i, j) {
-  console.log(i + ", " + j + ", " + boats.length);
+  //console.log(i + ", " + j + ", " + boats.length);
   for (let o = 0; o < boats.length; o++) {
     //console.log(dist(i, j, boats[o].x, boats[o].y) + "----" + boats[o].dist);
     if (dist(i, j, boats[o].x, boats[o].y) < boats[o].dist + 4) {
@@ -236,7 +247,7 @@ var addBoat = function (i, j) {
           splitBoat(o);
           let tmp = Object.keys(boats[o].tiles);
           if(tmp.length === 0){
-            console.log("test");
+            //console.log("test");
             boats.splice(o, 1);
           }
           return;
@@ -351,7 +362,7 @@ if(chunks.length > 1){
     boats[i].index = i;
   }
 }
-console.log(boats.length);
+//console.log(boats.length);
 
 }
 
