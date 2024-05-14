@@ -100,7 +100,7 @@ function p3_tileClicked(i, j) {
   if(!tiles.isIsland(i, j)){
     addBoat(i, j);
   } else {
-    addPerson(i,j)
+    //addPerson(i,j)
   }
   activeRipples.push(new Ripple(i, j));
 }

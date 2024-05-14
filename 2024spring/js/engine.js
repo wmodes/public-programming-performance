@@ -101,8 +101,8 @@ function setup() {
 
   $(window).resize(function () {
     resizeScreen();
-    //let inputKey = $("#world-seed");
-    //rebuildWorld(inputKey.val());
+    let inputKey = $("#world-seed");
+    rebuildWorld(inputKey.val());
   });
 
   resizeScreen();
