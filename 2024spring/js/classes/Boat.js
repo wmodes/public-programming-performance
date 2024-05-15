@@ -43,13 +43,13 @@ class Boat {
    * @param {number} j y coordinate to add to
    * @returns {void}
    */
-  addBoatTile(i, j) {
+  addBoatTile(i, j, s) {
       let tmpDist = dist(this.x, this.y, i, j);
       //this.tiles.push({i:i - this.x, j:j - this.y, dist: tmpDist});
       let I = i - this.x;
       let J = j - this.y;
       let key = [I, J];
-      this.tiles[key] = { i: i - this.x, j: j - this.y, dist: tmpDist };
+      this.tiles[key] = { i: i - this.x, j: j - this.y, dist: tmpDist , sail: s};
       //this.tiles.push({ i: i - this.x, j: j - this.y, dist: tmpDist });
       if (tmpDist > this.dist) {
           this.dist = tmpDist;
@@ -129,7 +129,7 @@ class Boat {
       for(let key in boats[I].tiles){
         if(i === boats[I].x + boats[I].tiles[key].i && j === boats[I].y + boats[I].tiles[key].j){
           // Cole is here
-          boats[I].drawBoat(i, j);
+          boats[I].drawBoat(i, j, boats[I].tiles[key].sail);
         }
       }
     }
@@ -161,9 +161,11 @@ class Boat {
    * Draws a trapezoidal boat shape with a front face, side face, and top face.
    * Based on surrounding boat tiles, it will expand to connect to other tiles of this boat.
    */
-  drawBoat(x, y) {
-    let boatHeight = this.getBoatHeight() + 3;
+  drawBoat(x, y, s) {
+    let boatHeight = this.getBoatHeight() + 20;
     let topHeight = 20 + boatHeight; // boat height
+
+    let bottomHeight = window.tiles.getHeight(x, y);
     
     let drawTile = (i, j) => { 
       push();
@@ -173,24 +175,24 @@ class Boat {
         lx = tw / 2;
       }
       if (`${i},${j-1}` in this.tiles) {
-        tx = th;
+        tx = th / 2;
       }
       // front face
       fill("#65350f");
       beginShape();
-      vertex(-10/16 * tw - tx, -2/16 * th - tx / 2);
+      vertex(-10/16 * tw - tx, -2/16 * th - tx / 2 - bottomHeight);
       vertex(-11/16 * tw - tx, -3/16 * th - boatHeight - tx / 2);
       vertex(2/8 * tw, 6/8 * th - boatHeight);
-      vertex(1/8 * tw, 5/8 * th);
+      vertex(1/8 * tw, 5/8 * th - bottomHeight);
       endShape();
     
       // side face
       fill("#4F330E")
       beginShape();
-      vertex(10/16 * tw + lx, 2/16 * th - lx / 2);
+      vertex(10/16 * tw + lx, 2/16 * th - lx / 2 - bottomHeight);
       vertex(12/16 * tw + lx, 4/16 * th - boatHeight - lx / 2);
       vertex(2/8 * tw, 6/8 * th - boatHeight);
-      vertex(1/8 * tw, 5/8 * th);
+      vertex(1/8 * tw, 5/8 * th - bottomHeight);
       endShape();
     
       // top face
@@ -201,6 +203,12 @@ class Boat {
       vertex(12/16 * tw + lx, 4/16 * th - boatHeight - lx / 2);
       vertex(4/16 * tw, 12/16 * th - boatHeight);
       endShape();
+
+      // if(s){
+      //   fill(0);
+      //   li
+      // }
+
       pop();
     }
     drawTile(x - this.x, y - this.y);
@@ -241,7 +249,7 @@ return j1 === j2 && i1 === i2;
 * @author Aidan
 * @param {number}
 */
-var addBoat = function (i, j) {
+var addBoat = function (i, j, s) {
   //console.log(i + ", " + j + ", " + boats.length);
   for (let o = 0; o < boats.length; o++) {
     //console.log(dist(i, j, boats[o].x, boats[o].y) + "----" + boats[o].dist);
@@ -267,14 +275,14 @@ var addBoat = function (i, j) {
       //for(let p = 0; p < boats[o].tiles.length; p++){
       for (let key in boats[o].tiles) {
         if (isAdjacent(i, j, boats[o].x + boats[o].tiles[key].i, boats[o].y + boats[o].tiles[key].j)) {
-          boats[o].addBoatTile(i, j);
+          boats[o].addBoatTile(i, j, s);
           return;
         }
       }
     }
   }
   let tmp = new Boat(i, j);
-  tmp.addBoatTile(i, j);
+  tmp.addBoatTile(i, j, s);
   tmp.index = boats.length;
   boats.push(tmp);
 

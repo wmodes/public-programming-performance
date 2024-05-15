@@ -104,7 +104,7 @@ function p3_tileClicked(i, j) {
   let key = [i, j];
   clicks[key] = 1 + (clicks[key] | 0);
   if(!tiles.isIsland(i, j)){
-    addBoat(i, j);
+    addBoat(i, j, true);
   } else {
     addPerson(i,j)
   }
