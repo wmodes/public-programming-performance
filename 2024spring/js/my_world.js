@@ -21,6 +21,9 @@ let trimColor;
 //array to encapsulate boat objext
 var boats = [];
 
+//array to encapsulate person objext
+var people = [];
+
 //Ripple globals
 let activeRipples = [];
 
@@ -100,7 +103,7 @@ function p3_tileClicked(i, j) {
   if(!tiles.isIsland(i, j)){
     addBoat(i, j);
   } else {
-    //addPerson(i,j)
+    addPerson(i,j)
   }
   activeRipples.push(new Ripple(i, j));
 }
@@ -135,6 +138,7 @@ function p3_drawTile(i, j) {
     }
   }
   Boat.drawBoats(i, j);
+  Person.drawPerson(i, j);
   pop();
 }
 

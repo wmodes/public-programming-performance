@@ -131,6 +131,7 @@ function draw() {
   // GARRETT adding WASD to controls
   frameRate(30);
   Boat.moveBoats();
+  Person.movePeople();
   // Keyboard controls!
   if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) {
     camera_velocity.x -= 1;
