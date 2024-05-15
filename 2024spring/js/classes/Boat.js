@@ -22,12 +22,6 @@ class Boat {
       this.updateDirection();
   }
 
-  /**
-   * @returns {undefined}
-   */
-  draw() {
-
-  }
   updateDirection(){
     let dx = random(-1, 1);
     let dy = random(-1, 1);
@@ -123,18 +117,13 @@ class Boat {
   static drawBoats(i, j){
     for(let I = 0; I < boats.length; I++){
       //for(let O = 0; O < boats[I].tiles.length; O++){
-
+      // if(i === boats[I].x && j === boats[I].y){
+      //     // Cole is here
+      //     boats[I].drawBoat();
+      // }
       for(let key in boats[I].tiles){
         if(i === boats[I].x + boats[I].tiles[key].i && j === boats[I].y + boats[I].tiles[key].j){
-          // fill( boats[I].color * 255);
-          // beginShape();
-          // vertex(-tw, 0);
-          // vertex(0, th);
-          // vertex(tw, 0);
-          // vertex(0, -th);
-          // endShape(CLOSE);
-          let r = boats[I].color;
-          // temp
+          // Cole is here
           boats[I].drawBoat(i, j);
         }
       }
@@ -161,48 +150,58 @@ class Boat {
   /**
    * @function drawBoat renders a boat to the canvas
    * @returns {void}
-   * @author James
-   * James is here!
-   * Lets start with drawing the new boats instead of the lawn chairs
-   * I'm gonna try to make a 1 tile boat here:
-   * This code is straight from chat gpt
-   * I'm gonna try to make it smaller and map it to a tile. 
+   * @author James, Jaxon, Cole
+   * James is here! And then Cole was here (and Jaxon in spirit)!
+   * @description
+   * Draws a trapezoidal boat shape with a front face, side face, and top face.
+   * Based on surrounding boat tiles, it will expand to connect to other tiles of this boat.
    */
-  drawBoat(i, j) {
-
-    let boatHeight = this.getBoatHeight();
-    // basic boat shape v1.0
-    let TopHeight = 20 + boatHeight; // boat height
-    let BottomHeight = window.tiles.getHeight(i, j); // boat height
-    // front face
-    fill("#65350f");
-    beginShape();
-    vertex(-10 / 16 * tw, -2 / 16 * th - BottomHeight); // 0
-    vertex(-10 / 16 * tw, -2 / 16 * th - TopHeight); // 0^
-    vertex(1 / 8 * tw, 5 / 8 * th - TopHeight); // 3^
-    vertex(1 / 8 * tw, 5 / 8 * th - BottomHeight); // 3
-    endShape();
-  
-    // side face
-    fill("#3c280d")
-    beginShape();
-    vertex(10 / 16 * tw, 2 / 16 * th - BottomHeight); // 2
-    vertex(10 / 16 * tw, 2 / 16 * th - TopHeight); // 2^
-    vertex(1 / 8 * tw, 5 / 8 * th - TopHeight); // 3^
-    vertex(1 / 8 * tw, 5 / 8 * th - BottomHeight); // 3
-    endShape();
-  
-    // top face
-    fill("#3f301d")
-    beginShape();
-    vertex(-10 / 16 * tw, -2 / 16 * th - TopHeight); // 0
-    vertex(-1 / 8 * tw, -5 / 8 * th - TopHeight); // 1
-    vertex(10 / 16 * tw, 2 / 16 * th - TopHeight); // 2
-    vertex(1 / 8 * tw, 5 / 8 * th - TopHeight); // 3
-    endShape();
+  drawBoat(x, y) {
+    let boatHeight = this.getBoatHeight() + 3;
+    let topHeight = 20 + boatHeight; // boat height
+    
+    let drawTile = (i, j) => { 
+      push();
+      // Find adjacent tiles and adjust the boat shape accordingly
+      let lx = 0, tx = 0;
+      if (`${i-1},${j}` in this.tiles) {
+        lx = tw / 2;
+      }
+      if (`${i},${j-1}` in this.tiles) {
+        tx = th;
+      }
+      // front face
+      fill("#65350f");
+      beginShape();
+      vertex(-10/16 * tw - tx, -2/16 * th - tx / 2);
+      vertex(-11/16 * tw - tx, -3/16 * th - boatHeight - tx / 2);
+      vertex(2/8 * tw, 6/8 * th - boatHeight);
+      vertex(1/8 * tw, 5/8 * th);
+      endShape();
+    
+      // side face
+      fill("#4F330E")
+      beginShape();
+      vertex(10/16 * tw + lx, 2/16 * th - lx / 2);
+      vertex(12/16 * tw + lx, 4/16 * th - boatHeight - lx / 2);
+      vertex(2/8 * tw, 6/8 * th - boatHeight);
+      vertex(1/8 * tw, 5/8 * th);
+      endShape();
+    
+      // top face
+      fill("#3f301d")
+      beginShape();
+      vertex(-11/16 * tw - tx, -3/16 * th - boatHeight - tx / 2);
+      vertex(-3/16 * tw + lx - tx, -11/16 * th - boatHeight - lx / 2 - tx / 2);
+      vertex(12/16 * tw + lx, 4/16 * th - boatHeight - lx / 2);
+      vertex(4/16 * tw, 12/16 * th - boatHeight);
+      endShape();
+      pop();
+    }
+    drawTile(x - this.x, y - this.y);
   }
-
 }
+
 
 /**
 * Function checks if two i,j coordanates are adjacent (no diagonals)
