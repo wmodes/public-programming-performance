@@ -179,7 +179,7 @@ class Boat {
       }
       // front face
       fill("#65350f");
-      beginShape();
+      beginShape();    
       vertex(-10/16 * tw - tx, -2/16 * th - tx / 2 - bottomHeight);
       vertex(-11/16 * tw - tx, -3/16 * th - boatHeight - tx / 2);
       vertex(2/8 * tw, 6/8 * th - boatHeight);
@@ -204,10 +204,12 @@ class Boat {
       vertex(4/16 * tw, 12/16 * th - boatHeight);
       endShape();
 
-      // if(s){
-      //   fill(0);
-      //   li
-      // }
+      if(s){
+        fill(83, 68, 49);
+        rect(-2.5, -50 - boatHeight, 5, 50);
+        fill(255);
+        rect(-20, -45 - boatHeight, 40, 30);
+      }
 
       pop();
     }
