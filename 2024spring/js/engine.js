@@ -81,6 +81,7 @@ function preload() {
 
 // setup() function is called once when the program starts
 function setup() {
+  frameRate(40);
   // place our canvas, making it fit our container
   canvasContainer = $(containerId);
   let canvas = createCanvas(canvasContainer.width(), canvasContainer.height());
@@ -132,7 +133,6 @@ window.addEventListener("keydown", function (e) {
 // draw() function is called repeatedly, it's the main animation loop
 function draw() {
   // GARRETT adding WASD to controls
-  frameRate(30);
   Boat.moveBoats();
   Person.movePeople();
   // Keyboard controls!

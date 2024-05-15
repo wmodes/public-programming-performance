@@ -4,6 +4,7 @@ class Person{
   constructor(i, j){
     this.i = i;
     this.j = j;
+    this.timer = floor(random(0, 100))
     this.updateDirection();
   }
   static drawPerson(i, j){
@@ -29,7 +30,6 @@ class Person{
   checkMove(di, dj){
     if(!window.tiles.isIsland(this.i + di, this.j + dj)){
       this.updateDirection();
-      console.log("false 1");
       return false;
     }
     let key = this.index;
@@ -37,19 +37,17 @@ class Person{
       if(key !== key2){
         if(people[key].i + di === people[key2].i && people[key].j + dj === people[key2].j){
           this.updateDirection();
-          console.log("false 2");
           return false;
         }
       }
     }
-    console.log("true");
     return true;
   }
   static movePeople = function(){
     if (!keyIsDown(32)) {
       Person.time++;
-      if(Person.time %60 === 0){
-        for(key in people){
+      for(key in people){
+        if((Person.time + people[key].timer) % 100 === 0){
 
           let tx = people[key].i + people[key].dx*10;
           let ty = people[key].j + people[key].dy*10;

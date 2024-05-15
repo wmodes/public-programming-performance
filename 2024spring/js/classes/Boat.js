@@ -11,6 +11,7 @@ class Boat {
    * @param {number} y y coordinate to rener to 
    */
   constructor(x, y) {
+      this.timer = floor(random(0, 100))
       this.x = x;
       this.y = y;
       this.tiles = {};
@@ -91,8 +92,8 @@ class Boat {
   static moveBoats = function(){
     if (!keyIsDown(32)) {
       Boat.time++;
-      if(Boat.time %60 === 0){
-        for(let I = 0; I < boats.length; I++){
+      for(let I = 0; I < boats.length; I++){
+        if((Boat.time + boats[I].timer) % 100 === 0){
 
           let tx = boats[I].x + boats[I].dx*10;
           let ty = boats[I].y + boats[I].dy*10;
