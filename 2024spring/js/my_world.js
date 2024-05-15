@@ -19,6 +19,9 @@ let worldSeed;
 let trimColor;
 
 //array to encapsulate boat objext
+/**
+ * @type {Array.<Boat>}
+ */
 var boats = [];
 
 //Ripple globals
