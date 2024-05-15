@@ -368,7 +368,7 @@ if(chunks.length > 1){
     let newBoat = new Boat(boat.x + startTile.i, boat.y + startTile.j);
     for(let key in chunk){
       let tile = chunk[key];
-      newBoat.addBoatTile(boat.x + tile.i, boat.y + tile.j);
+      newBoat.addBoatTile(boat.x + tile.i, boat.y + tile.j, tile.sail);
     }
     newBoat.index = boats.length;
     boats.push(newBoat);
