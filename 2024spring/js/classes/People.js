@@ -10,9 +10,9 @@ class Person{
     for(let Index in people){
       if(people[Index].i === i && people[Index].j === j){
         let height = window.tiles.getHeight(i, j);
-        noStroke();
-        fill(0);
-        ellipse(0, 0 - height, 20, 20);
+        let ratio = PersonImage.height/PersonImage.width;
+        let tmpWidth = 20;
+        image(PersonImage, -tmpWidth/2, -tmpWidth*ratio - height, tmpWidth, tmpWidth*ratio);
         return;
       }
     }

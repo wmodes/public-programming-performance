@@ -8,6 +8,8 @@
 // Constants - User-servicable parts
 const containerId = "#canvas-container";
 
+let PersonImage;
+
 // Globals
 let myInstance;
 let canvasContainer;
@@ -71,6 +73,7 @@ function worldOffsetToCamera([world_x, world_y]) {
 }
 
 function preload() {
+  PersonImage = loadImage('./img/person.png');
   if (window.p3_preload) {
     window.p3_preload();
   }
