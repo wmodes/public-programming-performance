@@ -30,13 +30,17 @@ class Boat {
 
   }
   updateDirection(){
-    let dx = random(-1, 1);
-    let dy = random(-1, 1);
-    let d = dist(0, 0, dx, dy);
-    if(d !== 0){
-      this.dx = dx/d;
-      this.dy = dy/d;
-    }
+    let d;
+    let dx;
+    let dy;
+    do
+    {
+    dx = random(-1, 1);
+    dy = random(-1, 1);
+    d = dist(0, 0, dx, dy);
+    } while(d === 0)
+    this.dx = dx/d;
+    this.dy = dy/d;
   }
 
 
