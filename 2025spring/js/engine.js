@@ -207,3 +207,10 @@ function drawTile([world_x, world_y], [camera_x, camera_y]) {
   }
   pop();
 }
+
+//ignore arrow key scrolling
+window.addEventListener("keydown", function(e) {
+  if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
+      e.preventDefault();
+  }
+}, false);
