@@ -12,5 +12,8 @@ class NPC {
         this.x += arr[0];
         this.y += arr[1];
     }
+    update(){
+        
+    }
 }
 
