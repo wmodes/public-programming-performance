@@ -7,14 +7,29 @@
 
 # Possibilities
 
-- Animals - whales, seagulls, krakun
-- Boats - pirates, cruise ships
-- Boat people - Pirates, navy, surfers
+- Animals - whales, seagulls, penguins, krakun
+- Boats - pirates, cruise ships, user-controlled ship
+- People - Pirates, navy, surfers, people on land
 - Trash - oil rig, litter
 - Objects - trees, treasure chests
-- Weather - volcano, storms
-- Interactivety
-  - scrolling (WASD/arrows)
-  - Add boats on water (splash), remove boats (explode and sink)
-  - Erupt volcano
-  - Add people on land (crawl out of dirt?), remove people on land (die)
+- Weather - volcano, storms, day/night cycle
+- Bioms - rocky, jungly, tarantula, flower, snowy urban/city, islands
+
+# Interactivety
+- scrolling (WASD/arrows)
+- Add boats on water (splash), remove boats (explode and sink)
+- Erupt volcano
+- Add people on land, remove people on land (die)
+- Collision interactions
+- Trading
+
+# Design Principles
+
+- Small files = less tears
+- Minimize exceptions
+- Classes
+  - World
+  - NPC
+    - people
+    - critters
+    - boats
