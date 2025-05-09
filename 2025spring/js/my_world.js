@@ -19,7 +19,7 @@ class World{
 this.p = p;
 this.worldSeed;
 this.trimColor;
-[this.tw, this.th] = [32,16];//[p3_tileWidth(), p3_tileHeight()];
+[this.tw, this.th] = [TILE_WIDTH,TILE_HEIGHT];
 this.clicks = {};
 console.log("World Created");
   }
@@ -37,10 +37,10 @@ p3_worldKeyChanged(key) {
 }
 
 p3_tileWidth() {
-  return 32;
+  return TILE_WIDTH;
 }
 p3_tileHeight() {
-  return 16;
+  return TILE_HEIGHT;
 }
 
 p3_tileClicked(i, j) {
