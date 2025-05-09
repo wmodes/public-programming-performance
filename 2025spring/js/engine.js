@@ -69,6 +69,8 @@ var s = function (p) {
     let canvas = p.createCanvas(800, 400);
     canvas.parent("container");
 
+    window.addEventListener("keydown", function(e) { if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {e.preventDefault();}}, false);
+
     camera_offset = new p5.Vector(-p.width / 2, p.height / 2);
     camera_velocity = new p5.Vector(0, 0);
 
