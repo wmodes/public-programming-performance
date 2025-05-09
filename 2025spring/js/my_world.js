@@ -31,10 +31,10 @@ function p3_worldKeyChanged(key) {
 }
 
 function p3_tileWidth() {
-  return 32;
+  return TILE_WIDTH;
 }
 function p3_tileHeight() {
-  return 16;
+  return TILE_HEIGHT;
 }
 
 let [tw, th] = [p3_tileWidth(), p3_tileHeight()];
