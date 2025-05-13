@@ -1,4 +1,4 @@
-"use strict";
+ "use strict";
 
 /* global XXH */
 /* exported --
@@ -23,7 +23,10 @@ this.trimColor;
 this.clicks = {};
 console.log("World Created");
   }
-p3_preload() {}
+p3_preload() {
+  loadImage("/img/ocean.png");
+  loadImage("img/xavier_grass.png")
+}
 
 p3_setup() {}
 
