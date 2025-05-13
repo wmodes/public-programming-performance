@@ -55,7 +55,7 @@ class World {
     this.p.noStroke();
 
     // Water
-    let t = this.p.millis() / 1000.0;
+    let t = this.p.millis() * WATER_ANIMATION_RATE;
     this.p.fill(100, 150, 233, 64 + 256 * this.p.noise(-t + i / 5, j / 5, t));
 
     // Draw tile
