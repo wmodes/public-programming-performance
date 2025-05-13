@@ -22,20 +22,21 @@ constructor(p){
   this.p = p;
   this.worldSeed;
   this.trimColor;
-  [this.tw, this.th] = [TILE_WIDTH,TILE_HEIGHT];
+  [this.tw, this.th] = [TILE_WIDTH,TILE_HEIGHT]; // tw = tile width, th = tile height
   this.clicks = {};
   console.log("World Created");
 }
 
   /** This is called on p3 preload call */
 p3_preload() {
-  loadImage("/img/ocean.png");
-  loadImage("img/xavier_grass.png")
+  this.ocean = this.p.loadImage("img/ocean.png", ()=>{console.log("loaded ocean.png")}, ()=>{console.log("failed to load ocean.png")});
+  this.grass = this.p.loadImage("img/xavier_grass.png", ()=>{console.log("loaded xavier_grass.png")}, ()=>{console.log("failed to load xavier_grass.png")});
 }
 
 
 /** This is called on the p3 setup call */
 p3_setup() {}
+
 
 /** This is called if someone changes the seed */
 p3_worldKeyChanged(key) {
@@ -60,9 +61,13 @@ p3_drawBefore() {
 
 }
 
+
 /** This draws the tile at that location */
 p3_drawTile(i, j) {
-  
+    this.p.image(this.ocean, 0,0,32,32);
+
+
+  /* =====  Old Draw Code =====
   this.p.noStroke();
 
   // this is the alorithm that determines whether it is a boat
@@ -111,6 +116,8 @@ p3_drawTile(i, j) {
     }
   }
   this.p.pop();
+
+  */
 }
 
 /** draws outline around the tile. */
