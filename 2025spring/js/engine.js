@@ -215,4 +215,10 @@ var s = function (p) {
   }
 }
 
+//ignore arrow key scrolling
+window.addEventListener("keydown", function(e) {
+  if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
+      e.preventDefault();
+  }
+}, false);
 var myp5_1 = new p5(s, "container");
