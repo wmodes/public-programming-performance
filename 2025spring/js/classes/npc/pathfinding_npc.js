@@ -75,17 +75,31 @@ class PathfindingNPC extends NPC {
 
     // TODO: override wander() to prevent walking on untraversable tiles (consider if we want to think about that for all NPC's and not just pathfinding ones, might want to pull up some traversability stuff)
 
-    // subclasses should override this and check if the tile is traversable
+    /**
+     * Override this to determine if a tile is traversable (the input type isn't known yet but this will be updated with that when it can be)
+     * @param {*} tile 
+     * @returns if the NPC can traverse the tile type
+     */
     isTileTraversable(tile) {
         return true
     }
 }
 
+/**
+ * A* graph node
+ */
 class AstarGraphNode {
     cameFrom
     position
     distance
-
+    
+    /**
+     * Create a new A* graph node (only needed by the A* implementation)
+     * 
+     * @param {[number,number]} position 
+     * @param {[number,number]} cameFrom 
+     * @param {number} distance 
+     */
     constructor(position, cameFrom, distance) {
         this.position = position
         this.cameFrom = cameFrom
@@ -93,11 +107,32 @@ class AstarGraphNode {
     }
 }
 
+/**
+ * Calculate the heuristic parameter for the A* implementation
+ * 
+ * @param {[number, number]} position
+ * @param {[number, number]} objective 
+ * @returns {number}
+ */
 function astarHeuristic([px, py], [ox, oy]) {
     return (ox - px) * (ox - px) + (oy - py) * (oy - py);
 }
 
+/**
+ * @typedef {Object} AstarReachable
+ * @property {[number, number]} position
+ * @property {[number, number]} from
+ * @property {number} distance
+ */
 
+/**
+ * Push the reachable undiscovered locations on the A* grid from a tile
+ * 
+ * @param {function([number, number]): boolean} traversabilityFunction Function which tests to see if a tile can be traversed 
+ * @param {Array.<AstarReachable>} possibleSpacesArray 
+ * @param {Map.<[number,number],AstarGraphNode>} graph 
+ * @param {[number,number]} position
+ */
 function astarPushReachables(traversabilityFunction, possibleSpacesArray, graph, [px, py]) {
     if (graph[[px - 1, py]] === undefined && traversabilityFunction([px - 1, py])) {
         possibleSpacesArray.push({position: [px - 1, py], from: [px, py], distance: graph[[px, py]].distance + 1});
@@ -137,6 +172,13 @@ function astarPushReachables(traversabilityFunction, possibleSpacesArray, graph,
     }
 }
 
+/**
+ * Select and remove the best space from the list of discovered unexplored spaces
+ * 
+ * @param {Array.<AstarReachable>} possibleSpacesArray 
+ * @param {[number, number]} objective 
+ * @returns {AstarReachable}
+ */
 function astarPopBestSpace(possibleSpacesArray, objective) {
     let bestSpaceIndex = 0;
     let bestValue = Infinity;
@@ -155,10 +197,21 @@ function astarPopBestSpace(possibleSpacesArray, objective) {
     return bestSpace;
 }
 
+/**
+ * @type {number}
+ * Max distance for A* to travel before giving up
+ */
 const ASTAR_MAX_TRAVERSABILITY_DISTANCE = 100;
 
 // traversabilityFunction is function([x, y]) -> bool
 // TODO: since world is infinite, prevent us from getting stuck by making a max distance
+/**
+ * 
+ * @param {function([number, number]): boolean} traversabilityFunction Test for if a position is traversable
+ * @param {[number, number]} position Starting point 
+ * @param {[number, number]} objective Destination
+ * @returns {Array.<[number, number]>} The path from starting point to objective
+ */
 function astar(traversabilityFunction, position, objective) {
     let startingPoint = new AstarGraphNode(position, null, 0)
     let graph = {}
