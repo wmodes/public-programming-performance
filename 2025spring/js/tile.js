@@ -6,6 +6,7 @@ class Tile {
         this.width;
         this.sprite;
         this.type; // either ocean or island (maybe biomes too later)
+        this.image = [];
     }
 
     draw(i, j)
@@ -36,13 +37,15 @@ class Tile {
         */
         
         this.p.push();
-
+        /*
         this.p.beginShape();
         this.p.vertex(-this.tw, 0);
         this.p.vertex(0, this.th);
         this.p.vertex(this.tw, 0);
         this.p.vertex(0, -this.th);
         this.p.endShape(this.p.CLOSE);
+        */
+        //this.p.image();
 
         if(onBoat) {
             let n = this.clicks[[i, j]] | 0;
