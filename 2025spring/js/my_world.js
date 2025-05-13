@@ -23,7 +23,9 @@ this.trimColor;
 this.clicks = {};
 console.log("World Created");
   }
-p3_preload() {}
+p3_preload() {
+  this.grassSprite = this.p.loadImage("2025spring/img/xavier_grass.png");
+}
 
 p3_setup() {}
 
@@ -78,12 +80,14 @@ p3_drawTile(i, j) {
   
   this.p.push();
 
-  this.p.beginShape();
-  this.p.vertex(-this.tw, 0);
-  this.p.vertex(0, this.th);
-  this.p.vertex(this.tw, 0);
-  this.p.vertex(0, -this.th);
-  this.p.endShape(this.p.CLOSE);
+  this.p.image(this.grassSprite);
+
+  //this.p.beginShape();
+  //this.p.vertex(-this.tw, 0);
+  //this.p.vertex(0, this.th);
+  //this.p.vertex(this.tw, 0);
+  //this.p.vertex(0, -this.th);
+  //this.p.endShape(this.p.CLOSE);
 
   if(onBoat) {
     let n = this.clicks[[i, j]] | 0;
