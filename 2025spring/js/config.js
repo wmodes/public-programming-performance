@@ -1,2 +1,4 @@
 const TILE_WIDTH = 32;
 const TILE_HEIGHT = 16;
+
+const WATER_ANIMATION_RATE = 0.001;
