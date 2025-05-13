@@ -1,10 +1,26 @@
+/** 
+ * NPC class with pathfinding functionality
+ * 
+ * Override pickObjective() and isTileTraversable() for behavior.
+ */
 class PathfindingNPC extends NPC {
+    
+    /**
+     * @param {number} x 
+     * @param {number} y 
+     * @param {number} speed 
+     */
     constructor(x, y, speed) {
         super(x, y, speed)
         this.objective = null
         this.path = null
     }
 
+    /**
+     * Pick an objective for the destination (or null to revert to wandering logic)
+     * 
+     * @returns {?[number,number]}
+     */
     pickObjective() {
         // This function should return with the objective position as [x, y] or null if the npc should not pathfind anywhere
     }
@@ -12,6 +28,8 @@ class PathfindingNPC extends NPC {
     /**
      * We need some kind of access to read the world so we know if we are allowed to traverse a tile,
      * this will likely change but lets pretend we pass some World object that gets passed around and has a function tileAt([x,y])
+     * 
+     * @param {World} world
      */
     pathfind(world) {
         this.objective = this.pickObjective()
