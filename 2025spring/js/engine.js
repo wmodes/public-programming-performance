@@ -122,17 +122,19 @@ var s = function (p) {
 
   p.draw = function () {
     // Keyboard controls!
-    if (p.keyIsDown(p.LEFT_ARROW) || p.keyIsDown(65)) {
-      camera_velocity.x -= 0.5;
-    }
-    if (p.keyIsDown(p.RIGHT_ARROW) || p.keyIsDown(68)) {
-      camera_velocity.x += 0.5;
-    }
-    if (p.keyIsDown(p.DOWN_ARROW) || p.keyIsDown(83)) {
-      camera_velocity.y -= 0.5;
-    }
-    if (p.keyIsDown(p.UP_ARROW) || p.keyIsDown(87)) {
-      camera_velocity.y += 0.5;
+    if (p.mouseX > 0 && p.mouseX < p.width && p.mouseY > 0 && p.mouseY < p.height) {
+      if (p.keyIsDown(p.LEFT_ARROW) || p.keyIsDown(65)) {
+        camera_velocity.x -= 0.5;
+      }
+      if (p.keyIsDown(p.RIGHT_ARROW) || p.keyIsDown(68)) {
+        camera_velocity.x += 0.5;
+      }
+      if (p.keyIsDown(p.DOWN_ARROW) || p.keyIsDown(83)) {
+        camera_velocity.y -= 0.5;
+      }
+      if (p.keyIsDown(p.UP_ARROW) || p.keyIsDown(87)) {
+        camera_velocity.y += 0.5;
+      }
     }
 
     let camera_delta = new p5.Vector(0, 0);
