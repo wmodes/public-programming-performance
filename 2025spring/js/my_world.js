@@ -21,9 +21,13 @@ this.worldSeed;
 this.trimColor;
 [this.tw, this.th] = [TILE_WIDTH,TILE_HEIGHT];
 this.clicks = {};
+this.dropSound;
 console.log("World Created");
   }
-p3_preload() {}
+
+p3_preload() {
+  this.dropSound = this.p.loadSound('assets/Water Drop - Sound Effects.mp3')
+}
 
 p3_setup() {}
 
@@ -46,6 +50,7 @@ p3_tileHeight() {
 p3_tileClicked(i, j) {
   let key = [i, j];
   this.clicks[key] = 1 + (this.clicks[key] | 0);
+  this.dropSound.play();
 }
 
 p3_drawBefore() {}
