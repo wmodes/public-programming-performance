@@ -137,6 +137,8 @@ function astarPopBestSpace(possibleSpacesArray, objective) {
     return bestSpace;
 }
 
+const ASTAR_MAX_TRAVERSABILITY_DISTANCE = 100;
+
 // traversabilityFunction is function([x, y]) -> bool
 // TODO: since world is infinite, prevent us from getting stuck by making a max distance
 function astar(traversabilityFunction, position, objective) {
@@ -157,7 +159,10 @@ function astar(traversabilityFunction, position, objective) {
             break;
         }
 
-        astarPushReachables(traversabilityFunction, possibleSpaces, graph, bestSpace.position);
+        let distance = max(abs(bestSpace.position[0] - position[0]), abs(bestSpace.position[1] - position[1]))
+        if (distance > ASTAR_MAX_TRAVERSABILITY_DISTANCE) {
+            astarPushReachables(traversabilityFunction, possibleSpaces, graph, bestSpace.position);
+        }
     }
 
     let objectiveNode = graph[bestSpace.position];
