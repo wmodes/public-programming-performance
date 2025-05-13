@@ -99,7 +99,7 @@ class AstarGraphNode {
      * @param {[number,number]} position 
      * @param {[number,number]} cameFrom 
      * @param {number} distance 
-     */
+    */
     constructor(position, cameFrom, distance) {
         this.position = position
         this.cameFrom = cameFrom
