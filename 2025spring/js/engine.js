@@ -117,16 +117,16 @@ var s = function (p) {
 
   p.draw = function() {
     // Keyboard controls!
-    if (p.keyIsDown(p.LEFT_ARROW) || p.keyIsDown(p.A_KEY)) {
+    if (p.keyIsDown(p.LEFT_ARROW) || p.keyIsDown(65)) { // a key = 65
       camera_velocity.x -= 1;
     }
-    if (p.keyIsDown(p.RIGHT_ARROW)) {
+    if (p.keyIsDown(p.RIGHT_ARROW) || p.keyIsDown(68)) { // d key = 68
       camera_velocity.x += 1;
     }
-    if (p.keyIsDown(p.DOWN_ARROW)) {
+    if (p.keyIsDown(p.DOWN_ARROW) || p.keyIsDown(83)) { // s key = 83
       camera_velocity.y -= 1;
     }
-    if (p.keyIsDown(p.UP_ARROW)) {
+    if (p.keyIsDown(p.UP_ARROW) || p.keyIsDown(87)) { // w key = 87
       camera_velocity.y += 1;
     }
 
