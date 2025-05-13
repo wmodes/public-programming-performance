@@ -14,104 +14,107 @@
     p3_drawAfter
 */
 
-function p3_preload() {}
+class World{
+  constructor(p){
+this.p = p;
+this.worldSeed;
+this.trimColor;
+[this.tw, this.th] = [TILE_WIDTH,TILE_HEIGHT];
+this.clicks = {};
+console.log("World Created");
+  }
+p3_preload() {}
 
-function p3_setup() {}
+p3_setup() {}
 
-let worldSeed;
 
-let trimColor;
-
-function p3_worldKeyChanged(key) {
-  worldSeed = XXH.h32(key, 0);
-  noiseSeed(worldSeed);
-  randomSeed(worldSeed);
+p3_worldKeyChanged(key) {
+  this.worldSeed = XXH.h32(key, 0);
+  this.p.noiseSeed(this.worldSeed);
+  this.p.randomSeed(this.worldSeed);
   
-  trimColor = random(['red','#44ff88','#aaeeff']);
+  this.trimColor = this.p.random(['red','#44ff88','#aaeeff']);
 }
 
-function p3_tileWidth() {
-  return 32;
+p3_tileWidth() {
+  return TILE_WIDTH;
 }
-function p3_tileHeight() {
-  return 16;
+p3_tileHeight() {
+  return TILE_HEIGHT;
 }
 
-let [tw, th] = [p3_tileWidth(), p3_tileHeight()];
-
-let clicks = {};
-
-function p3_tileClicked(i, j) {
+p3_tileClicked(i, j) {
   let key = [i, j];
-  clicks[key] = 1 + (clicks[key] | 0);
+  this.clicks[key] = 1 + (this.clicks[key] | 0);
 }
 
-function p3_drawBefore() {}
+p3_drawBefore() {}
 
-function p3_drawTile(i, j) {
+p3_drawTile(i, j) {
   
-  noStroke();
+  this.p.noStroke();
   let boatWidth = 5;
   
   
   let onBoat = false;
   if (j < -boatWidth || j > boatWidth) {
     // water
-    let t = millis()/1000.0;
-    fill(100, 150, 233, 64+256*noise(-t+i/5,j/5,t));
+    let t = this.p.millis()/1000.0;
+    this.p.fill(100, 150, 233, 64+256*this.p.noise(-t+i/5,j/5,t));
     
   } else {
     onBoat = true;
     if (j == -boatWidth || j == boatWidth) {
       
-      translate(0,-th/2);
+      this.p.translate(0,-this.th/2);
 
-      fill(trimColor);
+      this.p.fill(this.trimColor);
     } else {
-      fill(200);
+      this.p.fill(200);
       
     }
   }
 
   
-  push();
+  this.p.push();
 
-  beginShape();
-  vertex(-tw, 0);
-  vertex(0, th);
-  vertex(tw, 0);
-  vertex(0, -th);
-  endShape(CLOSE);
+  this.p.beginShape();
+  this.p.vertex(-this.tw, 0);
+  this.p.vertex(0, this.th);
+  this.p.vertex(this.tw, 0);
+  this.p.vertex(0, -this.th);
+  this.p.endShape(this.p.CLOSE);
 
   if(onBoat) {
-    let n = clicks[[i, j]] | 0;
+    let n = this.clicks[[i, j]] | 0;
     if (n % 2 == 1) {
-      fill(0, 0, 0, 32);
-      rect(0, 0, 10, 5);
-      translate(0, -10);
-      fill(0, 0, 0, 128);
-      rect(0, 0, 10, 10);
+      this.p.fill(0, 0, 0, 32);
+      this.p.rect(0, 0, 10, 5);
+      this.p.translate(0, -10);
+      this.p.fill(0, 0, 0, 128);
+      this.p.rect(0, 0, 10, 10);
     }
   }
   
 
-  pop();
+  this.p.pop();
 }
 
-function p3_drawSelectedTile(i, j) {
-  noFill();
-  stroke(0, 255, 0, 128);
+p3_drawSelectedTile(i, j) {
+  this.p.noFill();
+  this.p.stroke(0, 255, 0, 128);
 
-  beginShape();
-  vertex(-tw, 0);
-  vertex(0, th);
-  vertex(tw, 0);
-  vertex(0, -th);
-  endShape(CLOSE);
+  this.p.beginShape();
+  this.p.vertex(-this.tw, 0);
+  this.p.vertex(0, this.th);
+  this.p.vertex(this.tw, 0);
+  this.p.vertex(0, -this.th);
+  this.p.endShape(this.p.CLOSE);
 
-  noStroke();
-  fill(0);
-  text("tile " + [i, j], 0, 0);
+  this.p.noStroke();
+  this.p.fill(0);
+  this.p.text("tile " + [i, j], 0, 0);
 }
 
-function p3_drawAfter() {}
+  p3_drawAfter() {}
+}
