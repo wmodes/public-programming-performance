@@ -32,8 +32,8 @@ p3_preload() {
   this.ocean  = this.p.loadImage("img/ocean.png", ()=>{console.log("loaded ocean.png")}, ()=>{console.log("failed to load ocean.png")});
   this.dirt   = this.p.loadImage("assets/tiles/dirt_base.png", ()=>{console.log("loaded dirt_tile.png")}, ()=>{console.log("failed to load dirt_tile.png")});
   this.snow   = this.p.loadImage("assets/tiles/snow_base.png", ()=>{console.log("loaded snow_base.png")}, ()=>{console.log("failed to load snow_base.png")});
-  this.grass  = this.p.loadImage("assets/tiles/grass_tile.png", ()=>{console.log("loaded grass_tile.png")}, ()=>{console.log("failed to grass_tile.png")});
-  this.grass2 = this.p.loadImage("img/xavier_grass.png", ()=>{console.log("loaded xavier_grass.png")}, ()=>{console.log("failed to xavier_grass.png")});
+  this.grass  = this.p.loadImage("assets/tiles/xavier_grass.png", ()=>{console.log("loaded grass_tile.png")}, ()=>{console.log("failed to grass_tile.png")});
+  this.sand = this.p.loadImage("assets/tiles/xavier_sand.png", ()=>{console.log("loaded xavier_grass.png")}, ()=>{console.log("failed to xavier_grass.png")});
 
 }
 
@@ -70,9 +70,9 @@ p3_drawBefore() {
 p3_drawTile(i, j) {
     let noiseScale = 0.1;
     let vegetationNoise = this.p.noise(i * noiseScale, j * noiseScale);
-    this.p.image(this.snow, -30, 5, 60, 60);
-    if (vegetationNoise < 0.3) {
-      this.p.image(this.grass, -30, 0, 60, 60);
+    this.p.image(this.sand, -30, -12, 60, 50, 0, 80-24, 32, 24);
+    if (vegetationNoise < 0.4) {
+      this.p.image(this.grass, -30, -24, 60, 50, 0, 80-24, 32, 24);
     }
     
     //this.p.text(i + ", " + j, 0, 0)
@@ -135,12 +135,16 @@ p3_drawSelectedTile(i, j) {
   this.p.noFill();
   this.p.stroke(0, 255, 0, 128);
 
+  // Added temp code for adjusting selected tile based on height, will improve later
+  let y = this.p.noise(i * 0.1, j * 0.1) < 0.4 ? 0 : 6;
+
+
   // this draws the outline
   this.p.beginShape();
-  this.p.vertex(-this.tw, 0);
-  this.p.vertex(0, this.th);
-  this.p.vertex(this.tw, 0);
-  this.p.vertex(0, -this.th);
+  this.p.vertex(-this.tw, 0+y);
+  this.p.vertex(0, this.th+y);
+  this.p.vertex(this.tw, 0+y);
+  this.p.vertex(0, -this.th+y);
   this.p.endShape(this.p.CLOSE);
 
   this.p.noStroke();
