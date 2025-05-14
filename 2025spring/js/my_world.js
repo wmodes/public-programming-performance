@@ -29,8 +29,12 @@ constructor(p){
 
   /** This is called on p3 preload call */
 p3_preload() {
-  this.ocean = this.p.loadImage("img/ocean.png", ()=>{console.log("loaded ocean.png")}, ()=>{console.log("failed to load ocean.png")});
-  this.grass = this.p.loadImage("img/xavier_grass.png", ()=>{console.log("loaded xavier_grass.png")}, ()=>{console.log("failed to load xavier_grass.png")});
+  this.ocean  = this.p.loadImage("img/ocean.png", ()=>{console.log("loaded ocean.png")}, ()=>{console.log("failed to load ocean.png")});
+  this.dirt   = this.p.loadImage("assets/tiles/dirt_base.png", ()=>{console.log("loaded dirt_tile.png")}, ()=>{console.log("failed to load dirt_tile.png")});
+  this.snow   = this.p.loadImage("assets/tiles/snow_base.png", ()=>{console.log("loaded snow_base.png")}, ()=>{console.log("failed to load snow_base.png")});
+  this.grass  = this.p.loadImage("assets/tiles/grass_tile.png", ()=>{console.log("loaded grass_tile.png")}, ()=>{console.log("failed to grass_tile.png")});
+  this.grass2 = this.p.loadImage("img/xavier_grass.png", ()=>{console.log("loaded xavier_grass.png")}, ()=>{console.log("failed to xavier_grass.png")});
+
 }
 
 
@@ -64,8 +68,14 @@ p3_drawBefore() {
 
 /** This draws the tile at that location */
 p3_drawTile(i, j) {
-    this.p.image(this.ocean, 0,0,32,32);
-
+    let noiseScale = 0.1;
+    let vegetationNoise = this.p.noise(i * noiseScale, j * noiseScale);
+    this.p.image(this.snow, -30, 5, 60, 60);
+    if (vegetationNoise < 0.3) {
+      this.p.image(this.grass, -30, 0, 60, 60);
+    }
+    
+    //this.p.text(i + ", " + j, 0, 0)
 
   /* =====  Old Draw Code =====
   this.p.noStroke();
