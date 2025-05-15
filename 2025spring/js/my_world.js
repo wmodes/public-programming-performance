@@ -116,10 +116,11 @@ class World {
     this.p.image(this.sand, -30, -12, 60, 50, 0, 80 - 24, 32, 24);
     if (vegetationNoise < 0.4) {
       this.p.image(this.grass, -30, -24, 60, 50, 0, 80 - 24, 32, 24);
+    } else {
+      // Animated water fill
+      let t = this.p.millis() * WATER_ANIMATION_RATE;
+      this.p.fill(100, 150, 233, 64 + 256 * this.p.noise(-t + i / 5, j / 5, t));
     }
-    // Animated water fill
-    let t = this.p.millis() * WATER_ANIMATION_RATE;
-    this.p.fill(100, 150, 233, 64 + 256 * this.p.noise(-t + i / 5, j / 5, t));
   }
 
   /** draws outline around the tile. */
