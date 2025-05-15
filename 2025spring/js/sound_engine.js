@@ -20,6 +20,7 @@ class SoundEngine{
     this.waterClickSound = p5Instance.loadSound('sounds/Water Drop - Sound Effects.mp3');
     this.dirtClickSound = p5Instance.loadSound('sounds/Dirt Drop - Sound Effects.mp3');
     this.sandClickSound = p5Instance.loadSound('sounds/Sand Drop - Sound Effects.mp3');
+    this.snowClickSound = p5Instance.loadSound('sounds/Snow Drop - Sound Effects.mp3');
     this.landAmbience = p5Instance.loadSound('sounds/Land Ambience - Background.mp3');
     this.waterAmbience = p5Instance.loadSound('sounds/Water Ambience - Background.mp3');
   }
@@ -27,10 +28,12 @@ class SoundEngine{
   tileClicked(tileType = "water") {
     if (tileType == "water") {
       this.waterClickSound.play(0, 1, 1, this.waterClickSound.duration() * 2/7);
-    } else if (tileType == "dirt") {
-      this.dirtClickSound.play();
+    } else if (tileType == "dirt" || tileType == "grass") {
+      this.dirtClickSound.play(0, 1, 0.5);
     } else if (tileType == "sand") {
       this.sandClickSound.play();
+    } else if (tileType == "snow") {
+      this.snowClickSound.play();
     }
   }
 
