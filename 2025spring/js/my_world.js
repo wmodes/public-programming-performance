@@ -22,6 +22,8 @@ this.trimColor;
 [this.tw, this.th] = [TILE_WIDTH,TILE_HEIGHT];
 this.clicks = {};
 console.log("World Created");
+
+this.npc_manager = new NpcManager();
   }
 p3_preload() {}
 
@@ -116,5 +118,8 @@ p3_drawSelectedTile(i, j) {
   this.p.text("tile " + [i, j], 0, 0);
 }
 
-  p3_drawAfter() {}
+  p3_drawAfter() {
+    this.npc_manager.update()
+    this.npc_manager.draw(this.p)
+  }
 }
