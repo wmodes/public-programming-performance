@@ -17,11 +17,13 @@
 class SoundEngine{
   constructor(p){
     this.p = p;
-    this.waterClickSound = p.loadSound('assets/Water Drop - Sound Effects.mp3');
-    this.dirtClickSound = p.loadSound('assets/Dirt Drop - Sound Effects.mp3');
-    this.sandClickSound = p.loadSound('assets/Sand Drop - Sound Effects.mp3');
-    this.landAmbience = p.loadSound('assets/Land Ambience - Background.mp3');
-    this.waterAmbience = p.loadSound('assets/Water Ambience - Background.mp3');
+    this.waterClickSound = p.loadSound('sounds/Water Drop - Sound Effects.mp3');
+    this.dirtClickSound = p.loadSound('sounds/Dirt Drop - Sound Effects.mp3');
+    this.sandClickSound = p.loadSound('sounds/Sand Drop - Sound Effects.mp3');
+    this.landAmbience = p.loadSound('sounds/Land Ambience - Background.mp3');
+    this.waterAmbience = p.loadSound('sounds/Water Ambience - Background.mp3');
+    this.landTilesDrawn = 0;
+    this.waterTilesDrawn = 0;
   }
 
   tileClicked(tileType = "water") {
@@ -34,10 +36,10 @@ class SoundEngine{
     }
   }
 
-  dynamicBackground(waterTilesPresent, landTilesPresent) {
-    let totalTiles = waterTilesPresent + landTilesPresent;
-    let waterTilesPercent = waterTilesPresent/totalTiles;
-    let landTilesPercent = landTilesPresent/totalTiles;
+  dynamicBackground() {
+    let totalTiles = this.waterTilesDrawn + this.landTilesDrawn;
+    let waterTilesPercent = this.waterTilesDrawn/totalTiles;
+    let landTilesPercent = this.landTilesDrawn/totalTiles;
     let fadeTimeSec = 1;
     if (!this.landAmbience.isPlaying()) {
       this.landAmbience.play(0, 1, 0)
@@ -47,6 +49,11 @@ class SoundEngine{
     }
     this.landAmbience.setVolume(landTilesPercent * 0.2, fadeTimeSec);
     this.waterAmbience.setVolume(waterTilesPercent * 1, fadeTimeSec);
+  }
+
+  clearTileCount() {
+    this.landTilesDrawn = 0;
+    this.waterTilesDrawn = 0;
   }
 }
 
