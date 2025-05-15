@@ -20,6 +20,8 @@
     p3_drawAfter
 */
 
+
+
 /** This class stores all the info for a world generation. */
 class World {
   constructor(p) {
@@ -29,6 +31,7 @@ class World {
     [this.tw, this.th] = [TILE_WIDTH, TILE_HEIGHT]; // tw = tile width, th = tile height
     this.clicks = {};
     console.log("World Created");
+    this.npc_manager = new NpcManager();
   }
 
   /** This is called on p3 preload call */
@@ -128,6 +131,8 @@ class World {
         this.p.image(this.ocean, -30, -24, 60, 50, 32, 32 - 24, 32, 24);
       }
     }
+    
+
   }
 
   /** draws outline around the tile. */
@@ -153,7 +158,8 @@ class World {
     this.p.text("tile " + [i, j], 0, 0);
   }
 
-  /** This is called after draw */
-  p3_drawAfter() {}
+  p3_drawAfter(camera_offset) {
+    this.npc_manager.update()
+    this.npc_manager.draw(this.p, camera_offset)
+  }
 }
-
