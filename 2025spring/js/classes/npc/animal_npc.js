@@ -6,9 +6,9 @@ class AnimalNPC extends NPC{
         //this.image = loadImage(imagePath);
         this.timer = 0;
     }
-    draw(p,[world_x, world_y], [camera_x, camera_y]){
+    draw(p, [camera_x, camera_y]){
         let [screen_x, screen_y] = p.worldToScreen(
-            [world_x, world_y],
+            [this.x, this.y],
             [camera_x, camera_y]
         );
         p.push();

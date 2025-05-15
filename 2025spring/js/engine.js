@@ -170,14 +170,6 @@ var s = function (p) {
           camera_offset.x,
           camera_offset.y
         ]); // odd row
-
-        
-        if (x == animal.x && y == animal.y){
-          
-          animal.draw(p,
-            p.tileRenderingOrder([x + world_offset.x, y - world_offset.y]),
-          [camera_offset.x,camera_offset.y]);
-        }
       }
       for (let x = x0; x < x1; x++) {
         p.drawTile(
@@ -187,15 +179,15 @@ var s = function (p) {
           ]),
           [camera_offset.x, camera_offset.y]
         ); // even rows are offset horizontally
-        if (x == animal.x && y == animal.y){
-          animal.draw(p,
-            p.tileRenderingOrder([x + world_offset.x + 0.5, y - world_offset.y + 0.5]), 
-          [camera_offset.x,camera_offset.y]);
-        }
       }
     }
 
     p.describeMouseTile(world_pos, [camera_offset.x, camera_offset.y]);
+
+    animal.draw(p,
+      // p.tileRenderingOrder([x + world_offset.x, y - world_offset.y]),
+    [camera_offset.x,camera_offset.y]);
+
 
     if (w.p3_drawAfter) {
       w.p3_drawAfter();
