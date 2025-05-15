@@ -27,7 +27,8 @@ this.npc_manager = new NpcManager();
   }
 p3_preload() {}
 
-p3_setup() {}
+p3_setup() {
+}
 
 
 p3_worldKeyChanged(key) {
@@ -53,6 +54,7 @@ p3_tileClicked(i, j) {
 p3_drawBefore() {}
 
 p3_drawTile(i, j) {
+  this.p.print([i,j])
   
   this.p.noStroke();
   let boatWidth = 5;
@@ -75,6 +77,8 @@ p3_drawTile(i, j) {
       this.p.fill(200);
       
     }
+    
+
   }
 
   

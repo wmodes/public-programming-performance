@@ -65,6 +65,7 @@ var s = function (p) {
   }
 
   let w;
+  let animal;
   p.setup = function () {
     let canvas = p.createCanvas(800, 400);
     canvas.parent("container");
@@ -91,6 +92,9 @@ var s = function (p) {
     p.createP("Arrow keys scroll. Clicking changes tiles.").parent("container");
 
     p.rebuildWorld(input.value());
+
+    animal = new AnimalNPC(0,0,5)
+
   }
 
   p.rebuildWorld = function(key) {
@@ -116,6 +120,7 @@ var s = function (p) {
   }
 
   p.draw = function() {
+    
     // Keyboard controls!
     if (p.keyIsDown(p.LEFT_ARROW) || p.keyIsDown(p.A_KEY)) {
       camera_velocity.x -= 1;
@@ -157,12 +162,22 @@ var s = function (p) {
     let x0 = Math.floor((0 - overdraw) * tile_columns);
     let x1 = Math.floor((1 + overdraw) * tile_columns);
 
+    //animal.update();
+
     for (let y = y0; y < y1; y++) {
       for (let x = x0; x < x1; x++) {
         p.drawTile(p.tileRenderingOrder([x + world_offset.x, y - world_offset.y]), [
           camera_offset.x,
           camera_offset.y
         ]); // odd row
+
+        
+        if (x == animal.x && y == animal.y){
+          
+          animal.draw(p,
+            p.tileRenderingOrder([x + world_offset.x, y - world_offset.y]),
+          [camera_offset.x,camera_offset.y]);
+        }
       }
       for (let x = x0; x < x1; x++) {
         p.drawTile(
@@ -172,6 +187,11 @@ var s = function (p) {
           ]),
           [camera_offset.x, camera_offset.y]
         ); // even rows are offset horizontally
+        if (x == animal.x && y == animal.y){
+          animal.draw(p,
+            p.tileRenderingOrder([x + world_offset.x + 0.5, y - world_offset.y + 0.5]), 
+          [camera_offset.x,camera_offset.y]);
+        }
       }
     }
 
@@ -180,6 +200,7 @@ var s = function (p) {
     if (w.p3_drawAfter) {
       w.p3_drawAfter();
     }
+    
   }
 
   // Display a discription of the tile at world_x, world_y.
@@ -210,6 +231,7 @@ var s = function (p) {
     p.translate(0 - screen_x, screen_y);
     if (w.p3_drawTile) {
       w.p3_drawTile(world_x, world_y, -screen_x, screen_y);
+      
     }
     p.pop();
   }
