@@ -5,7 +5,7 @@ class NPC {
         this.y = y;
         this.speed = speed;
     }
-    draw(){
+    draw(p, [camera_x, camera_y]){
 
     }
     move(arr){

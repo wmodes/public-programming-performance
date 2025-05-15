@@ -28,6 +28,7 @@ this.npc_manager = new NpcManager();
 p3_preload() {}
 
 p3_setup() {
+  this.npc_manager.spawnEntity(new AnimalNPC(0,0,0))
 }
 
 
@@ -122,8 +123,8 @@ p3_drawSelectedTile(i, j) {
   this.p.text("tile " + [i, j], 0, 0);
 }
 
-  p3_drawAfter() {
+  p3_drawAfter(camera_offset) {
     this.npc_manager.update()
-    this.npc_manager.draw(this.p)
+    this.npc_manager.draw(this.p, camera_offset)
   }
 }

@@ -12,9 +12,9 @@ class NpcManager {
         this.entities.push(entity)
     }
 
-    draw(p) {
+    draw(p, camera_offset) {
         for (let entity of this.entities) {
-            entity.draw(p);
+            entity.draw(p, camera_offset);
         }
     }
 

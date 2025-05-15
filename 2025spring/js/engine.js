@@ -92,9 +92,6 @@ var s = function (p) {
     p.createP("Arrow keys scroll. Clicking changes tiles.").parent("container");
 
     p.rebuildWorld(input.value());
-
-    animal = new AnimalNPC(0,0,5)
-
   }
 
   p.rebuildWorld = function(key) {
@@ -184,13 +181,8 @@ var s = function (p) {
 
     p.describeMouseTile(world_pos, [camera_offset.x, camera_offset.y]);
 
-    animal.draw(p,
-      // p.tileRenderingOrder([x + world_offset.x, y - world_offset.y]),
-    [camera_offset.x,camera_offset.y]);
-
-
     if (w.p3_drawAfter) {
-      w.p3_drawAfter();
+      w.p3_drawAfter([camera_offset.x, camera_offset.y]);
     }
     
   }
