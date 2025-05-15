@@ -34,7 +34,7 @@ class World {
   /** This is called on p3 preload call */
   p3_preload() {
     this.ocean = this.p.loadImage(
-      "img/ocean.png",
+      "assets/tiles/water_base.png",
       () => {
         console.log("loaded ocean.png");
       },
@@ -113,7 +113,7 @@ class World {
     this.p.noStroke();
     let noiseScale = 0.1;
     let vegetationNoise = this.p.noise(i * noiseScale, j * noiseScale);
-    this.p.image(this.sand, -30, -12, 60, 50, 0, 80 - 24, 32, 24);
+    this.p.image(this.ocean, -30, -24, 60, 50, 0, 32 - 24, 32, 24);
     if (vegetationNoise < 0.4) {
       this.p.image(this.grass, -30, -24, 60, 50, 0, 80 - 24, 32, 24);
     } else {
