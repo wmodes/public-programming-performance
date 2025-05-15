@@ -113,13 +113,20 @@ class World {
     this.p.noStroke();
     let noiseScale = 0.1;
     let vegetationNoise = this.p.noise(i * noiseScale, j * noiseScale);
-    this.p.image(this.ocean, -30, -24, 60, 50, 0, 32 - 24, 32, 24);
     if (vegetationNoise < 0.4) {
       this.p.image(this.grass, -30, -24, 60, 50, 0, 80 - 24, 32, 24);
     } else {
       // Animated water fill
-      let t = this.p.millis() * WATER_ANIMATION_RATE;
-      this.p.fill(100, 150, 233, 64 + 256 * this.p.noise(-t + i / 5, j / 5, t));
+      //let t = this.p.millis() * WATER_ANIMATION_RATE;
+      //this.p.fill(100, 150, 233, 64 + 256 * this.p.noise(-t + i / 5, j / 5, t));
+      if(this.p.millis() % 1000 < 500){
+        this.p.image(this.ocean, -30, -24, 60, 50, 0, 32 - 24, 32, 24);
+
+      }
+      else{
+
+        this.p.image(this.ocean, -30, -24, 60, 50, 32, 32 - 24, 32, 24);
+      }
     }
   }
 
