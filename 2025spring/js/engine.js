@@ -1,3 +1,9 @@
+/**
+ * @file main.js
+ * Entry point for the isometric tile-based p5.js world.
+ * Handles camera movement, user interaction, and coordinate transformations.
+ */
+
 "use strict";
 
 /* global p5 */
@@ -6,35 +12,35 @@
 // Project base code provided by {amsmith,ikarth}@ucsc.edu
 
 var s = function (p) {
-  let tile_width_step_main; // A width step is half a tile's width
-  let tile_height_step_main; // A height step is half a tile's height
+  // Tile rendering step sizes
+  let tile_width_step_main;  // Half the width of a tile
+  let tile_height_step_main; // Half the height of a tile
 
-  // Global variables. These will mostly be overwritten in setup().
+  // World and camera globals
   let tile_rows, tile_columns;
   let camera_offset;
   let camera_velocity;
 
   /////////////////////////////
-  // Transforms between coordinate systems
-  // These are actually slightly weirder than in full 3d...
+  // Coordinate system transforms
   /////////////////////////////
-  p.worldToScreen = function([world_x, world_y], [camera_x, camera_y]) {
+  p.worldToScreen = function ([world_x, world_y], [camera_x, camera_y]) {
     let i = (world_x - world_y) * tile_width_step_main;
     let j = (world_x + world_y) * tile_height_step_main;
     return [i + camera_x, j + camera_y];
   }
 
-  p.worldToCamera = function([world_x, world_y], [camera_x, camera_y]) {
+  p.worldToCamera = function ([world_x, world_y], [camera_x, camera_y]) {
     let i = (world_x - world_y) * tile_width_step_main;
     let j = (world_x + world_y) * tile_height_step_main;
     return [i, j];
   }
 
-  p.tileRenderingOrder = function(offset) {
+  p.tileRenderingOrder = function (offset) {
     return [offset[1] - offset[0], offset[0] + offset[1]];
   }
 
-  p.screenToWorld = function([screen_x, screen_y], [camera_x, camera_y]) {
+  p.screenToWorld = function ([screen_x, screen_y], [camera_x, camera_y]) {
     screen_x -= camera_x;
     screen_y -= camera_y;
     screen_x /= tile_width_step_main * 2;
@@ -43,21 +49,20 @@ var s = function (p) {
     return [Math.floor(screen_y + screen_x), Math.floor(screen_y - screen_x)];
   }
 
-  p.cameraToWorldOffset = function([camera_x, camera_y]) {
+  p.cameraToWorldOffset = function ([camera_x, camera_y]) {
     let world_x = camera_x / (tile_width_step_main * 2);
     let world_y = camera_y / (tile_height_step_main * 2);
     return { x: Math.round(world_x), y: Math.round(world_y) };
   }
 
-  p.worldOffsetToCamera = function([world_x, world_y]) {
+  p.worldOffsetToCamera = function ([world_x, world_y]) {
     let camera_x = world_x * (tile_width_step_main * 2);
     let camera_y = world_y * (tile_height_step_main * 2);
     return new p5.Vector(camera_x, camera_y);
   }
 
+  // World instance is set up and preloaded here
   p.preload = function () {
-    
-
     w = new World(p);
     if (w.p3_preload) {
       w.p3_preload();
@@ -69,7 +74,12 @@ var s = function (p) {
     let canvas = p.createCanvas(800, 400);
     canvas.parent("container");
 
-    window.addEventListener("keydown", function(e) { if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {e.preventDefault();}}, false);
+    // Disable default browser controls
+    window.addEventListener("keydown", function (e) {
+      if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].indexOf(e.code) > -1) {
+        e.preventDefault();
+      }
+    }, false);
 
     camera_offset = new p5.Vector(-p.width / 2, p.height / 2);
     camera_velocity = new p5.Vector(0, 0);
@@ -78,6 +88,7 @@ var s = function (p) {
       w.p3_setup();
     }
 
+    // UI elements
     let label = p.createP();
     label.html("World key: ");
     label.parent("container");
@@ -93,7 +104,7 @@ var s = function (p) {
     p.rebuildWorld(input.value());
   }
 
-  p.rebuildWorld = function(key) {
+  p.rebuildWorld = function (key) {
     if (w.p3_worldKeyChanged) {
       w.p3_worldKeyChanged(key);
     }
@@ -103,7 +114,7 @@ var s = function (p) {
     tile_rows = Math.ceil(p.height / (tile_height_step_main * 2));
   }
 
-  p.mouseClicked = function() {
+  p.mouseClicked = function () {
     let world_pos = p.screenToWorld(
       [0 - p.mouseX, p.mouseY],
       [camera_offset.x, camera_offset.y]
@@ -115,33 +126,30 @@ var s = function (p) {
     return false;
   }
 
-  p.draw = function() {
+  p.draw = function () {
     // Keyboard controls!
-    if (p.keyIsDown(p.LEFT_ARROW) || p.keyIsDown(p.A_KEY)) {
-      camera_velocity.x -= 1;
-    }
-    if (p.keyIsDown(p.RIGHT_ARROW)) {
-      camera_velocity.x += 1;
-    }
-    if (p.keyIsDown(p.DOWN_ARROW)) {
-      camera_velocity.y -= 1;
-    }
-    if (p.keyIsDown(p.UP_ARROW)) {
-      camera_velocity.y += 1;
+    if (p.mouseX > 0 && p.mouseX < p.width && p.mouseY > 0 && p.mouseY < p.height) {
+      if (p.keyIsDown(p.LEFT_ARROW) || p.keyIsDown(A_KEY)) {
+        camera_velocity.x -= CAMERA_SPEED;
+      }
+      if (p.keyIsDown(p.RIGHT_ARROW) || p.keyIsDown(D_KEY)) {
+        camera_velocity.x += CAMERA_SPEED;
+      }
+      if (p.keyIsDown(p.DOWN_ARROW) || p.keyIsDown(S_KEY)) {
+        camera_velocity.y -= CAMERA_SPEED;
+      }
+      if (p.keyIsDown(p.UP_ARROW) || p.keyIsDown(W_KEY)) {
+        camera_velocity.y += CAMERA_SPEED;
+      }
     }
 
     let camera_delta = new p5.Vector(0, 0);
     camera_velocity.add(camera_delta);
     camera_offset.add(camera_velocity);
-    camera_velocity.mult(0.95); // cheap easing
-    if (camera_velocity.mag() < 0.01) {
-      camera_velocity.setMag(0);
-    }
+    camera_velocity.mult(0.95); // easing
+    if (camera_velocity.mag() < 0.01) camera_velocity.setMag(0);
 
-    let world_pos = p.screenToWorld(
-      [0 - p.mouseX, p.mouseY],
-      [camera_offset.x, camera_offset.y]
-    );
+    let world_pos = p.screenToWorld([0 - p.mouseX, p.mouseY], [camera_offset.x, camera_offset.y]);
     let world_offset = p.cameraToWorldOffset([camera_offset.x, camera_offset.y]);
 
     p.background(100);
@@ -150,8 +158,8 @@ var s = function (p) {
       w.p3_drawBefore();
     }
 
+    // Render all tiles (odd and even rows)
     let overdraw = 0.1;
-
     let y0 = Math.floor((0 - overdraw) * tile_rows);
     let y1 = Math.floor((1 + overdraw) * tile_rows);
     let x0 = Math.floor((0 - overdraw) * tile_columns);
@@ -159,19 +167,13 @@ var s = function (p) {
 
     for (let y = y0; y < y1; y++) {
       for (let x = x0; x < x1; x++) {
-        p.drawTile(p.tileRenderingOrder([x + world_offset.x, y - world_offset.y]), [
-          camera_offset.x,
-          camera_offset.y
-        ]); // odd row
+        p.drawTile(p.tileRenderingOrder([x + world_offset.x, y - world_offset.y]), [camera_offset.x, camera_offset.y]);
       }
       for (let x = x0; x < x1; x++) {
         p.drawTile(
-          p.tileRenderingOrder([
-            x + 0.5 + world_offset.x,
-            y + 0.5 - world_offset.y
-          ]),
+          p.tileRenderingOrder([x + 0.5 + world_offset.x, y + 0.5 - world_offset.y]),
           [camera_offset.x, camera_offset.y]
-        ); // even rows are offset horizontally
+        );
       }
     }
 
@@ -181,9 +183,9 @@ var s = function (p) {
       w.p3_drawAfter();
     }
   }
-
+  
   // Display a discription of the tile at world_x, world_y.
-  p.describeMouseTile = function([world_x, world_y], [camera_x, camera_y]) {
+  p.describeMouseTile = function ([world_x, world_y], [camera_x, camera_y]) {
     let [screen_x, screen_y] = p.worldToScreen(
       [world_x, world_y],
       [camera_x, camera_y]
@@ -191,7 +193,7 @@ var s = function (p) {
     p.drawTileDescription([world_x, world_y], [0 - screen_x, screen_y]);
   }
 
-  p.drawTileDescription = function([world_x, world_y], [screen_x, screen_y]) {
+  p.drawTileDescription = function ([world_x, world_y], [screen_x, screen_y]) {
     p.push();
     p.translate(screen_x, screen_y);
     if (w.p3_drawSelectedTile) {
@@ -201,7 +203,7 @@ var s = function (p) {
   }
 
   // Draw a tile, mostly by calling the user's drawing code.
-  p.drawTile = function([world_x, world_y], [camera_x, camera_y]) {
+  p.drawTile = function ([world_x, world_y], [camera_x, camera_y]) {
     let [screen_x, screen_y] = p.worldToScreen(
       [world_x, world_y],
       [camera_x, camera_y]
@@ -215,4 +217,5 @@ var s = function (p) {
   }
 }
 
+// Bootstrap the sketch
 var myp5_1 = new p5(s, "container");

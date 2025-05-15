@@ -1,3 +1,9 @@
+/**
+ * @file World.js
+ * Defines the World class and its p3.js lifecycle methods and helpers.
+ * Handles tile drawing, world state changes, and user interaction.
+ */
+
 "use strict";
 
 /* global XXH */
@@ -14,107 +20,85 @@
     p3_drawAfter
 */
 
-class World{
-  constructor(p){
-this.p = p;
-this.worldSeed;
-this.trimColor;
-[this.tw, this.th] = [TILE_WIDTH,TILE_HEIGHT];
-this.clicks = {};
-console.log("World Created");
-  }
-p3_preload() {}
-
-p3_setup() {}
-
-
-p3_worldKeyChanged(key) {
-  this.worldSeed = XXH.h32(key, 0);
-  this.p.noiseSeed(this.worldSeed);
-  this.p.randomSeed(this.worldSeed);
-  
-  this.trimColor = this.p.random(['red','#44ff88','#aaeeff']);
-}
-
-p3_tileWidth() {
-  return TILE_WIDTH;
-}
-p3_tileHeight() {
-  return TILE_HEIGHT;
-}
-
-p3_tileClicked(i, j) {
-  let key = [i, j];
-  this.clicks[key] = 1 + (this.clicks[key] | 0);
-}
-
-p3_drawBefore() {}
-
-p3_drawTile(i, j) {
-  
-  this.p.noStroke();
-  let boatWidth = 5;
-  
-  
-  let onBoat = false;
-  if (j < -boatWidth || j > boatWidth) {
-    // water
-    let t = this.p.millis()/1000.0;
-    this.p.fill(100, 150, 233, 64+256*this.p.noise(-t+i/5,j/5,t));
-    
-  } else {
-    onBoat = true;
-    if (j == -boatWidth || j == boatWidth) {
-      
-      this.p.translate(0,-this.th/2);
-
-      this.p.fill(this.trimColor);
-    } else {
-      this.p.fill(200);
-      
-    }
+class World {
+  constructor(p) {
+    this.p = p;
+    this.worldSeed;
+    this.trimColor;
+    [this.tw, this.th] = [TILE_WIDTH, TILE_HEIGHT];
+    this.clicks = {};
+    console.log("World Created");
   }
 
-  
-  this.p.push();
+  // Called during preload phase
+  p3_preload() { }
 
-  this.p.beginShape();
-  this.p.vertex(-this.tw, 0);
-  this.p.vertex(0, this.th);
-  this.p.vertex(this.tw, 0);
-  this.p.vertex(0, -this.th);
-  this.p.endShape(this.p.CLOSE);
+  // Called during setup phase
+  p3_setup() { }
 
-  if(onBoat) {
-    let n = this.clicks[[i, j]] | 0;
-    if (n % 2 == 1) {
-      this.p.fill(0, 0, 0, 32);
-      this.p.rect(0, 0, 10, 5);
-      this.p.translate(0, -10);
-      this.p.fill(0, 0, 0, 128);
-      this.p.rect(0, 0, 10, 10);
-    }
+  // Called when the world key changes; seeds noise & random
+  p3_worldKeyChanged(key) {
+    this.worldSeed = XXH.h32(key, 0);
+    this.p.noiseSeed(this.worldSeed);
+    this.p.randomSeed(this.worldSeed);
+
+    this.trimColor = this.p.random(['red', '#44ff88', '#aaeeff']);
   }
-  
 
-  this.p.pop();
-}
+  // Return tile width
+  p3_tileWidth() {
+    return TILE_WIDTH;
+  }
 
-p3_drawSelectedTile(i, j) {
-  this.p.noFill();
-  this.p.stroke(0, 255, 0, 128);
+  // Return tile height
+  p3_tileHeight() {
+    return TILE_HEIGHT;
+  }
 
-  this.p.beginShape();
-  this.p.vertex(-this.tw, 0);
-  this.p.vertex(0, this.th);
-  this.p.vertex(this.tw, 0);
-  this.p.vertex(0, -this.th);
-  this.p.endShape(this.p.CLOSE);
+  // Handle tile clicks (accumulates click count per tile)
+  p3_tileClicked(i, j) {
+    let key = [i, j];
+    this.clicks[key] = 1 + (this.clicks[key] | 0);
+  }
 
-  this.p.noStroke();
-  this.p.fill(0);
-  this.p.text("tile " + [i, j], 0, 0);
-}
+  // Hook before drawing tiles
+  p3_drawBefore() { }
 
-  p3_drawAfter() {}
+  // Draw an individual tile
+  p3_drawTile(i, j) {
+    this.p.noStroke();
+
+    // Animated water fill
+    let t = this.p.millis() * WATER_ANIMATION_RATE;
+    this.p.fill(100, 150, 233, 64 + 256 * this.p.noise(-t + i / 5, j / 5, t));
+
+    // Diamond-shaped tile
+    this.p.push();
+    this.p.beginShape();
+    this.p.vertex(-this.tw, 0);
+    this.p.vertex(0, this.th);
+    this.p.vertex(this.tw, 0);
+    this.p.vertex(0, -this.th);
+    this.p.endShape(this.p.CLOSE);
+    this.p.pop();
+  }
+
+  // Draw the selected tile highlight
+  p3_drawSelectedTile(i, j) {
+    this.p.noFill();
+    this.p.stroke(0, 255, 0, 128);
+    this.p.beginShape();
+    this.p.vertex(-this.tw, 0);
+    this.p.vertex(0, this.th);
+    this.p.vertex(this.tw, 0);
+    this.p.vertex(0, -this.th);
+    this.p.endShape(this.p.CLOSE);
+
+    this.p.noStroke();
+    this.p.fill(0);
+    this.p.text("tile " + [i, j], 0, 0);
+  }
+
+  // Hook after drawing tiles
+  p3_drawAfter() { }
 }
