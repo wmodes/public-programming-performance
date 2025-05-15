@@ -1,9 +1,9 @@
 class AnimalNPC extends NPC{
-    constructor(x,y,speed){//,imagePath){
+    constructor(x,y,speed,imagePath){
         //speed is inversely related to the amount of seconds it takes between moves, 
         //imagePath takes in image as a path string
         super(x,y,speed);
-        //this.image = loadImage(imagePath);
+        this.image = imagePath;
         this.timer = 0;
     }
     draw(p, [camera_x, camera_y]){
@@ -19,7 +19,7 @@ class AnimalNPC extends NPC{
         
         ///
     
-        p.circle(0,0,10);
+        p.image(this.image,0,0);
 
         ///
     

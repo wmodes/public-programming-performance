@@ -81,10 +81,13 @@ class World {
         console.log("failed to xavier_grass.png");
       }
     );
+    this.bird = this.p.loadImage("assets/npc/seagull.png");
   }
 
   /** This is called on the p3 setup call */
-  p3_setup() {}
+  p3_setup() {
+    this.npc_manager.spawnEntity(new AnimalNPC(0,0,5,this.p.loadImage("assets/npc/seagull.png")));
+  }
 
   /** This is called if someone changes the seed */
   p3_worldKeyChanged(key) {
