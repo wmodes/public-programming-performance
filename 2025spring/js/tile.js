@@ -9,11 +9,15 @@ class Tile {
         this.image = [];
     }
 
-    draw(x, y)
+    
+
+    draw(y)
     {
         this.p.noStroke();
-        
-        
+        world.p.image(this.image, -30, -30 + y, 60, 60);
+        if (this.sprite) {
+            world.p.image(this.sprite);
+        }
     }
     
     setImage(image)
