@@ -123,7 +123,7 @@ class Island {
     if (localX < 0 || localY < 0 || localX >= this.ISLAND_SIZE || localY >= this.ISLAND_SIZE) {
       //world.p.image(world.ocean, -30, -24, 60, 50, 0, 32 - 24, 32, 24);
       this.changeAttributes("OCEAN");
-      tile.draw(2);
+      tile.draw(8);
       return;
     }
 
@@ -148,7 +148,7 @@ class Island {
     } else if (type === "SAND") {
       // Sand edge is always sand, regardless of biome
       tile.changeAttributes(type);
-      tile.draw(1);
+      tile.draw(4);
       //world.p.image(world.sand, -30, -24, 60, 50, 0, 80 - 24, 32, 24);
     } else {
       // Animated water fill
