@@ -29,6 +29,8 @@ class World {
     [this.tw, this.th] = [TILE_WIDTH, TILE_HEIGHT]; // tw = tile width, th = tile height
     this.clicks = {};
     this.island = new Island(p); // Use the new Island class
+    this.tileTypes = {OCEAN: [], SAND: [], GRASS: [], DIRT: [], SNOW: []};
+    this.tiles = {};
     console.log("World Created");
   }
 
@@ -43,33 +45,8 @@ class World {
         console.log("failed to load ocean.png");
       }
     );
-    this.dirt = this.p.loadImage(
-      "assets/tiles/dirt_base.png",
-      () => {
-        console.log("loaded dirt_tile.png");
-      },
-      () => {
-        console.log("failed to load dirt_tile.png");
-      }
-    );
-    this.snow = this.p.loadImage(
-      "assets/tiles/snow_base.png",
-      () => {
-        console.log("loaded snow_base.png");
-      },
-      () => {
-        console.log("failed to load snow_base.png");
-      }
-    );
-    this.grass = this.p.loadImage(
-      "assets/tiles/xavier_grass.png",
-      () => {
-        console.log("loaded grass_tile.png");
-      },
-      () => {
-        console.log("failed to grass_tile.png");
-      }
-    );
+    this.tileTypes.OCEAN.push(this.ocean);
+
     this.sand = this.p.loadImage(
       "assets/tiles/xavier_sand.png",
       () => {
@@ -79,6 +56,40 @@ class World {
         console.log("failed to xavier_grass.png");
       }
     );
+    this.tileTypes.SAND.push(this.sand);
+
+    this.grass = this.p.loadImage(
+      "assets/tiles/xavier_grass.png",
+      () => {
+        console.log("loaded grass_tile.png");
+      },
+      () => {
+        console.log("failed to grass_tile.png");
+      }
+    );
+    this.tileTypes.GRASS.push(this.grass); 
+
+    this.dirt = this.p.loadImage(
+      "assets/tiles/dirt_base.png",
+      () => {
+        console.log("loaded dirt_tile.png");
+      },
+      () => {
+        console.log("failed to load dirt_tile.png");
+      }
+    );
+    this.tileTypes.DIRT.push(this.dirt);
+
+    this.snow = this.p.loadImage(
+      "assets/tiles/snow_base.png",
+      () => {
+        console.log("loaded snow_base.png");
+      },
+      () => {
+        console.log("failed to load snow_base.png");
+      }
+    );
+    this.tileTypes.SNOW.push(this.snow);
   }
 
   /** This is called on the p3 setup call */
@@ -111,7 +122,8 @@ class World {
 
   /** This draws the tile at that location */
   p3_drawTile(i, j) {
-    this.island.drawTile(i, j, this);
+    this.tiles[i + ", " + j] = this.island.drawTile(i, j, this);
+    return this.tiles[i + ", " + j].getType();
   }
 
   /** draws outline around the tile. */
@@ -120,7 +132,7 @@ class World {
     this.p.stroke(0, 255, 0, 128);
 
     // Added temp code for adjusting selected tile based on height, will improve later
-    let y = this.p.noise(i * 0.1, j * 0.1) < 0.4 ? 0 : 6;
+    let y = this.tiles[i + ", " + j].getType() == "OCEAN" ? 8 : 0;
 
     // this draws the outline
     this.p.beginShape();
