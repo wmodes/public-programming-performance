@@ -20,85 +20,146 @@
     p3_drawAfter
 */
 
+
+
+/** This class stores all the info for a world generation. */
 class World {
   constructor(p) {
     this.p = p;
     this.worldSeed;
     this.trimColor;
-    [this.tw, this.th] = [TILE_WIDTH, TILE_HEIGHT];
+    [this.tw, this.th] = [TILE_WIDTH, TILE_HEIGHT]; // tw = tile width, th = tile height
     this.clicks = {};
     console.log("World Created");
+    this.npc_manager = new NpcManager();
   }
 
-  // Called during preload phase
-  p3_preload() { }
+  /** This is called on p3 preload call */
+  p3_preload() {
+    this.ocean = this.p.loadImage(
+      "assets/tiles/water_base.png",
+      () => {
+        console.log("loaded ocean.png");
+      },
+      () => {
+        console.log("failed to load ocean.png");
+      }
+    );
+    this.dirt = this.p.loadImage(
+      "assets/tiles/dirt_base.png",
+      () => {
+        console.log("loaded dirt_tile.png");
+      },
+      () => {
+        console.log("failed to load dirt_tile.png");
+      }
+    );
+    this.snow = this.p.loadImage(
+      "assets/tiles/snow_base.png",
+      () => {
+        console.log("loaded snow_base.png");
+      },
+      () => {
+        console.log("failed to load snow_base.png");
+      }
+    );
+    this.grass = this.p.loadImage(
+      "assets/tiles/xavier_grass.png",
+      () => {
+        console.log("loaded grass_tile.png");
+      },
+      () => {
+        console.log("failed to grass_tile.png");
+      }
+    );
+    this.sand = this.p.loadImage(
+      "assets/tiles/xavier_sand.png",
+      () => {
+        console.log("loaded xavier_grass.png");
+      },
+      () => {
+        console.log("failed to xavier_grass.png");
+      }
+    );
+  }
 
-  // Called during setup phase
-  p3_setup() { }
+  /** This is called on the p3 setup call */
+  p3_setup() {}
 
-  // Called when the world key changes; seeds noise & random
+  /** This is called if someone changes the seed */
   p3_worldKeyChanged(key) {
     this.worldSeed = XXH.h32(key, 0);
     this.p.noiseSeed(this.worldSeed);
     this.p.randomSeed(this.worldSeed);
 
-    this.trimColor = this.p.random(['red', '#44ff88', '#aaeeff']);
+    this.trimColor = this.p.random(["red", "#44ff88", "#aaeeff"]);
   }
 
-  // Return tile width
   p3_tileWidth() {
     return TILE_WIDTH;
   }
-
-  // Return tile height
   p3_tileHeight() {
     return TILE_HEIGHT;
   }
 
-  // Handle tile clicks (accumulates click count per tile)
+  /** this is called when the tile at i,j is clicked */
   p3_tileClicked(i, j) {
     let key = [i, j];
     this.clicks[key] = 1 + (this.clicks[key] | 0);
   }
 
-  // Hook before drawing tiles
-  p3_drawBefore() { }
+  /** This is called before the tile is drawn. */
+  p3_drawBefore() {}
 
-  // Draw an individual tile
+  /** This draws the tile at that location */
   p3_drawTile(i, j) {
     this.p.noStroke();
+    let noiseScale = 0.1;
+    let vegetationNoise = this.p.noise(i * noiseScale, j * noiseScale);
+    if (vegetationNoise < 0.4) {
+      this.p.image(this.grass, -30, -24, 60, 50, 0, 80 - 24, 32, 24);
+    } else {
+      // Animated water fill
+      //let t = this.p.millis() * WATER_ANIMATION_RATE;
+      //this.p.fill(100, 150, 233, 64 + 256 * this.p.noise(-t + i / 5, j / 5, t));
+      if(this.p.millis() % 1000 < 500){
+        this.p.image(this.ocean, -30, -24, 60, 50, 0, 32 - 24, 32, 24);
 
-    // Animated water fill
-    let t = this.p.millis() * WATER_ANIMATION_RATE;
-    this.p.fill(100, 150, 233, 64 + 256 * this.p.noise(-t + i / 5, j / 5, t));
+      }
+      else{
 
-    // Diamond-shaped tile
-    this.p.push();
-    this.p.beginShape();
-    this.p.vertex(-this.tw, 0);
-    this.p.vertex(0, this.th);
-    this.p.vertex(this.tw, 0);
-    this.p.vertex(0, -this.th);
-    this.p.endShape(this.p.CLOSE);
-    this.p.pop();
+        this.p.image(this.ocean, -30, -24, 60, 50, 32, 32 - 24, 32, 24);
+      }
+    }
+    
+
   }
 
-  // Draw the selected tile highlight
+  /** draws outline around the tile. */
   p3_drawSelectedTile(i, j) {
     this.p.noFill();
     this.p.stroke(0, 255, 0, 128);
+
+    // Added temp code for adjusting selected tile based on height, will improve later
+    let y = this.p.noise(i * 0.1, j * 0.1) < 0.4 ? 0 : 6;
+
+    // this draws the outline
     this.p.beginShape();
-    this.p.vertex(-this.tw, 0);
-    this.p.vertex(0, this.th);
-    this.p.vertex(this.tw, 0);
-    this.p.vertex(0, -this.th);
+    this.p.vertex(-this.tw, 0 + y);
+    this.p.vertex(0, this.th + y);
+    this.p.vertex(this.tw, 0 + y);
+    this.p.vertex(0, -this.th + y);
     this.p.endShape(this.p.CLOSE);
 
     this.p.noStroke();
     this.p.fill(0);
+
+    // this adds the text above the tile
     this.p.text("tile " + [i, j], 0, 0);
   }
 
-  // Hook after drawing tiles
-  p3_drawAfter() { }
+  p3_drawAfter(camera_offset) {
+    this.npc_manager.update()
+    this.npc_manager.draw(this.p, camera_offset)
+  }
 }
