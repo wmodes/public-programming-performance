@@ -7,7 +7,8 @@ class Tile {
         this.height;
         this.width;
         this.sprite;
-        this.type; // either ocean or island (maybe biomes too later)
+        this.type;
+        this.surface;
         this.image = [];
         
     }
@@ -15,7 +16,8 @@ class Tile {
     changeAttributes(type)
     {
         this.setType(type);
-        this.setImage(this.world.tileTypes[type]); 
+        this.setImage(this.world.tileTypes[type]);
+        this.surface = type == "OCEAN" ? "LAND" : "WATER";
     }
 
     draw(y = 0, tileOffsetX = 0, tileOffsetY = 0)
@@ -36,6 +38,11 @@ class Tile {
     getType()
     {
         return this.type;
+    }
+
+    isLand()
+    {
+        return this.surface == "LAND" ? true : false;
     }
 
     setImage(image)

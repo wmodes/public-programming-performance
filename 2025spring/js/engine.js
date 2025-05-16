@@ -164,16 +164,28 @@ var s = function (p) {
     let y1 = Math.floor((1 + overdraw) * tile_rows);
     let x0 = Math.floor((0 - overdraw) * tile_columns);
     let x1 = Math.floor((1 + overdraw) * tile_columns);
+    let landNum = 0;
+    let waterNum = 0;
 
     for (let y = y0; y < y1; y++) {
       for (let x = x0; x < x1; x++) {
-        p.drawTile(p.tileRenderingOrder([x + world_offset.x, y - world_offset.y]), [camera_offset.x, camera_offset.y]);
+        let isLand = p.drawTile(p.tileRenderingOrder([x + world_offset.x, y - world_offset.y]), [camera_offset.x, camera_offset.y]);
+        if (isLand) {
+          landNum++;
+        } else {
+          waterNum++;
+        }
       }
       for (let x = x0; x < x1; x++) {
-        p.drawTile(
-          p.tileRenderingOrder([x + 0.5 + world_offset.x, y + 0.5 - world_offset.y]),
+        let isLand = p.drawTile(
+          p.tileRenderingOrder([x + 0.5 + world_offset.x, y + 0.5 - world_offset.y]), 
           [camera_offset.x, camera_offset.y]
         );
+        if (isLand) {
+          landNum++;
+        } else {
+          waterNum++;
+        }
       }
     }
 

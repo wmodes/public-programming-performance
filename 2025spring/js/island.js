@@ -153,7 +153,11 @@ class Island {
     } else {
       // Animated water fill
       tile.changeAttributes(type);
-      tile.draw(8, world.p.millis() % 1000 < 500 ? 0 : 32, 8-56);
+      tile.draw(
+        8, 
+        world.p.millis() % 1000 < 500 ? 0 : 32, 
+        8-56
+      );
       /*
       if (world.p.millis() % 1000 < 500) {
         world.p.image(world.ocean, -30, -24, 60, 50, 0, 32 - 24, 32, 24);
