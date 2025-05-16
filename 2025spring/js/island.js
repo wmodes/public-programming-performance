@@ -105,7 +105,7 @@ class Island {
       // Water everywhere if no island in this chunk
       //world.p.image(world.ocean, -30, -24, 60, 50, 0, 32 - 24, 32, 24);
       tile.changeAttributes("OCEAN");
-      tile.draw(2);
+      tile.draw(8);
       return;
     }
 
