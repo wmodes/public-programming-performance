@@ -124,7 +124,7 @@ class World {
   p3_drawTile(i, j) {
     this.tiles[i + ", " + j] = this.island.drawTile(i, j, this);
     console.log("(" + i + ", " + j + ")  " + this.tiles[i + ", " + j])
-    return this.tiles[i + ", " + j] && this.tiles[i + ", " + j].isLand();
+    return this.tiles[i, j] && this.tiles[i, j].isLand();
   }
 
   /** draws outline around the tile. */
@@ -133,7 +133,7 @@ class World {
     this.p.stroke(0, 255, 0, 128);
 
     // Added temp code for adjusting selected tile based on height, will improve later
-    let y = this.tiles[i + ", " + j] && this.tiles[i + ", " + j].getType() == "OCEAN" ? 8 : 0;
+    let y = this.tiles[i, j] && this.tiles[i, j].getType() == "OCEAN" ? 8 : 0;
 
     // this draws the outline
     this.p.beginShape();
