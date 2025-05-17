@@ -107,8 +107,8 @@ class Island {
       // Water everywhere if no island in this chunk
       //world.p.image(world.ocean, -30, -24, 60, 50, 0, 32 - 24, 32, 24);
       tile.changeAttributes("OCEAN");
-      tile.draw(8);
-      return;
+      tile.draw(8, world.p.millis() % 1000 < 500 ? 0 : 32, 8 - 56);
+      return tile;
     }
 
     // Get island shape seeds
@@ -130,8 +130,8 @@ class Island {
     ) {
       //world.p.image(world.ocean, -30, -24, 60, 50, 0, 32 - 24, 32, 24);
       tile.changeAttributes("OCEAN");
-      tile.draw(8);
-      return;
+      tile.draw(8, world.p.millis() % 1000 < 500 ? 0 : 32, 8 - 56);
+      return tile;
     }
 
     // Determine tile type
