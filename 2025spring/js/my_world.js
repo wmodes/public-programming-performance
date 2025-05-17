@@ -20,8 +20,6 @@
     p3_drawAfter
 */
 
-
-
 /** This class stores all the info for a world generation. */
 class World {
   constructor(p) {
@@ -30,6 +28,9 @@ class World {
     this.trimColor;
     [this.tw, this.th] = [TILE_WIDTH, TILE_HEIGHT]; // tw = tile width, th = tile height
     this.clicks = {};
+    this.island = new Island(p); // Use the new Island class
+    this.tileTypes = { OCEAN: [], SAND: [], GRASS: [], DIRT: [], SNOW: [] };
+    this.tiles = {};
     console.log("World Created");
     this.npc_manager = new NpcManager();
   }
@@ -45,33 +46,8 @@ class World {
         console.log("failed to load ocean.png");
       }
     );
-    this.dirt = this.p.loadImage(
-      "assets/tiles/dirt_base.png",
-      () => {
-        console.log("loaded dirt_tile.png");
-      },
-      () => {
-        console.log("failed to load dirt_tile.png");
-      }
-    );
-    this.snow = this.p.loadImage(
-      "assets/tiles/snow_base.png",
-      () => {
-        console.log("loaded snow_base.png");
-      },
-      () => {
-        console.log("failed to load snow_base.png");
-      }
-    );
-    this.grass = this.p.loadImage(
-      "assets/tiles/xavier_grass.png",
-      () => {
-        console.log("loaded grass_tile.png");
-      },
-      () => {
-        console.log("failed to grass_tile.png");
-      }
-    );
+    this.tileTypes.OCEAN.push(this.ocean);
+
     this.sand = this.p.loadImage(
       "assets/tiles/xavier_sand.png",
       () => {
@@ -81,6 +57,40 @@ class World {
         console.log("failed to xavier_grass.png");
       }
     );
+    this.tileTypes.SAND.push(this.sand);
+
+    this.grass = this.p.loadImage(
+      "assets/tiles/xavier_grass.png",
+      () => {
+        console.log("loaded grass_tile.png");
+      },
+      () => {
+        console.log("failed to grass_tile.png");
+      }
+    );
+    this.tileTypes.GRASS.push(this.grass);
+
+    this.dirt = this.p.loadImage(
+      "assets/tiles/dirt_base.png",
+      () => {
+        console.log("loaded dirt_tile.png");
+      },
+      () => {
+        console.log("failed to load dirt_tile.png");
+      }
+    );
+    this.tileTypes.DIRT.push(this.dirt);
+
+    this.snow = this.p.loadImage(
+      "assets/tiles/snow_base.png",
+      () => {
+        console.log("loaded snow_base.png");
+      },
+      () => {
+        console.log("failed to load snow_base.png");
+      }
+    );
+    this.tileTypes.SNOW.push(this.snow);
   }
 
   /** This is called on the p3 setup call */
@@ -113,26 +123,9 @@ class World {
 
   /** This draws the tile at that location */
   p3_drawTile(i, j) {
-    this.p.noStroke();
-    let noiseScale = 0.1;
-    let vegetationNoise = this.p.noise(i * noiseScale, j * noiseScale);
-    if (vegetationNoise < 0.4) {
-      this.p.image(this.grass, -30, -24, 60, 50, 0, 80 - 24, 32, 24);
-    } else {
-      // Animated water fill
-      //let t = this.p.millis() * WATER_ANIMATION_RATE;
-      //this.p.fill(100, 150, 233, 64 + 256 * this.p.noise(-t + i / 5, j / 5, t));
-      if(this.p.millis() % 1000 < 500){
-        this.p.image(this.ocean, -30, -24, 60, 50, 0, 32 - 24, 32, 24);
-
-      }
-      else{
-
-        this.p.image(this.ocean, -30, -24, 60, 50, 32, 32 - 24, 32, 24);
-      }
-    }
-    
-
+    this.tiles[i + ", " + j] = this.island.drawTile(i, j, this);
+    console.log("(" + i + ", " + j + ")  " + this.tiles[i + ", " + j]);
+    return this.tiles[(i, j)] && this.tiles[(i, j)].isLand();
   }
 
   /** draws outline around the tile. */
@@ -141,7 +134,8 @@ class World {
     this.p.stroke(0, 255, 0, 128);
 
     // Added temp code for adjusting selected tile based on height, will improve later
-    let y = this.p.noise(i * 0.1, j * 0.1) < 0.4 ? 0 : 6;
+    let y =
+      this.tiles[(i, j)] && this.tiles[(i, j)].getType() == "OCEAN" ? 8 : 0;
 
     // this draws the outline
     this.p.beginShape();
@@ -159,7 +153,7 @@ class World {
   }
 
   p3_drawAfter(camera_offset) {
-    this.npc_manager.update()
-    this.npc_manager.draw(this.p, camera_offset)
+    this.npc_manager.update();
+    this.npc_manager.draw(this.p, camera_offset);
   }
 }
