@@ -25,14 +25,14 @@ class SoundEngine{
     this.waterAmbience = p5Instance.loadSound('sounds/Water Ambience - Background.mp3');
   }
 
-  tileClicked(tileType = "water") {
-    if (tileType == "water") {
+  tileClicked(tileType = "OCEAN") {
+    if (tileType == "OCEAN") {
       this.waterClickSound.play(0, 1, 1, this.waterClickSound.duration() * 2/7);
-    } else if (tileType == "dirt" || tileType == "grass") {
+    } else if (tileType == "DIRT" || tileType == "GRASS") {
       this.dirtClickSound.play(0, 1, 0.5);
-    } else if (tileType == "sand") {
+    } else if (tileType == "SAND") {
       this.sandClickSound.play();
-    } else if (tileType == "snow") {
+    } else if (tileType == "SNOW") {
       this.snowClickSound.play();
     }
   }
