@@ -54,9 +54,9 @@ class Island {
       cX * this.BIOME_NOISE_SCALE + 100.1,
       cY * this.BIOME_NOISE_SCALE + 200.2
     );
-    // if (n < 0.5) return "SNOW";
-    // if (n < 0.5) return "ROCK";
-    // if (n < 0.75) return "SAND";
+    if (n < 0.25) return "SNOW";
+    if (n < 0.5) return "DIRT";
+    if (n < 0.75) return "SAND";
     return "GRASS";
   }
 
@@ -105,8 +105,11 @@ class Island {
       // Water everywhere if no island in this chunk
       //world.p.image(world.ocean, -30, -24, 60, 50, 0, 32 - 24, 32, 24);
       tile.changeAttributes("OCEAN");
-      tile.draw(8);
-      return;
+      tile.draw(
+        8, 
+        world.p.millis() % 1000 < 500 ? 0 : 32
+      );
+      return tile;
     }
 
     // Get island shape seeds
@@ -123,8 +126,12 @@ class Island {
     if (localX < 0 || localY < 0 || localX >= this.ISLAND_SIZE || localY >= this.ISLAND_SIZE) {
       //world.p.image(world.ocean, -30, -24, 60, 50, 0, 32 - 24, 32, 24);
       this.changeAttributes("OCEAN");
-      tile.draw(8);
-      return;
+      console.log("hello")
+      tile.draw(
+        8, 
+        world.p.millis() % 1000 < 500 ? 0 : 32
+      );
+      return tile;
     }
 
     // Determine tile type
@@ -155,8 +162,7 @@ class Island {
       tile.changeAttributes(type);
       tile.draw(
         8, 
-        world.p.millis() % 1000 < 500 ? 0 : 32, 
-        8-56
+        world.p.millis() % 1000 < 500 ? 0 : 32
       );
       /*
       if (world.p.millis() % 1000 < 500) {

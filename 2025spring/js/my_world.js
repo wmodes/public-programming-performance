@@ -122,8 +122,8 @@ class World {
 
   /** This draws the tile at that location */
   p3_drawTile(i, j) {
-    this.tiles[i + ", " + j] = this.island.drawTile(i, j, this);
-    console.log("(" + i + ", " + j + ")  " + this.tiles[i + ", " + j])
+    this.tiles[i, j] = this.island.drawTile(i, j, this);
+    console.log("(" + i + ", " + j + ")  " + this.tiles[i, j].getType())
     return this.tiles[i, j] && this.tiles[i, j].isLand();
   }
 
