@@ -31,6 +31,7 @@ class World {
     this.island = new Island(p); // Use the new Island class
     this.tileTypes = { OCEAN: [], SAND: [], GRASS: [], DIRT: [], SNOW: [] };
     this.tiles = {};
+    this.soundEngine = new SoundEngine(p);
     console.log("World Created");
     this.npc_manager = new NpcManager();
   }
@@ -149,6 +150,7 @@ class World {
   p3_tileClicked(i, j) {
     let key = [i, j];
     this.clicks[key] = 1 + (this.clicks[key] | 0);
+    this.soundEngine.tileClicked( this.tiles[i + ", " + j].getType())
   }
 
   /** This is called before the tile is drawn. */
