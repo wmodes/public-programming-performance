@@ -36,14 +36,16 @@ class Island {
 
   // Returns the shape seeds for an island at chunk (cX, cY)
   getIslandShapeSeeds(cX, cY) {
-    let sx = this.p.noise(
-      cX * this.ISLAND_SHAPE_SEED_NOISE_SCALE + 10.3,
-      cY * this.ISLAND_SHAPE_SEED_NOISE_SCALE + 20.7
-    ) * 100000;
-    let sy = this.p.noise(
-      cX * this.ISLAND_SHAPE_SEED_NOISE_SCALE + 30.5,
-      cY * this.ISLAND_SHAPE_SEED_NOISE_SCALE + 40.1
-    ) * 100000;
+    let sx =
+      this.p.noise(
+        cX * this.ISLAND_SHAPE_SEED_NOISE_SCALE + 10.3,
+        cY * this.ISLAND_SHAPE_SEED_NOISE_SCALE + 20.7
+      ) * 100000;
+    let sy =
+      this.p.noise(
+        cX * this.ISLAND_SHAPE_SEED_NOISE_SCALE + 30.5,
+        cY * this.ISLAND_SHAPE_SEED_NOISE_SCALE + 40.1
+      ) * 100000;
     return [sx, sy];
   }
 
@@ -63,17 +65,17 @@ class Island {
   // Returns "water", "sand", or "land" for a given tile in an island
   getIslandTileType(localX, localY, shapeSeedX, shapeSeedY) {
     // Perlin Noise Pass 1: Rough Outline
-    let n1X = (localX * this.NOISE_SCALE_ROUGH) + shapeSeedX;
-    let n1Y = (localY * this.NOISE_SCALE_ROUGH) + shapeSeedY;
+    let n1X = localX * this.NOISE_SCALE_ROUGH + shapeSeedX;
+    let n1Y = localY * this.NOISE_SCALE_ROUGH + shapeSeedY;
     let noiseValueRough = this.p.noise(n1X, n1Y);
 
     // Perlin Noise Pass 2: Details
-    let n2X = (localX * this.NOISE_SCALE_DETAIL) + shapeSeedX + 200.5;
-    let n2Y = (localY * this.NOISE_SCALE_DETAIL) + shapeSeedY + 300.5;
+    let n2X = localX * this.NOISE_SCALE_DETAIL + shapeSeedX + 200.5;
+    let n2Y = localY * this.NOISE_SCALE_DETAIL + shapeSeedY + 300.5;
     let noiseValueDetail = this.p.noise(n2X, n2Y);
 
     // Combine Noise Values
-    let combinedNoise = (noiseValueRough * 0.70) + (noiseValueDetail * 0.30);
+    let combinedNoise = noiseValueRough * 0.7 + noiseValueDetail * 0.3;
 
     // Central Bias / Radial Falloff
     let centerX = this.ISLAND_SIZE / 2;
@@ -120,9 +122,14 @@ class Island {
     let localY = j - cY * this.CHUNK_GRID_SIZE;
 
     // Out of bounds (shouldn't happen, but just in case)
-    if (localX < 0 || localY < 0 || localX >= this.ISLAND_SIZE || localY >= this.ISLAND_SIZE) {
+    if (
+      localX < 0 ||
+      localY < 0 ||
+      localX >= this.ISLAND_SIZE ||
+      localY >= this.ISLAND_SIZE
+    ) {
       //world.p.image(world.ocean, -30, -24, 60, 50, 0, 32 - 24, 32, 24);
-      this.changeAttributes("OCEAN");
+      tile.changeAttributes("OCEAN");
       tile.draw(8);
       return;
     }
@@ -153,11 +160,7 @@ class Island {
     } else {
       // Animated water fill
       tile.changeAttributes(type);
-      tile.draw(
-        8, 
-        world.p.millis() % 1000 < 500 ? 0 : 32, 
-        8-56
-      );
+      tile.draw(8, world.p.millis() % 1000 < 500 ? 0 : 32, 8 - 56);
       /*
       if (world.p.millis() % 1000 < 500) {
         world.p.image(world.ocean, -30, -24, 60, 50, 0, 32 - 24, 32, 24);
