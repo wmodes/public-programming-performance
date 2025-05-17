@@ -29,9 +29,10 @@ class World {
     [this.tw, this.th] = [TILE_WIDTH, TILE_HEIGHT]; // tw = tile width, th = tile height
     this.clicks = {};
     this.island = new Island(p); // Use the new Island class
-    this.tileTypes = {OCEAN: [], SAND: [], GRASS: [], DIRT: [], SNOW: []};
+    this.tileTypes = { OCEAN: [], SAND: [], GRASS: [], DIRT: [], SNOW: [] };
     this.tiles = {};
     console.log("World Created");
+    this.npc_manager = new NpcManager();
   }
 
   /** This is called on p3 preload call */
@@ -67,7 +68,7 @@ class World {
         console.log("failed to grass_tile.png");
       }
     );
-    this.tileTypes.GRASS.push(this.grass); 
+    this.tileTypes.GRASS.push(this.grass);
 
     this.dirt = this.p.loadImage(
       "assets/tiles/dirt_base.png",
@@ -123,8 +124,8 @@ class World {
   /** This draws the tile at that location */
   p3_drawTile(i, j) {
     this.tiles[i + ", " + j] = this.island.drawTile(i, j, this);
-    console.log("(" + i + ", " + j + ")  " + this.tiles[i + ", " + j])
-    return this.tiles[i, j] && this.tiles[i, j].isLand();
+    console.log("(" + i + ", " + j + ")  " + this.tiles[i + ", " + j]);
+    return this.tiles[(i, j)] && this.tiles[(i, j)].isLand();
   }
 
   /** draws outline around the tile. */
@@ -133,7 +134,8 @@ class World {
     this.p.stroke(0, 255, 0, 128);
 
     // Added temp code for adjusting selected tile based on height, will improve later
-    let y = this.tiles[i, j] && this.tiles[i, j].getType() == "OCEAN" ? 8 : 0;
+    let y =
+      this.tiles[(i, j)] && this.tiles[(i, j)].getType() == "OCEAN" ? 8 : 0;
 
     // this draws the outline
     this.p.beginShape();
@@ -150,7 +152,8 @@ class World {
     this.p.text("tile " + [i, j], 0, 0);
   }
 
-  /** This is called after draw */
-  p3_drawAfter() {}
+  p3_drawAfter(camera_offset) {
+    this.npc_manager.update();
+    this.npc_manager.draw(this.p, camera_offset);
+  }
 }
-
