@@ -23,6 +23,7 @@ class Island {
     // Thresholds for land formation
     this.SAND_THRESHOLD = 0.18;
     this.LAND_THRESHOLD = 0.28;
+    this.DETAIL_THRESHOLD = 0.4;
   }
 
   // Returns true if an island should exist at chunk (cX, cY)
@@ -87,7 +88,7 @@ class Island {
 
     // Thresholding
     if (finalNoiseValue > this.LAND_THRESHOLD) {
-      return "LAND";
+      return (noiseValueRough < this.DETAIL_THRESHOLD) ? "TREE" : "LAND";
     } else if (finalNoiseValue > this.SAND_THRESHOLD) {
       return "SAND";
     } else {
@@ -107,7 +108,7 @@ class Island {
       // Water everywhere if no island in this chunk
       //world.p.image(world.ocean, -30, -24, 60, 50, 0, 32 - 24, 32, 24);
       tile.changeAttributes("OCEAN");
-      tile.draw(8, world.p.millis() % 1000 < 500 ? 0 : 32, 8 - 56);
+      tile.draw({y:-16, cropOffsetX: world.p.millis() % 1000 < 500 ? 0 : 32, cropOffsetY: 8});
       return tile;
     }
 
@@ -130,7 +131,7 @@ class Island {
     ) {
       //world.p.image(world.ocean, -30, -24, 60, 50, 0, 32 - 24, 32, 24);
       tile.changeAttributes("OCEAN");
-      tile.draw(8, world.p.millis() % 1000 < 500 ? 0 : 32, 8 - 56);
+        tile.draw({y:-16, cropOffsetX: world.p.millis() % 1000 < 500 ? 0 : 32, cropOffsetY: 8});
       return tile;
     }
 
@@ -138,37 +139,46 @@ class Island {
     let type = this.getIslandTileType(localX, localY, shapeSeedX, shapeSeedY);
 
     // Draw based on biome and tile type
-    if (type === "LAND") {
-      tile.changeAttributes(biome);
-      tile.draw();
-      /*
-      if (biome === "snow") {
-        world.p.image(world.snow, -30, -24, 60, 50, 0, 80 - 24, 32, 24);
-      } else if (biome === "rock") {
-        world.p.image(world.dirt, -30, -24, 60, 50, 0, 80 - 24, 32, 24);
-      } else if (biome === "desert") {
-        world.p.image(world.sand, -30, -24, 60, 50, 0, 80 - 24, 32, 24);
-      } else {
-        world.p.image(world.grass, -30, -24, 60, 50, 0, 80 - 24, 32, 24);
-      }
-      */
-    } else if (type === "SAND") {
-      // Sand edge is always sand, regardless of biome
-      tile.changeAttributes(type);
-      tile.draw(4);
-      //world.p.image(world.sand, -30, -24, 60, 50, 0, 80 - 24, 32, 24);
-    } else {
-      // Animated water fill
-      tile.changeAttributes(type);
-      tile.draw(8, world.p.millis() % 1000 < 500 ? 0 : 32, 8 - 56);
-      /*
-      if (world.p.millis() % 1000 < 500) {
-        world.p.image(world.ocean, -30, -24, 60, 50, 0, 32 - 24, 32, 24);
-      } else {
-        world.p.image(world.ocean, -30, -24, 60, 50, 32, 32 - 24, 32, 24);
-      }
-      */
+    switch (type){
+      case ("TREE"):
+        tile.changeAttributes(biome, 1);
+        tile.draw({y:-138, cropOffsetY: 0,height:160,cropHeight:80});
+      break;
+      case ("LAND"):
+        tile.changeAttributes(biome);
+        tile.draw();
+        /*
+        if (biome === "snow") {
+          world.p.image(world.snow, -30, -24, 60, 50, 0, 80 - 24, 32, 24);
+        } else if (biome === "rock") {
+          world.p.image(world.dirt, -30, -24, 60, 50, 0, 80 - 24, 32, 24);
+        } else if (biome === "desert") {
+          world.p.image(world.sand, -30, -24, 60, 50, 0, 80 - 24, 32, 24);
+        } else {
+          world.p.image(world.grass, -30, -24, 60, 50, 0, 80 - 24, 32, 24);
+        }
+        */
+      break;
+      case ("SAND"):
+        // Sand edge is always sand, regardless of biome
+        tile.changeAttributes(type);
+        tile.draw({y:-20});
+        //world.p.image(world.sand, -30, -24, 60, 50, 0, 80 - 24, 32, 24);
+      break;
+      default:
+        // Animated water fill
+        tile.changeAttributes(type);
+        tile.draw({y:-16, cropOffsetX: world.p.millis() % 1000 < 500 ? 0 : 32, cropOffsetY: 8});
+        /*
+        if (world.p.millis() % 1000 < 500) {
+          world.p.image(world.ocean, -30, -24, 60, 50, 0, 32 - 24, 32, 24);
+        } else {
+          world.p.image(world.ocean, -30, -24, 60, 50, 32, 32 - 24, 32, 24);
+        }
+        */
+      break;
     }
+
     return tile;
   }
 }
