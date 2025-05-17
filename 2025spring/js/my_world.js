@@ -71,6 +71,39 @@ class World {
     );
     this.tileTypes.GRASS.push(this.grass);
 
+    this.tree0 = this.p.loadImage(
+      "assets/decor/xavier_grass_tree0.png",
+      () => {
+        console.log("loaded xavier_grass_tree0.png");
+      },
+      () => {
+        console.log("failed to load xavier_grass_tree0.png");
+      }
+    );
+    this.tileTypes.GRASS.push(this.tree0);
+
+    this.tree1 = this.p.loadImage(
+      "assets/decor/xavier_grass_tree1.png",
+      () => {
+        console.log("loaded xavier_grass_tree1.png");
+      },
+      () => {
+        console.log("failed to load xavier_grass_tree0.png");
+      }
+    );
+    this.tileTypes.GRASS.push(this.tree1);
+
+    this.tree2 = this.p.loadImage(
+      "assets/decor/xavier_grass_tree2.png",
+      () => {
+        console.log("loaded xavier_grass_tree0.png");
+      },
+      () => {
+        console.log("failed to load xavier_grass_tree2.png");
+      }
+    );
+    this.tileTypes.GRASS.push(this.tree2);
+
     this.dirt = this.p.loadImage(
       "assets/tiles/dirt_base.png",
       () => {
@@ -126,7 +159,7 @@ class World {
   /** This draws the tile at that location */
   p3_drawTile(i, j) {
     this.tiles[i + ", " + j] = this.island.drawTile(i, j, this);
-    console.log("(" + i + ", " + j + ")  " + this.tiles[i + ", " + j]);
+    //console.log("(" + i + ", " + j + ")  " + this.tiles[i + ", " + j]);
     return this.tiles[(i, j)] && this.tiles[(i, j)].isLand();
   }
 
