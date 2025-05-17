@@ -103,10 +103,34 @@ class Island {
 
     let tile = new Tile(this.p, world);
 
+    // Helper: calculate wave offset for OCEAN tiles
+    function getWaterWaveOffset(i, j, p) {
+      // Use frameCount if available, else fallback to millis
+      let t = typeof p.frameCount !== "undefined" ? p.frameCount : p.millis() * 0.06;
+      // Sine wave for smooth up/down motion
+      return Math.sin(t * 0.05 + i * 0.7 + j * 0.9) * 4;
+    }
+
+    // Helper: decide which animation frame to use based on wave phase
+    function getWaterFrame(i, j, p) {
+      let t = typeof p.frameCount !== "undefined" ? p.frameCount : p.millis() * 0.06;
+      // Use a chunked sine wave for flipping in groups
+      // The chunk size controls how many tiles flip together
+      let chunkSize = 4; // Increase for bigger chunks
+      let chunkI = Math.floor((i+j) / chunkSize);
+      let chunkJ = Math.floor((i-j) / chunkSize);
+      let phase = Math.sin(t * 0.025 + chunkI * 0.7 + chunkJ * 0.9);
+      // If wave is above 0, use frame 0 (high), else frame 1 (low)
+      return phase > 0 ? 0 : 1;
+    }
+
     if (!this.hasIslandAt(cX, cY)) {
       // Water everywhere if no island in this chunk
+      //world.p.image(world.ocean, -30, -24, 60, 50, 0, 32 - 24, 32, 24);
       tile.changeAttributes("OCEAN");
-      tile.draw(8, world.p.millis() % 1000 < 500 ? 0 : 32, 8 - 56);
+      let waveOffset = getWaterWaveOffset(i, j, this.p);
+      let frame = getWaterFrame(i, j, this.p);
+      tile.draw(8 + waveOffset, frame === 0 ? 0 : 32, 8 - 56);
       return tile;
     }
 
@@ -129,7 +153,9 @@ class Island {
     ) {
       //world.p.image(world.ocean, -30, -24, 60, 50, 0, 32 - 24, 32, 24);
       tile.changeAttributes("OCEAN");
-      tile.draw(8, world.p.millis() % 1000 < 500 ? 0 : 32, 8 - 56);
+      let waveOffset = getWaterWaveOffset(i, j, this.p);
+      let frame = getWaterFrame(i, j, this.p);
+      tile.draw(8 + waveOffset, frame === 0 ? 0 : 32, 8 - 56);
       return tile;
     }
 
@@ -157,9 +183,11 @@ class Island {
       tile.draw(4);
       //world.p.image(world.sand, -30, -24, 60, 50, 0, 80 - 24, 32, 24);
     } else {
-      // Animated water fill
+      // Animated water fill with wave effect and synced frame
       tile.changeAttributes(type);
-      tile.draw(8, world.p.millis() % 1000 < 500 ? 0 : 32, 8 - 56);
+      let waveOffset = getWaterWaveOffset(i, j, this.p);
+      let frame = getWaterFrame(i, j, this.p);
+      tile.draw(8 + waveOffset, frame === 0 ? 0 : 32, 8 - 56);
       /*
       if (world.p.millis() % 1000 < 500) {
         world.p.image(world.ocean, -30, -24, 60, 50, 0, 32 - 24, 32, 24);
