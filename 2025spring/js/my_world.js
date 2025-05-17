@@ -130,9 +130,13 @@ class World {
 
         this.p.image(this.ocean, -30, -24, 60, 50, 32, 32 - 24, 32, 24);
       }
-    }
-    
 
+      // Draw a boat if this tile has been clicked
+      if (this.clicks[[i, j]] % 2 == 1) {
+        let boat = new StaticBoat(this.p);
+        boat.draw();
+      }
+    }
   }
 
   /** draws outline around the tile. */
