@@ -70,6 +70,7 @@ var s = function (p) {
   }
 
   let w;
+  let animal;
   p.setup = function () {
     let canvas = p.createCanvas(800, 400);
     canvas.parent("container");
@@ -126,7 +127,7 @@ var s = function (p) {
     return false;
   }
 
-  p.draw = function () {
+  p.draw = function() {
     // Keyboard controls!
     if (p.mouseX > 0 && p.mouseX < p.width && p.mouseY > 0 && p.mouseY < p.height) {
       if (p.keyIsDown(p.LEFT_ARROW) || p.keyIsDown(A_KEY)) {
@@ -167,6 +168,8 @@ var s = function (p) {
     let landNum = 0;
     let waterNum = 0;
 
+    //animal.update();
+
     for (let y = y0; y < y1; y++) {
       for (let x = x0; x < x1; x++) {
         let isLand = p.drawTile(p.tileRenderingOrder([x + world_offset.x, y - world_offset.y]), [camera_offset.x, camera_offset.y]);
@@ -192,8 +195,9 @@ var s = function (p) {
     p.describeMouseTile(world_pos, [camera_offset.x, camera_offset.y]);
 
     if (w.p3_drawAfter) {
-      w.p3_drawAfter();
+      w.p3_drawAfter([camera_offset.x, camera_offset.y]);
     }
+    
   }
   
   // Display a discription of the tile at world_x, world_y.
@@ -224,6 +228,7 @@ var s = function (p) {
     p.translate(0 - screen_x, screen_y);
     if (w.p3_drawTile) {
       w.p3_drawTile(world_x, world_y, -screen_x, screen_y);
+      
     }
     p.pop();
   }
