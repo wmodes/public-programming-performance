@@ -31,6 +31,8 @@ class World {
     this.island = new Island(p); // Use the new Island class
     this.tileTypes = { OCEAN: [], SAND: [], GRASS: [], DIRT: [], SNOW: [] };
     this.tiles = {};
+    this.landTiles = 0;
+    this.oceanTiles = 0;
     this.soundEngine = new SoundEngine(p);
     console.log("World Created");
     this.npc_manager = new NpcManager();
@@ -154,11 +156,19 @@ class World {
   }
 
   /** This is called before the tile is drawn. */
-  p3_drawBefore() {}
+  p3_drawBefore() {
+    this.landTiles = 0;
+    this.oceanTiles = 0;
+  }
 
   /** This draws the tile at that location */
   p3_drawTile(i, j) {
     this.tiles[i + ", " + j] = this.island.drawTile(i, j, this);
+    if (this.tiles[i + ", " + j].getType() == "OCEAN") {
+      this.oceanTiles++
+    } else {
+      this.landTiles++
+    }
     //console.log("(" + i + ", " + j + ")  " + this.tiles[i + ", " + j]);
     return this.tiles[(i, j)] && this.tiles[(i, j)].isLand();
   }
@@ -190,5 +200,6 @@ class World {
   p3_drawAfter(camera_offset) {
     this.npc_manager.update();
     this.npc_manager.draw(this.p, camera_offset);
+    this.soundEngine.dynamicBackground(this.oceanTiles, this.landTiles);
   }
 }
