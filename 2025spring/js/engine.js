@@ -74,6 +74,7 @@ var s = function (p) {
   p.setup = function () {
     let canvas = p.createCanvas(800, 400);
     canvas.parent("container");
+    canvas.style.imageRendering = "pixelated";
 
     // Disable default browser controls
     window.addEventListener("keydown", function (e) {
