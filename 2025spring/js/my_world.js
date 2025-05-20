@@ -31,6 +31,9 @@ class World {
     this.island = new Island(p); // Use the new Island class
     this.tileTypes = {OCEAN: [], SAND: [], GRASS: [], DIRT: [], SNOW: []};
     this.tiles = {};
+    this.landTiles = 0;
+    this.oceanTiles = 0;
+    this.soundEngine = new SoundEngine(p);
     console.log("World Created");
   }
 
@@ -90,10 +93,15 @@ class World {
       }
     );
     this.tileTypes.SNOW.push(this.snow);
+
+    this.bird = this.p.loadImage("assets/npc/seagull.png");
   }
 
   /** This is called on the p3 setup call */
-  p3_setup() {}
+  p3_setup() {
+    this.npc_manager.spawnEntity(new PathfindingTestNpc(0,0,5));
+    this.npc_manager.spawnEntity(new AnimalNPC(0,0,5,[this.p.loadImage("assets/npc/seagull.png"),this.p.loadImage("assets/npc/seagull2.png")]));
+  }
 
   /** This is called if someone changes the seed */
   p3_worldKeyChanged(key) {
@@ -118,13 +126,21 @@ class World {
   }
 
   /** This is called before the tile is drawn. */
-  p3_drawBefore() {}
+  p3_drawBefore() {
+    this.landTiles = 0;
+    this.oceanTiles = 0;
+  }
 
   /** This draws the tile at that location */
   p3_drawTile(i, j) {
-    this.tiles[i, j] = this.island.drawTile(i, j, this);
-    console.log("(" + i + ", " + j + ")  " + this.tiles[i, j].getType())
-    return this.tiles[i, j] && this.tiles[i, j].isLand();
+    this.tiles[i + ", " + j] = this.island.drawTile(i, j, this);
+    if (this.tiles[i + ", " + j].getType() == "OCEAN") {
+      this.oceanTiles++
+    } else {
+      this.landTiles++
+    }
+    //console.log("(" + i + ", " + j + ")  " + this.tiles[i + ", " + j]);
+    return this.tiles[(i, j)] && this.tiles[(i, j)].isLand();
   }
 
   /** draws outline around the tile. */
@@ -150,7 +166,14 @@ class World {
     this.p.text("tile " + [i, j], 0, 0);
   }
 
-  /** This is called after draw */
-  p3_drawAfter() {}
+  p3_drawAfter(camera_offset) {
+    this.npc_manager.update(this);
+    this.npc_manager.draw(this.p, camera_offset);
+    this.soundEngine.dynamicBackground(this.oceanTiles, this.landTiles);
+  }
+
+  tileAt([i, j]) {
+    return this.tiles[i + ", " + j]
+  }
 }
 
