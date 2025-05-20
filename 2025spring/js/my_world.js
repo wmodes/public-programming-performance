@@ -128,13 +128,22 @@ class World {
     );
     this.tileTypes.SNOW.push(this.snow);
 
-    this.bird = this.p.loadImage("assets/npc/seagull.png");
+    this.bird1 = this.p.loadImage("./assets/npc/seagull.png");
+    this.bird2 = this.p.loadImage("./assets/npc/seagull2.png")
   }
 
   /** This is called on the p3 setup call */
   p3_setup() {
     this.npc_manager.spawnEntity(new PathfindingTestNpc(0,0,5));
-    this.npc_manager.spawnEntity(new AnimalNPC(0,0,5,[this.p.loadImage("assets/npc/seagull.png"),this.p.loadImage("assets/npc/seagull2.png")]));
+    for (let i = 0; i < 100; i++){
+    this.npc_manager.spawnEntity(new AnimalNPC(0,0,5,[
+      [this.bird1,this.bird2],
+      [this.bird1,this.bird2],
+      [this.bird1,this.bird2],
+      [this.bird1,this.bird2],
+      ]
+    ));
+  }
   }
 
   /** This is called if someone changes the seed */
