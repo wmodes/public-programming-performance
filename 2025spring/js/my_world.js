@@ -20,8 +20,6 @@
     p3_drawAfter
 */
 
-
-
 /** This class stores all the info for a world generation. */
 class World {
   constructor(p) {
@@ -81,6 +79,35 @@ class World {
         console.log("failed to xavier_grass.png");
       }
     );
+    this.boatParts = [
+      this.p.loadImage(
+        "assets/tiles/boat_front.png",
+        () => {
+          console.log("loaded boat_front.png");
+        },
+        () => {
+          console.log("failed to boat_front.png");
+        }
+      ),
+      this.p.loadImage(
+        "assets/tiles/boat_middle_sail.png",
+        () => {
+          console.log("loaded boat_middle_sail.png");
+        },
+        () => {
+          console.log("failed to boat_middle_sail.png");
+        }
+      ),
+      this.p.loadImage(
+        "assets/tiles/boat_middle.png",
+        () => {
+          console.log("loaded boat_middle.png");
+        },
+        () => {
+          console.log("failed to boat_middle.png");
+        }
+      ),
+    ];
   }
 
   /** This is called on the p3 setup call */
@@ -122,18 +149,15 @@ class World {
       // Animated water fill
       //let t = this.p.millis() * WATER_ANIMATION_RATE;
       //this.p.fill(100, 150, 233, 64 + 256 * this.p.noise(-t + i / 5, j / 5, t));
-      if(this.p.millis() % 1000 < 500){
+      if (this.p.millis() % 1000 < 500) {
         this.p.image(this.ocean, -30, -24, 60, 50, 0, 32 - 24, 32, 24);
-
-      }
-      else{
-
+      } else {
         this.p.image(this.ocean, -30, -24, 60, 50, 32, 32 - 24, 32, 24);
       }
 
       // Draw a boat if this tile has been clicked
       if (this.clicks[[i, j]] % 2 == 1) {
-        let boat = new StaticBoat(this.p);
+        let boat = new Boat(this.p, this.boatParts, i, j, 1);
         boat.draw();
       }
     }
@@ -163,7 +187,7 @@ class World {
   }
 
   p3_drawAfter(camera_offset) {
-    this.npc_manager.update()
-    this.npc_manager.draw(this.p, camera_offset)
+    this.npc_manager.update();
+    this.npc_manager.draw(this.p, camera_offset);
   }
 }

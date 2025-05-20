@@ -1,21 +1,24 @@
+let SAIL_OFFSET_X = 14;
+let SAIL_OFFSET_Y = -32;
 class Boat extends PathfindingNPC {
-    constructor(x, y, speed/*, imagePath*/) {
-        super(x, y, speed, objective, path); // not sure about those last 2
-        // this.image = loadImage(imagePath);
-        
-    }
+  constructor(p, boatParts, x, y, speed) {
+    super(x, y, speed);
+    this.p = p;
+    this.front = boatParts[0];
+    this.midSail = boatParts[1];
+    this.mid = boatParts[2];
+    this.level = 1;
+  }
 
-    draw() {
-        // push();
-        // imageMode(CENTER);
-        // image(this.image, this.x, this.y);
-        // pop();
-        stroke(0, 255, 0, 128);
-        beginShape();
-        vertex(-this.tw, 0);
-        vertex(0, this.th);
-        vertex(this.tw, 0);
-        vertex(0, -this.th);
-        endShape();
-    }
+  draw() {
+    // Note: in its current implementation, the tile that the boat spawns on will
+    // have the boat FRONT on it, and the middle/end pieces will be placed behind it.
+    // For example: if you place a boat at [0,0], the boat front will be placed at that point,
+    // and the following pieces will be placed at an offset from that tile.
+    this.p.push();
+    this.p.imageMode(this.p.CENTER);
+    this.p.image(this.midSail, SAIL_OFFSET_X, SAIL_OFFSET_Y);
+    this.p.image(this.front, 0, 0);
+    this.p.pop();
+  }
 }
