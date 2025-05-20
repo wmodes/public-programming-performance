@@ -19,10 +19,12 @@
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <!-- Load p5.js library -->
     <script src="https://cdn.jsdelivr.net/npm/p5"></script>
+    
 
     <!-- Link to javascript files - DEFER waits until all elements are rendered -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.2.0/p5.min.js" integrity="sha512-b/htz6gIyFi3dwSoZ0Uv3cuv3Ony7EeKkacgrcVg8CMzu90n777qveu0PBcbZUA7TzyENGtU+qZRuFAkfqgyoQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/addons/p5.sound.min.js"></script>
     <script src="js/xxhash.min.js" defer></script>
 
     <script src="js/classes/npc/npc.js" defer></script>
@@ -31,8 +33,10 @@
     <script src="js/classes/npc/animal_npc.js" defer></script>
 
     <script src="js/engine.js" defer></script>
+    <script src="js/sound_engine.js" defer></script>
     <script src="js/my_world.js" defer></script>
     <script src="js/config.js" defer></script>
+    <script src="js/island.js" defer></script>
     <script src="js/tile.js" defer></script>
 </head>
 
@@ -59,7 +63,7 @@
             <div class="minor-section two-columns">
                 <div class="showcase-img">
                     <img src="img/ocean.png" alt="Open Ocean" />
-                    <img src="img/xavier_grass.png" />
+                    <!--<img src="img/xavier_grass.png" />-->
                 </div>
                 <div>
                     <h2>Description</h2>
