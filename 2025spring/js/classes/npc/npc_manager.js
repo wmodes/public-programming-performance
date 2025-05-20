@@ -41,4 +41,15 @@ class NpcManager {
         
         this.loaded_ids.splice(idx, 1)
     }
+
+    /**
+     * Iterate over all npcs
+     * 
+     * @param {function (npc)} f 
+     */
+    forEachNpc(f) {
+        for (let entity_id of this.loaded_ids) {
+            f(this.entities[entity_id])
+        }
+    }
 }
