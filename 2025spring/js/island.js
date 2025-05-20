@@ -88,7 +88,7 @@ class Island {
 
     // Thresholding
     if (finalNoiseValue > this.LAND_THRESHOLD) {
-      return (noiseValueRough < this.DETAIL_THRESHOLD) ? "TREE" : "LAND";
+      return (noiseValueRough % .2 > .16) ? "TREE" : "LAND";
     } else if (finalNoiseValue > this.SAND_THRESHOLD) {
       return "SAND";
     } else {

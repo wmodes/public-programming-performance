@@ -27,7 +27,6 @@ class Tile {
         let defaults = {x: -30,y: -24,width: 64,height: 48,cropOffsetX: 0,cropOffsetY: 56,cropHeight: 24,cropWidth: 32};
         let keys = Object.getOwnPropertyNames(defaults);
         for (let i = 0; i < keys.length; i++){
-            //console.log(keys[i]);
             if (args[keys[i]] != undefined){
                 defaults[keys[i]] = args[keys[i]];
             }
