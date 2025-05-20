@@ -30,14 +30,13 @@ class NPC {
     }
   
     // Update the NPC (currently a stub)
-    update() { }
+    update(world) { }
   
     // Move randomly in a cardinal direction
     wander() {
-      this.move([
-        Math.pow(-1, get_random_int_between_inclusive(0, 1)),
-        Math.pow(-1, get_random_int_between_inclusive(0, 1))
-      ]);
+        let arr = [[0,1],[0,-1],[1,0],[-1,0]]
+        
+      this.move(arr[get_random_int_between_inclusive(0,3)]);
     }
 }
   
