@@ -160,23 +160,36 @@ var s = function (p) {
     }
 
     // Render all tiles (odd and even rows)
-    let overdraw = 0.1;
-    let y0 = Math.floor((0 - overdraw) * tile_rows);
-    let y1 = Math.floor((1 + overdraw) * tile_rows);
-    let x0 = Math.floor((0 - overdraw) * tile_columns);
-    let x1 = Math.floor((1 + overdraw) * tile_columns);
+    let overdrawX = 0.1;
+    let overdrawY = 0.5;
+    let y0 = Math.floor((0 - overdrawY) * tile_rows);
+    let y1 = Math.floor((1 + overdrawY) * tile_rows);
+    let x0 = Math.floor((0 - overdrawX) * tile_columns);
+    let x1 = Math.floor((1 + overdrawX) * tile_columns);
+    let landNum = 0;
+    let waterNum = 0;
 
     //animal.update();
 
     for (let y = y0; y < y1; y++) {
       for (let x = x0; x < x1; x++) {
-        p.drawTile(p.tileRenderingOrder([x + world_offset.x, y - world_offset.y]), [camera_offset.x, camera_offset.y]);
+        let isLand = p.drawTile(p.tileRenderingOrder([x + world_offset.x, y - world_offset.y]), [camera_offset.x, camera_offset.y]);
+        if (isLand) {
+          landNum++;
+        } else {
+          waterNum++;
+        }
       }
       for (let x = x0; x < x1; x++) {
-        p.drawTile(
-          p.tileRenderingOrder([x + 0.5 + world_offset.x, y + 0.5 - world_offset.y]),
+        let isLand = p.drawTile(
+          p.tileRenderingOrder([x + 0.5 + world_offset.x, y + 0.5 - world_offset.y]), 
           [camera_offset.x, camera_offset.y]
         );
+        if (isLand) {
+          landNum++;
+        } else {
+          waterNum++;
+        }
       }
     }
 
