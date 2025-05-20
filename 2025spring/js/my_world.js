@@ -181,7 +181,11 @@ class World {
   /** draws outline around the tile. */
   p3_drawSelectedTile(i, j) {
     this.p.noFill();
-    this.p.stroke(0, 255, 0, 128);
+    if (this.isTileLand([i, j])) {
+      this.p.stroke(255, 0, 0, 128);
+    } else {
+      this.p.stroke(0, 255, 0, 128);
+    }
 
     // Added temp code for adjusting selected tile based on height, will improve later
     let y =
@@ -206,5 +210,12 @@ class World {
     this.npc_manager.update(this);
     this.npc_manager.draw(this.p, camera_offset);
     this.soundEngine.dynamicBackground(this.oceanTiles, this.landTiles);
+  }
+
+  isTileLand([i,j]) {
+    var tile = this.tiles[i + ", " + j];
+    if (tile !== undefined)
+      return !tile.isLand()
+    return undefined
   }
 }

@@ -38,7 +38,9 @@ class PathfindingNPC extends NPC {
         if (this.objective !== null) {
             if (Math.floor(this.x) == this.objective[0] && Math.floor(this.y) == this.objective[1]) return;
             // right now I'm assuming x,y as being tile position, but as floating point (since the sheared view makes it rather annoying to manage otherwise, if this needs to change we can change it)
-            this.path = astar(([x, y]) => true, [Math.floor(this.x), Math.floor(this.y)], this.objective); // this.isTileTraversable(world.tileAt([x, y])), [Math.floor(this.x), Math.floor(this.y)]);
+            this.path = astar(([x, y]) => {
+                return this.isTileTraversable(world.isTileLand([x, y]));
+            }, [Math.floor(this.x), Math.floor(this.y)], this.objective);
         }
     }
 
@@ -59,8 +61,6 @@ class PathfindingNPC extends NPC {
             let dist = Math.sqrt((this.x - tx) * (this.x - tx) + (this.y - ty) * (this.y - ty))
             let ux = (tx - this.x) / dist;
             let uy = (ty - this.y) / dist;
-
-            console.log([this.x,this.y], [tx, ty])
 
             let [u2x, u2y] = [0, 0];
 
@@ -107,7 +107,7 @@ class PathfindingTestNpc extends PathfindingNPC {
     }
 
     pickObjective() {
-        return [Math.floor(this.x) + (get_random_int_between_inclusive(-16, 16)), Math.floor(this.y) + (get_random_int_between_inclusive(-16, 16))];
+        return [Math.floor(this.x) + (get_random_int_between_inclusive(-20, 20)), Math.floor(this.y) + (get_random_int_between_inclusive(-20, 20))];
     }
 
     draw(p, [camera_x, camera_y]) {
@@ -123,12 +123,18 @@ class PathfindingTestNpc extends PathfindingNPC {
 
         ///
 
+        p.fill(255);
+
         p.circle(0, 0, 8);
 
         ///
 
         p.pop();
 
+    }
+
+    isTileTraversable(tile) {
+        return tile == false;
     }
 }
 
@@ -248,7 +254,7 @@ function astarPopBestSpace(possibleSpacesArray, objective) {
  * @type {number}
  * Max distance for A* to travel before giving up
  */
-const ASTAR_MAX_TRAVERSABILITY_DISTANCE = 20;
+const ASTAR_MAX_TRAVERSABILITY_DISTANCE = 50;
 
 // traversabilityFunction is function([x, y]) -> bool
 // TODO: since world is infinite, prevent us from getting stuck by making a max distance
@@ -260,7 +266,6 @@ const ASTAR_MAX_TRAVERSABILITY_DISTANCE = 20;
  * @returns {Array.<[number, number]>} The path from starting point to objective
  */
 function astar(traversabilityFunction, position, objective) {
-    console.log(objective)
     let startingPoint = new AstarGraphNode(position, null, 0)
     let graph = {}
     graph[position] = startingPoint;

@@ -30,7 +30,7 @@ class NPC {
     }
   
     // Update the NPC (currently a stub)
-    update() { }
+    update(world) { }
   
     // Move randomly in a cardinal direction
     wander() {
