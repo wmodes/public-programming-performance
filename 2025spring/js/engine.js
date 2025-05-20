@@ -160,11 +160,12 @@ var s = function (p) {
     }
 
     // Render all tiles (odd and even rows)
-    let overdraw = 0.1;
-    let y0 = Math.floor((0 - overdraw) * tile_rows);
-    let y1 = Math.floor((1 + overdraw) * tile_rows);
-    let x0 = Math.floor((0 - overdraw) * tile_columns);
-    let x1 = Math.floor((1 + overdraw) * tile_columns);
+    let overdrawX = 0.1;
+    let overdrawY = 0.5;
+    let y0 = Math.floor((0 - overdrawY) * tile_rows);
+    let y1 = Math.floor((1 + overdrawY) * tile_rows);
+    let x0 = Math.floor((0 - overdrawX) * tile_columns);
+    let x1 = Math.floor((1 + overdrawX) * tile_columns);
     let landNum = 0;
     let waterNum = 0;
 
