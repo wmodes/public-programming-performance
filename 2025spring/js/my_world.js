@@ -106,6 +106,7 @@ class World {
   p3_tileClicked(i, j) {
     let key = [i, j];
     this.clicks[key] = 1 + (this.clicks[key] | 0);
+    this.soundEngine.tileClicked(this.tiles[i + ", " + j])
   }
 
   /** This is called before the tile is drawn. */
