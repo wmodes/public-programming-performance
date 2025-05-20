@@ -29,11 +29,9 @@ class World {
     [this.tw, this.th] = [TILE_WIDTH, TILE_HEIGHT]; // tw = tile width, th = tile height
     this.clicks = {};
     this.island = new Island(p); // Use the new Island class
-    this.tileTypes = { OCEAN: [], SAND: [], GRASS: [], DIRT: [], SNOW: [] };
+    this.tileTypes = {OCEAN: [], SAND: [], GRASS: [], DIRT: [], SNOW: []};
     this.tiles = {};
-    this.soundEngine = new SoundEngine(p);
     console.log("World Created");
-    this.npc_manager = new NpcManager();
   }
 
   /** This is called on p3 preload call */
@@ -69,40 +67,7 @@ class World {
         console.log("failed to grass_tile.png");
       }
     );
-    this.tileTypes.GRASS.push(this.grass);
-
-    this.tree0 = this.p.loadImage(
-      "assets/decor/xavier_grass_tree0.png",
-      () => {
-        console.log("loaded xavier_grass_tree0.png");
-      },
-      () => {
-        console.log("failed to load xavier_grass_tree0.png");
-      }
-    );
-    this.tileTypes.GRASS.push(this.tree0);
-
-    this.tree1 = this.p.loadImage(
-      "assets/decor/xavier_grass_tree1.png",
-      () => {
-        console.log("loaded xavier_grass_tree1.png");
-      },
-      () => {
-        console.log("failed to load xavier_grass_tree0.png");
-      }
-    );
-    this.tileTypes.GRASS.push(this.tree1);
-
-    this.tree2 = this.p.loadImage(
-      "assets/decor/xavier_grass_tree2.png",
-      () => {
-        console.log("loaded xavier_grass_tree0.png");
-      },
-      () => {
-        console.log("failed to load xavier_grass_tree2.png");
-      }
-    );
-    this.tileTypes.GRASS.push(this.tree2);
+    this.tileTypes.GRASS.push(this.grass); 
 
     this.dirt = this.p.loadImage(
       "assets/tiles/dirt_base.png",
@@ -150,7 +115,6 @@ class World {
   p3_tileClicked(i, j) {
     let key = [i, j];
     this.clicks[key] = 1 + (this.clicks[key] | 0);
-    this.soundEngine.tileClicked( this.tiles[i + ", " + j].getType())
   }
 
   /** This is called before the tile is drawn. */
@@ -159,7 +123,7 @@ class World {
   /** This draws the tile at that location */
   p3_drawTile(i, j) {
     this.tiles[i, j] = this.island.drawTile(i, j, this);
-    //console.log("(" + i + ", " + j + ")  " + this.tiles[i + ", " + j]);
+    console.log("(" + i + ", " + j + ")  " + this.tiles[i, j].getType())
     return this.tiles[i, j] && this.tiles[i, j].isLand();
   }
 
@@ -169,8 +133,7 @@ class World {
     this.p.stroke(0, 255, 0, 128);
 
     // Added temp code for adjusting selected tile based on height, will improve later
-    let y =
-      this.tiles[i, j] && this.tiles[i, j].getType() == "OCEAN" ? 8 : 0;
+    let y = this.tiles[i, j] && this.tiles[i, j].getType() == "OCEAN" ? 8 : 0;
 
     // this draws the outline
     this.p.beginShape();
@@ -187,8 +150,7 @@ class World {
     this.p.text("tile " + [i, j], 0, 0);
   }
 
-  p3_drawAfter(camera_offset) {
-    this.npc_manager.update();
-    this.npc_manager.draw(this.p, camera_offset);
-  }
+  /** This is called after draw */
+  p3_drawAfter() {}
 }
+
