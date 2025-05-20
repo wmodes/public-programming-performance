@@ -54,6 +54,16 @@ class Boat extends PathfindingNPC {
 
   update(world) {
     super.update(world);
-  }
 
+    world.npcManager.forEachNPC((npc) => {
+      if (npc.type && npc.type == "boat") {
+        let distance = Math.sqrt((this.x - npc.x)**2 + (this.y-npc.y)**2);
+        if (distance <= 1 && this != npc) {
+          console.log("KABOOM!");
+          this.speed = 0;
+          npc.speed = 0;
+        }
+      }
+    })
+  }
 }
