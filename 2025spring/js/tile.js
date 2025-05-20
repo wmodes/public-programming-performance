@@ -22,7 +22,8 @@ class Tile {
         this.setType(type);
         this.setOffset(type);
         this.setImage(this.world.tileTypes[type]);
-        this.surface = type == "OCEAN" ? "LAND" : "WATER";
+        this.surface = type == "OCEAN" ? "WATER" : "LAND";
+        this.subtype = subtype % this.image.length;
     }
 
     draw(y = 0, tileOffsetX = 0)
