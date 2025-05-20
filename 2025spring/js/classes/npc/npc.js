@@ -5,6 +5,8 @@
  */
 
 class NPC {
+    id
+
     /**
      * Create a new NPC.
      * @param {number} x - Initial x position.
