@@ -133,8 +133,8 @@ class World {
 
   /** This is called on the p3 setup call */
   p3_setup() {
-    this.npc_manager.spawnEntity(new AnimalNPC(0,0,5,this.p.loadImage("assets/npc/seagull.png")));
     this.npc_manager.spawnEntity(new PathfindingTestNpc(0,0,5));
+    this.npc_manager.spawnEntity(new AnimalNPC(0,0,5,[this.p.loadImage("assets/npc/seagull.png"),this.p.loadImage("assets/npc/seagull2.png")]));
   }
 
   /** This is called if someone changes the seed */
