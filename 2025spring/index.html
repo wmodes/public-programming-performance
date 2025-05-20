@@ -36,7 +36,6 @@
     <script src="js/classes/npc/npc_manager.js" defer></script>
     <script src="js/classes/npc/pathfinding_npc.js" defer></script>
     <script src="js/classes/npc/animal_npc.js" defer></script>
-    <script src="js/classes/npc/static_boat.js" defer></script>
     <script src="js/classes/npc/boat.js" defer></script>
 
     <script src="js/engine.js" defer></script>
@@ -62,50 +61,9 @@
               Arrow keys and WASD scroll. Hold Space to stop boats and people.
               Hold shift to place boats with sails. Clicking changes tiles.
             </div>
-
-            <div class="minor-section two-columns">
-              <div class="showcase-img">
-                <img src="img/ocean.png" alt="Open Ocean" />
-                <!--<img src="img/xavier_grass.png" />-->
-              </div>
-              <div>
-                <h2>Description</h2>
-                <p>
-                  We're starting with a simple "Infinite Worlds" sketch derived
-                  from Experiment 04.
-                  <a
-                    href="https://glitch.com/~cmpm147-playful-public-programming"
-                    target="_new"
-                    >Boaty McLongBoat</a
-                  >
-                  is an infinite boat in which users can rearrange the deck
-                  chairs.
-                </p>
-
-                <p>
-                  We'll be removing McLongBoat and creating an island
-                  archipelago. Features:
-                </p>
-                <ol>
-                  <li>Islands with colored geography</li>
-                  <li>
-                    Users can navigate this infinite world with arrow keys.
-                  </li>
-                  <li>Users can place boats in the water.</li>
-                  <li>The world seed affects the island placement</li>
-                </ol>
-
-                <p>Stretch goals:</p>
-                <ol>
-                  <li>Islands have varrying geography?</li>
-                  <li>Boats move around on the water?</li>
-                  <li>Adjacent boats make longer, wider, bigger boats?</li>
-                  <li>People can be placed on the islands?</li>
-                  <li>People move around on the islands?</li>
-                  <li>Splash animations when boats are placed or removed?</li>
-                  <li>What happens when you click on an island?</li>
-                </ol>
-              </div>
+            <div>
+              World seed:
+              <input type="text" id="world-seed" value="Boaty McLongBoat" />
             </div>
             <!-- <button id="fullscreen">Fullscreen</button> -->
           </div>
@@ -114,7 +72,7 @@
         <div class="minor-section two-columns">
           <div class="showcase-img">
             <img src="img/ocean.png" alt="Open Ocean" />
-            <img src="img/xavier_grass.png" />
+            <!--<img src="img/xavier_grass.png" />-->
           </div>
           <div>
             <h2>Description</h2>
