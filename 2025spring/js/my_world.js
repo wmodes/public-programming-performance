@@ -188,6 +188,11 @@ class World {
     let key = [i, j];
     this.clicks[key] = 1 + (this.clicks[key] | 0);
     this.soundEngine.tileClicked(this.tiles[i + ", " + j].getType());
+    if (this.clicks[[i, j]] % 2 == 1) {
+        // let boat = new Boat(this.p, this.boatParts, i, j, 1);
+        this.npc_manager.spawnEntity(new Boat(this.boatParts, i, j, 5));
+        // boat.draw();
+    }
   }
 
   /** This is called before the tile is drawn. */
@@ -200,10 +205,7 @@ class World {
   p3_drawTile(i, j) {
     this.tiles[i + ", " + j] = this.island.drawTile(i, j, this);
     if (this.tiles[i + ", " + j].getType() == "OCEAN") {
-      if (this.clicks[[i, j]] % 2 == 1) {
-        let boat = new Boat(this.p, this.boatParts, i, j, 1);
-        boat.draw();
-      }
+      
       this.oceanTiles++;
     } else {
       this.landTiles++;

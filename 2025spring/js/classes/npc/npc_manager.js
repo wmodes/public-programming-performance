@@ -20,6 +20,7 @@ class NpcManager {
 
     update(world) {
         for (let entity of this.entities) {
+            console.log(entity);
             entity.update(world);
         }        
     }
