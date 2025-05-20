@@ -1,10 +1,12 @@
 class AnimalNPC extends NPC{
-    constructor(x,y,speed){//,imagePath){
+    constructor(x,y,speed,imagePatharr){
         //speed is inversely related to the amount of seconds it takes between moves, 
         //imagePath takes in image as a path string
         super(x,y,speed);
-        //this.image = loadImage(imagePath);
+        this.images = imagePatharr;
         this.timer = 0;
+        this.currentFrame = 0;
+        this.currImage = this.images[0];
     }
     draw(p, [camera_x, camera_y]){
         let [screen_x, screen_y] = p.worldToScreen(
@@ -13,13 +15,13 @@ class AnimalNPC extends NPC{
         );
         p.push();
         
-        p.print(screen_x,screen_y);
+        // p.print(screen_x,screen_y);
 
         p.translate(0 - screen_x, screen_y);
         
         ///
     
-        p.circle(0,0,10);
+        p.image(this.currImage,0,0);
 
         ///
     
@@ -32,5 +34,15 @@ class AnimalNPC extends NPC{
             this.wander();
             this.timer = 0;
         }
+        if (this.timer % 150 == 0){
+            this.nextFrame();
+        }
+    }
+    nextFrame(){
+        this.currentFrame += 1;
+        if (this.currentFrame >= this.images.length){
+            this.currentFrame = 0;
+        } 
+        this.currImage = this.images[this.currentFrame]
     }
 }
