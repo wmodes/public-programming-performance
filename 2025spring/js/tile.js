@@ -18,7 +18,7 @@ class Tile {
     {
         this.setType(type);
         this.setImage(this.world.tileTypes[type]);
-        this.surface = type == "OCEAN" ? "LAND" : "WATER";
+        this.surface = type == "OCEAN" ? "WATER" : "LAND";
         this.subtype = subtype % this.image.length;
     }
 
