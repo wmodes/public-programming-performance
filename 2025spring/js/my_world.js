@@ -127,10 +127,15 @@ class World {
       }
     );
     this.tileTypes.SNOW.push(this.snow);
+
+    this.bird = this.p.loadImage("assets/npc/seagull.png");
   }
 
   /** This is called on the p3 setup call */
-  p3_setup() {}
+  p3_setup() {
+    this.npc_manager.spawnEntity(new PathfindingTestNpc(0,0,5));
+    this.npc_manager.spawnEntity(new AnimalNPC(0,0,5,[this.p.loadImage("assets/npc/seagull.png"),this.p.loadImage("assets/npc/seagull2.png")]));
+  }
 
   /** This is called if someone changes the seed */
   p3_worldKeyChanged(key) {
@@ -198,8 +203,12 @@ class World {
   }
 
   p3_drawAfter(camera_offset) {
-    this.npc_manager.update();
+    this.npc_manager.update(this);
     this.npc_manager.draw(this.p, camera_offset);
     this.soundEngine.dynamicBackground(this.oceanTiles, this.landTiles);
+  }
+
+  tileAt([i, j]) {
+    return this.tiles[i + ", " + j]
   }
 }
