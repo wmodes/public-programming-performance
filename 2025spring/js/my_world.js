@@ -87,6 +87,7 @@ class World {
   /** This is called on the p3 setup call */
   p3_setup() {
     this.npc_manager.spawnEntity(new AnimalNPC(0,0,5,this.p.loadImage("assets/npc/seagull.png")));
+    this.npc_manager.spawnEntity(new PathfindingTestNpc(0,0,5));
   }
 
   /** This is called if someone changes the seed */
@@ -162,7 +163,7 @@ class World {
   }
 
   p3_drawAfter(camera_offset) {
-    this.npc_manager.update()
+    this.npc_manager.update(this)
     this.npc_manager.draw(this.p, camera_offset)
   }
 }

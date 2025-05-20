@@ -13,7 +13,7 @@ class AnimalNPC extends NPC{
         );
         p.push();
         
-        p.print(screen_x,screen_y);
+        // p.print(screen_x,screen_y);
 
         p.translate(0 - screen_x, screen_y);
         

@@ -4,7 +4,7 @@
  * Override pickObjective() and isTileTraversable() for behavior.
  */
 class PathfindingNPC extends NPC {
-    
+
     /**
      * @param {number} x 
      * @param {number} y 
@@ -14,6 +14,7 @@ class PathfindingNPC extends NPC {
         super(x, y, speed)
         this.objective = null
         this.path = null
+        this.timer = 0;
     }
 
     /**
@@ -33,40 +34,55 @@ class PathfindingNPC extends NPC {
      */
     pathfind(world) {
         this.objective = this.pickObjective()
+
         if (this.objective !== null) {
+            if (Math.floor(this.x) == this.objective[0] && Math.floor(this.y) == this.objective[1]) return;
             // right now I'm assuming x,y as being tile position, but as floating point (since the sheared view makes it rather annoying to manage otherwise, if this needs to change we can change it)
-            this.path = astar(([x, y]) => this.isTileTraversable(world.tileAt([x, y])), [Math.floor(this.x), Math.floor(this.y)]);
+            this.path = astar(([x, y]) => true, [Math.floor(this.x), Math.floor(this.y)], this.objective); // this.isTileTraversable(world.tileAt([x, y])), [Math.floor(this.x), Math.floor(this.y)]);
         }
     }
 
-    update() {
+    update(world) {
         if (this.path === null || this.path[0] === undefined) {
-            this.wander()
+            this.timer += 10;
+            if (this.timer > 1000 * 5.0 / this.speed) {
+                this.pathfind(world)
+
+                if (this.path === null || this.path[0] === undefined) {
+                    this.wander();
+                    this.timer = 0;
+                }
+            }
         } else {
+            this.timer = 0;
             let [tx, ty] = this.path[0]
             let dist = Math.sqrt((this.x - tx) * (this.x - tx) + (this.y - ty) * (this.y - ty))
             let ux = (tx - this.x) / dist;
             let uy = (ty - this.y) / dist;
 
-            let [u2x, u2y] = [0,0];
+            console.log([this.x,this.y], [tx, ty])
 
-            let d = min(dist, this.speed);
+            let [u2x, u2y] = [0, 0];
+
+            let d = Math.min(dist, this.speed / 60);
             let d2 = 0;
 
             // todo: because fp math do proper equality comparisons w/ epsilon
-            if (this.x + ux * d == tx && this.y + uy * d == ty) {
+            if (Math.abs(this.x + ux * d - tx) < 0.05 && Math.abs(this.y + uy * d - ty) < 0.05) {
                 this.path.shift(); // pop the first element from the array, so we move to the next point
+                // console.log("shift")
+                // console.log(this.path[0]);
             }
 
             // we only do this for one tile because we assume we don't travel more than a full tile in a frame
             // this makes sure that we don't slow down for every step in the path.
-            if (d < this.speed && this.path[0] !== undefined) {
+            if (d < this.speed / 60 && this.path[0] !== undefined) {
                 let [t2x, t2y] = this.path[0];
                 let [s2x, s2y] = [this.x + ux * d, this.y + uy * d];
                 let dist2 = Math.sqrt((s2x - t2x) * (s2x - t2x) + (s2y - t2y) * (s2y - t2y))
                 u2x = (t2x - s2x) / dist2
                 u2y = (t2y - s2y) / dist2
-                d2 = min(dist2, this.speed - d)
+                d2 = Math.min(dist2, this.speed / 60 - d)
             }
 
             this.move([ux * d + u2x * d2, uy * d + u2y * d2])
@@ -85,6 +101,37 @@ class PathfindingNPC extends NPC {
     }
 }
 
+class PathfindingTestNpc extends PathfindingNPC {
+    constructor(x, y, speed) {
+        super(x, y, speed)
+    }
+
+    pickObjective() {
+        return [Math.floor(this.x) + (get_random_int_between_inclusive(-16, 16)), Math.floor(this.y) + (get_random_int_between_inclusive(-16, 16))];
+    }
+
+    draw(p, [camera_x, camera_y]) {
+        let [screen_x, screen_y] = p.worldToScreen(
+            [this.x, this.y],
+            [camera_x, camera_y]
+        );
+        p.push();
+
+        // p.print(screen_x,screen_y);
+
+        p.translate(0 - screen_x, screen_y);
+
+        ///
+
+        p.circle(0, 0, 8);
+
+        ///
+
+        p.pop();
+
+    }
+}
+
 /**
  * A* graph node
  */
@@ -92,7 +139,7 @@ class AstarGraphNode {
     cameFrom
     position
     distance
-    
+
     /**
      * Create a new A* graph node (only needed by the A* implementation)
      * 
@@ -135,19 +182,19 @@ function astarHeuristic([px, py], [ox, oy]) {
  */
 function astarPushReachables(traversabilityFunction, possibleSpacesArray, graph, [px, py]) {
     if (graph[[px - 1, py]] === undefined && traversabilityFunction([px - 1, py])) {
-        possibleSpacesArray.push({position: [px - 1, py], from: [px, py], distance: graph[[px, py]].distance + 1});
+        possibleSpacesArray.push({ position: [px - 1, py], from: [px, py], distance: graph[[px, py]].distance + 1 });
         graph[[px - 1, py]] = null; // different from undefined, used to make sure that we don't touch the same tile multiple times.
     }
     if (graph[[px + 1, py]] === undefined && traversabilityFunction([px + 1, py])) {
-        possibleSpacesArray.push({position: [px + 1, py], from: [px, py], distance: graph[[px, py]].distance + 1});
+        possibleSpacesArray.push({ position: [px + 1, py], from: [px, py], distance: graph[[px, py]].distance + 1 });
         graph[[px + 1, py]] = null; // different from undefined, used to make sure that we don't touch the same tile multiple times.
     }
     if (graph[[px, py - 1]] === undefined && traversabilityFunction([px, py - 1])) {
-        possibleSpacesArray.push({position: [px, py - 1], from: [px, py], distance: graph[[px, py]].distance + 1});
+        possibleSpacesArray.push({ position: [px, py - 1], from: [px, py], distance: graph[[px, py]].distance + 1 });
         graph[[px, py - 1]] = null; // different from undefined, used to make sure that we don't touch the same tile multiple times.
     }
     if (graph[[px, py + 1]] === undefined && traversabilityFunction([px, py + 1])) {
-        possibleSpacesArray.push({position: [px, py + 1], from: [px, py], distance: graph[[px, py]].distance + 1});
+        possibleSpacesArray.push({ position: [px, py + 1], from: [px, py], distance: graph[[px, py]].distance + 1 });
         graph[[px, py + 1]] = null; // different from undefined, used to make sure that we don't touch the same tile multiple times.
     }
 
@@ -155,19 +202,19 @@ function astarPushReachables(traversabilityFunction, possibleSpacesArray, graph,
     // also need to decide if we want to filter out diagonals where you have a sort of #. formation.
     //                                                                                 .#
     if (graph[[px - 1, py - 1]] === undefined && traversabilityFunction([px - 1, py - 1])) {
-        possibleSpacesArray.push({position: [px - 1, py - 1], from: [px, py], distance: graph[[px, py]].distance + 1});
+        possibleSpacesArray.push({ position: [px - 1, py - 1], from: [px, py], distance: graph[[px, py]].distance + 1 });
         graph[[px - 1, py - 1]] = null; // different from undefined, used to make sure that we don't touch the same tile multiple times.
     }
     if (graph[[px + 1, py + 1]] === undefined && traversabilityFunction([px + 1, py + 1])) {
-        possibleSpacesArray.push({position: [px + 1, py + 1], from: [px, py], distance: graph[[px, py]].distance + 1});
+        possibleSpacesArray.push({ position: [px + 1, py + 1], from: [px, py], distance: graph[[px, py]].distance + 1 });
         graph[[px + 1, py + 1]] = null; // different from undefined, used to make sure that we don't touch the same tile multiple times.
     }
     if (graph[[px + 1, py - 1]] === undefined && traversabilityFunction([px + 1, py - 1])) {
-        possibleSpacesArray.push({position: [px + 1, py - 1], from: [px, py], distance: graph[[px, py]].distance + 1});
+        possibleSpacesArray.push({ position: [px + 1, py - 1], from: [px, py], distance: graph[[px, py]].distance + 1 });
         graph[[px + 1, py - 1]] = null; // different from undefined, used to make sure that we don't touch the same tile multiple times.
     }
     if (graph[[px - 1, py + 1]] === undefined && traversabilityFunction([px - 1, py + 1])) {
-        possibleSpacesArray.push({position: [px - 1, py + 1], from: [px, py], distance: graph[[px, py]].distance + 1});
+        possibleSpacesArray.push({ position: [px - 1, py + 1], from: [px, py], distance: graph[[px, py]].distance + 1 });
         graph[[px - 1, py + 1]] = null; // different from undefined, used to make sure that we don't touch the same tile multiple times.
     }
 }
@@ -182,8 +229,8 @@ function astarPushReachables(traversabilityFunction, possibleSpacesArray, graph,
 function astarPopBestSpace(possibleSpacesArray, objective) {
     let bestSpaceIndex = 0;
     let bestValue = Infinity;
-    for (let i = 0 ; i < possibleSpacesArray.length ; i++) {
-        let space = possibleSpaces[i];
+    for (let i = 0; i < possibleSpacesArray.length; i++) {
+        let space = possibleSpacesArray[i];
         let h = astarHeuristic(space.position, objective);
         let g = space.distance;
         let f = h + g;
@@ -201,7 +248,7 @@ function astarPopBestSpace(possibleSpacesArray, objective) {
  * @type {number}
  * Max distance for A* to travel before giving up
  */
-const ASTAR_MAX_TRAVERSABILITY_DISTANCE = 100;
+const ASTAR_MAX_TRAVERSABILITY_DISTANCE = 20;
 
 // traversabilityFunction is function([x, y]) -> bool
 // TODO: since world is infinite, prevent us from getting stuck by making a max distance
@@ -213,6 +260,7 @@ const ASTAR_MAX_TRAVERSABILITY_DISTANCE = 100;
  * @returns {Array.<[number, number]>} The path from starting point to objective
  */
 function astar(traversabilityFunction, position, objective) {
+    console.log(objective)
     let startingPoint = new AstarGraphNode(position, null, 0)
     let graph = {}
     graph[position] = startingPoint;
@@ -224,19 +272,19 @@ function astar(traversabilityFunction, position, objective) {
     let path = []
 
     while (possibleSpaces.length > 0) {
-        let bestSpace = astarPopBestSpace(possibleSpaces, objective);
+        bestSpace = astarPopBestSpace(possibleSpaces, objective);
         graph[bestSpace.position] = new AstarGraphNode(bestSpace.position, bestSpace.from, bestSpace.distance);
         if (bestSpace.position == objective) {
             break;
         }
 
-        let distance = max(abs(bestSpace.position[0] - position[0]), abs(bestSpace.position[1] - position[1]))
-        if (distance > ASTAR_MAX_TRAVERSABILITY_DISTANCE) {
+        let distance = Math.max(Math.abs(bestSpace.position[0] - position[0]), Math.abs(bestSpace.position[1] - position[1]))
+        if (distance < ASTAR_MAX_TRAVERSABILITY_DISTANCE) {
             astarPushReachables(traversabilityFunction, possibleSpaces, graph, bestSpace.position);
         }
     }
 
-    let objectiveNode = graph[bestSpace.position];
+    let objectiveNode = graph[objective];
     if (objectiveNode === undefined) {
         return null; // no path
     }
@@ -244,7 +292,7 @@ function astar(traversabilityFunction, position, objective) {
     let node = objectiveNode;
     while (node != startingPoint) {
         path.unshift(node.position);
-        node = node.cameFrom;
+        node = graph[node.cameFrom];
     }
 
     return path;
