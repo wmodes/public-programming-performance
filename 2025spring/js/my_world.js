@@ -29,7 +29,7 @@ class World {
     [this.tw, this.th] = [TILE_WIDTH, TILE_HEIGHT]; // tw = tile width, th = tile height
     this.clicks = {};
     this.island = new Island(p); // Use the new Island class
-    this.tileTypes = { OCEAN: [], SAND: [], GRASS: [], DIRT: [], SNOW: [] };
+    this.tileTypes = { OCEAN: [], SAND: [], ROCK: [], GRASS: [], DIRT: [], SNOW: []};
     this.tiles = {};
     this.landTiles = 0;
     this.oceanTiles = 0;
@@ -61,6 +61,17 @@ class World {
       }
     );
     this.tileTypes.SAND.push(this.sand);
+
+    this.rock = this.p.loadImage(
+      "assets/tiles/rock_base.png",
+      () => {
+        console.log("loaded rock_base.png");
+      },
+      () => {
+        console.log("failed to rock_base.png");
+      }
+    );
+    this.tileTypes.ROCK.push(this.rock);
 
     this.grass = this.p.loadImage(
       "assets/tiles/xavier_grass.png",

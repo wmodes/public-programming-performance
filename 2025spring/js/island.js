@@ -56,15 +56,15 @@ class Island {
     let n = this.p.noise(
       cX * this.BIOME_NOISE_SCALE + 100.1,
       cY * this.BIOME_NOISE_SCALE + 200.2
-    );
-    // if (n < 0.5) return "SNOW";
-    // if (n < 0.5) return "ROCK";
-    // if (n < 0.75) return "SAND";
+    ) * 4;
+    if (n < 1) return "SNOW";
+    if (n < 2) return "ROCK";
+    if (n < 3) return "SAND";
     return "GRASS";
   }
 
   // Returns "water", "sand", or "land" for a given tile in an island
-  getIslandTileType(localX, localY, shapeSeedX, shapeSeedY) {
+  getIslandTileType(localX, localY, shapeSeedX, shapeSeedY, biome) {
     // Perlin Noise Pass 1: Rough Outline
     let n1X = localX * this.NOISE_SCALE_ROUGH + shapeSeedX;
     let n1Y = localY * this.NOISE_SCALE_ROUGH + shapeSeedY;
@@ -88,7 +88,7 @@ class Island {
 
     // Thresholding
     if (finalNoiseValue > this.LAND_THRESHOLD) {
-      return (noiseValueRough % .2 > .16) ? "TREE" : "LAND";
+      return (noiseValueRough % .2 > .16) && (biome == "GRASS")  ? "TREE" : "LAND";
     } else if (finalNoiseValue > this.SAND_THRESHOLD) {
       return "SAND";
     } else {
@@ -162,7 +162,7 @@ class Island {
     }
 
     // Determine tile type
-    let type = this.getIslandTileType(localX, localY, shapeSeedX, shapeSeedY);
+    let type = this.getIslandTileType(localX, localY, shapeSeedX, shapeSeedY, biome);
 
     // Draw based on biome and tile type
     switch (type){
