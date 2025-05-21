@@ -12,6 +12,7 @@ class Island {
     this.ISLAND_SIZE = 24; // tile units (not pixels)
     this.CHUNK_GRID_SIZE = this.ISLAND_SIZE;
     this.ISLAND_PRESENCE_THRESHOLD = 0.55;
+    this.ISLAND_HEIGHT_SCALER = 200;
 
     // Noise parameters
     this.NOISE_SCALE_ROUGH = 0.085;
@@ -58,9 +59,9 @@ class Island {
       cY * this.BIOME_NOISE_SCALE + 200.2
     ) * 4;
     if (n < 1) return "SNOW";
-    if (n < 2) return "ROCK";
-    if (n < 3) return "SAND";
-    return "GRASS";
+    if (n < 2) return "GRASS";
+    if (n < 3) return "ROCK";
+    return "SAND";
   }
 
   // Returns "water", "sand", or "land" for a given tile in an island
@@ -88,11 +89,11 @@ class Island {
 
     // Thresholding
     if (finalNoiseValue > this.LAND_THRESHOLD) {
-      return (noiseValueRough % .2 > .16) && (biome == "GRASS")  ? "TREE" : "LAND";
+      return {id: (noiseValueRough % .2 > .16) ? "DECOR" : "LAND", n: finalNoiseValue};
     } else if (finalNoiseValue > this.SAND_THRESHOLD) {
-      return "SAND";
+      return {id: "SAND", n: finalNoiseValue};
     } else {
-      return "OCEAN";
+      return {id: "OCEAN", n: finalNoiseValue};
     }
   }
 
@@ -163,16 +164,26 @@ class Island {
 
     // Determine tile type
     let type = this.getIslandTileType(localX, localY, shapeSeedX, shapeSeedY, biome);
+    let mody = 16+(type.n-this.SAND_THRESHOLD)*this.ISLAND_HEIGHT_SCALER;
 
     // Draw based on biome and tile type
-    switch (type){
-      case ("TREE"):
+    switch (type.id){
+      case ("DECOR"):
         tile.changeAttributes(biome, 1);
-        tile.draw({y:-138, cropOffsetY: 0,height:160,cropHeight:80});
+        for (let i = 60; i > -6; i -= 6){
+          tile.draw({y:i-mody});
+        }
+        if (biome == "GRASS")
+          tile.draw({y:-mody-116, cropOffsetY: 0,height:160,cropHeight:80});
+        else
+          tile.draw({y:-mody});
       break;
       case ("LAND"):
         tile.changeAttributes(biome);
-        tile.draw();
+        for (let i = 60; i > -6; i -= 6){
+          tile.draw({y:i-mody});
+        }
+        tile.draw({y:-mody});
         /*
         if (biome === "snow") {
           world.p.image(world.snow, -30, -24, 60, 50, 0, 80 - 24, 32, 24);
@@ -187,13 +198,16 @@ class Island {
       break;
       case ("SAND"):
         // Sand edge is always sand, regardless of biome
-        tile.changeAttributes(type);
-        tile.draw({y:-20});
+        tile.changeAttributes(type.id);
+        for (let i = 60; i > -6; i -= 6){
+          tile.draw({y:i-mody});
+        }
+        tile.draw({y:-mody});
         //world.p.image(world.sand, -30, -24, 60, 50, 0, 80 - 24, 32, 24);
       break;
       default:
         // Animated water fill
-        tile.changeAttributes(type);
+        tile.changeAttributes(type.id);
         let waveOffset = getWaterWaveOffset(i, j, this.p);
         let frame = getWaterFrame(i, j, this.p);
         tile.draw({y:-16 + waveOffset, cropOffsetX: frame === 0 ? 0 : 32, cropOffsetY: 8});
