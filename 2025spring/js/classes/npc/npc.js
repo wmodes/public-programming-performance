@@ -5,6 +5,8 @@
  */
 
 class NPC {
+    id
+
     /**
      * Create a new NPC.
      * @param {number} x - Initial x position.
@@ -34,9 +36,10 @@ class NPC {
   
     // Move randomly in a cardinal direction
     wander() {
-        let arr = [[0,1],[0,-1],[1,0],[-1,0]]
-        
-      this.move(arr[get_random_int_between_inclusive(0,3)]);
+      let arr = [[0,1],[0,-1],[1,0],[-1,0]]
+      let temp = get_random_int_between_inclusive(0,3)
+      this.move(arr[temp]);
+      return temp;
     }
 }
   
