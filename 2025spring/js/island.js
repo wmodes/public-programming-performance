@@ -7,9 +7,9 @@
 
 const BIOME_HEIGHT_SCALE = {
   SAND: 0.5,
-  ROCK: 2,
+  ROCK: 2.5,
   GRASS: 1,
-  SNOW: 2
+  SNOW: 1
 }
 
 class Island {
@@ -179,11 +179,12 @@ class Island {
     // Draw based on biome and tile type
     switch (type.id){
       case ("DECOR"):
-        tile.changeAttributes(biome, 1);
+        tile.changeAttributes(biome, this.p.floor(mody));
         //gross hack solution; replace with proper column (if you have the time)
-        for (let i = 60; i > -6; i -= 6){
-          tile.draw({y:i-mody});
-        }
+        
+        //for (let i = 60; i > -6; i -= 6){
+        //  tile.draw({y:i-mody});
+        //}
         if (biome == "GRASS")
           tile.draw({y:-mody-116, cropOffsetY: 0,height:160,cropHeight:80});
         else
@@ -192,9 +193,9 @@ class Island {
       case ("LAND"):
         tile.changeAttributes(biome);
         //see above
-        for (let i = 60; i > -6; i -= 6){
-          tile.draw({y:i-mody});
-        }
+        //for (let i = 60; i > -6; i -= 6){
+        //  tile.draw({y:i-mody});
+        //}
         tile.draw({y:-mody});
         /*
         if (biome === "snow") {
@@ -212,9 +213,9 @@ class Island {
         // Sand edge is always sand, regardless of biome
         tile.changeAttributes(type.id);
         //see above
-        for (let i = 60; i > -6; i -= 6){
-          tile.draw({y:i-mody});
-        }
+        //for (let i = 60; i > -6; i -= 6){
+        //  tile.draw({y:i-mody});
+        //}
         tile.draw({y:-mody});
         //world.p.image(world.sand, -30, -24, 60, 50, 0, 80 - 24, 32, 24);
       break;

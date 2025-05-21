@@ -154,7 +154,8 @@ var s = function (p) {
     let world_pos = p.screenToWorld([0 - p.mouseX, p.mouseY], [camera_offset.x, camera_offset.y]);
     let world_offset = p.cameraToWorldOffset([camera_offset.x, camera_offset.y]);
 
-    p.background(100);
+    //blue because you can occasionally see it through the water
+    p.background(p.color("3C5F7F"));
 
     if (w.p3_drawBefore) {
       w.p3_drawBefore();

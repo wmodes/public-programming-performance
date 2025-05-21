@@ -29,7 +29,7 @@ class World {
     [this.tw, this.th] = [TILE_WIDTH, TILE_HEIGHT]; // tw = tile width, th = tile height
     this.clicks = {};
     this.island = new Island(p); // Use the new Island class
-    this.tileTypes = { OCEAN: [], SAND: [], ROCK: [], GRASS: [], DIRT: [], SNOW: []};
+    this.tileTypes = { OCEAN: [], SAND: [], ROCK: [], GRASS: [], DIRT: [], SNOW: [], FILLER: []};
     this.tiles = {};
     this.landTiles = 0;
     this.oceanTiles = 0;
@@ -63,6 +63,17 @@ class World {
     this.tileTypes.SAND.push(this.sand);
 
     this.rock = this.p.loadImage(
+      "assets/tiles/rock_base_retouch.png",
+      () => {
+        console.log("loaded rock_base_retouch.png");
+      },
+      () => {
+        console.log("failed to rock_base_retouch.png");
+      }
+    );
+    this.tileTypes.ROCK.push(this.rock);
+
+    this.rock0 = this.p.loadImage(
       "assets/tiles/rock_base.png",
       () => {
         console.log("loaded rock_base.png");
@@ -71,7 +82,18 @@ class World {
         console.log("failed to rock_base.png");
       }
     );
-    this.tileTypes.ROCK.push(this.rock);
+    this.tileTypes.ROCK.push(this.rock0);
+
+    this.rock1 = this.p.loadImage(
+      "assets/tiles/rock_base_retouch_rock0.png",
+      () => {
+        console.log("loaded rock_base_retouch_rock0.png");
+      },
+      () => {
+        console.log("failed to rock_base_retouch_rock0.png");
+      }
+    );
+    this.tileTypes.ROCK.push(this.rock1);
 
     this.grass = this.p.loadImage(
       "assets/tiles/xavier_grass.png",
@@ -101,22 +123,55 @@ class World {
         console.log("loaded xavier_grass_tree1.png");
       },
       () => {
-        console.log("failed to load xavier_grass_tree0.png");
+        console.log("failed to load xavier_grass_tree1.png");
       }
     );
     this.tileTypes.GRASS.push(this.tree1);
-
+    
     this.tree2 = this.p.loadImage(
       "assets/decor/xavier_grass_tree2.png",
       () => {
-        console.log("loaded xavier_grass_tree0.png");
+        console.log("loaded xavier_grass_tree2.png");
       },
       () => {
         console.log("failed to load xavier_grass_tree2.png");
       }
     );
     this.tileTypes.GRASS.push(this.tree2);
-
+    
+    this.tree3 = this.p.loadImage(
+      "assets/decor/xavier_grass_tree3.png",
+      () => {
+        console.log("loaded xavier_grass_tree3.png");
+      },
+      () => {
+        console.log("failed to load xavier_grass_tree3.png");
+      }
+    );
+    this.tileTypes.GRASS.push(this.tree3);
+    /*
+    this.tree4 = this.p.loadImage(
+      "assets/decor/xavier_grass_tree4.png",
+      () => {
+        console.log("loaded xavier_grass_tree4.png");
+      },
+      () => {
+        console.log("failed to load xavier_grass_tree4.png");
+      }
+    );
+    this.tileTypes.GRASS.push(this.tree4);
+    
+    this.tree5 = this.p.loadImage(
+      "assets/decor/xavier_grass_tree5.png",
+      () => {
+        console.log("loaded xavier_grass_tree5.png");
+      },
+      () => {
+        console.log("failed to load xavier_grass_tree5.png");
+      }
+    );
+    this.tileTypes.GRASS.push(this.tree5);
+    */
     this.dirt = this.p.loadImage(
       "assets/tiles/dirt_base.png",
       () => {
@@ -138,6 +193,39 @@ class World {
       }
     );
     this.tileTypes.SNOW.push(this.snow);
+
+    this.col0 = this.p.loadImage(
+      "assets/decor/dirt_column.png",
+      () => {
+        console.log("loaded dirt_column.png");
+      },
+      () => {
+        console.log("failed to load dirt_column.png");
+      }
+    );
+    this.tileTypes.FILLER.push(this.col0);
+
+    this.col1 = this.p.loadImage(
+      "assets/decor/sand_column.png",
+      () => {
+        console.log("loaded sand_column.png");
+      },
+      () => {
+        console.log("failed to load sand_column.png");
+      }
+    );
+    this.tileTypes.FILLER.push(this.col1);
+
+    this.col2 = this.p.loadImage(
+      "assets/decor/rock_column.png",
+      () => {
+        console.log("loaded rock_column.png");
+      },
+      () => {
+        console.log("failed to load rock_column.png");
+      }
+    );
+    this.tileTypes.FILLER.push(this.col2);
 
     this.bird1 = this.p.loadImage("./assets/npc/seagull.png");
     this.bird2 = this.p.loadImage("./assets/npc/seagull2.png")
