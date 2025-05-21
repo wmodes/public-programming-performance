@@ -170,6 +170,7 @@ class Island {
     switch (type.id){
       case ("DECOR"):
         tile.changeAttributes(biome, 1);
+        //gross hack solution; replace with proper column (if you have the time)
         for (let i = 60; i > -6; i -= 6){
           tile.draw({y:i-mody});
         }
@@ -180,6 +181,7 @@ class Island {
       break;
       case ("LAND"):
         tile.changeAttributes(biome);
+        //see above
         for (let i = 60; i > -6; i -= 6){
           tile.draw({y:i-mody});
         }
@@ -199,6 +201,7 @@ class Island {
       case ("SAND"):
         // Sand edge is always sand, regardless of biome
         tile.changeAttributes(type.id);
+        //see above
         for (let i = 60; i > -6; i -= 6){
           tile.draw({y:i-mody});
         }
