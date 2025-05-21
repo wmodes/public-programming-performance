@@ -5,27 +5,35 @@
 
 "use strict";
 
+const BIOME_HEIGHT_SCALE = {
+  SAND: 0.5,
+  ROCK: 2,
+  GRASS: 1,
+  SNOW: 2
+}
+
 class Island {
   constructor(p) {
     this.p = p;
     this.t = 0;
     this.landRatio = 0;
     // Island & chunk properties
-    this.ISLAND_SIZE = 24; // tile units (not pixels)
+    this.ISLAND_SIZE = 32; // tile units (not pixels) default: 24
     this.CHUNK_GRID_SIZE = this.ISLAND_SIZE;
-    this.ISLAND_PRESENCE_THRESHOLD = 0.55;
-    this.ISLAND_HEIGHT_SCALER = 200;
+    this.ISLAND_PRESENCE_THRESHOLD = 0.55; // default: .55
+    this.ISLAND_HEIGHT_SCALER = 300;
 
     // Noise parameters
     this.NOISE_SCALE_ROUGH = 0.085;
     this.NOISE_SCALE_DETAIL = 0.18;
     this.CHUNK_PRESENCE_NOISE_SCALE = 0.1;
-    this.ISLAND_SHAPE_SEED_NOISE_SCALE = 0.05;
-    this.BIOME_NOISE_SCALE = 0.13; // New: scale for biome selection
+    this.ISLAND_SHAPE_SEED_NOISE_SCALE = 0.75; // default: .05
+    this.BIOME_NOISE_SCALE = 0.2; // default: .1
+    this.PARALLAX_SCALE = 1.5;
 
     // Thresholds for land formation
-    this.SAND_THRESHOLD = 0.18;
-    this.LAND_THRESHOLD = 0.28;
+    this.SAND_THRESHOLD = 0.075;  // default: .28
+    this.LAND_THRESHOLD = 0.15;   // default: .38
     this.DETAIL_THRESHOLD = 0.4;
   }
 
@@ -47,7 +55,7 @@ class Island {
       ) * 100000;
     let sy =
       this.p.noise(
-        cX * this.ISLAND_SHAPE_SEED_NOISE_SCALE + 30.5,
+        cX * this.ISLAND_SHAPE_SEED_NOISE_SCALE, + 30.5,
         cY * this.ISLAND_SHAPE_SEED_NOISE_SCALE + 40.1
       ) * 100000;
     return [sx, sy];
@@ -166,7 +174,7 @@ class Island {
 
     // Determine tile type
     let type = this.getIslandTileType(localX, localY, shapeSeedX, shapeSeedY, biome);
-    let mody = 16+(type.n-this.SAND_THRESHOLD)*this.ISLAND_HEIGHT_SCALER;
+    let mody = 16+(type.n-this.SAND_THRESHOLD)*this.ISLAND_HEIGHT_SCALER*BIOME_HEIGHT_SCALE[biome];
 
     // Draw based on biome and tile type
     switch (type.id){
