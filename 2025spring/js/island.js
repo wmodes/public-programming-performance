@@ -8,6 +8,8 @@
 class Island {
   constructor(p) {
     this.p = p;
+    this.t = 0;
+    this.landRatio = 0;
     // Island & chunk properties
     this.ISLAND_SIZE = 24; // tile units (not pixels)
     this.CHUNK_GRID_SIZE = this.ISLAND_SIZE;
@@ -225,5 +227,34 @@ class Island {
     }
 
     return tile;
+  }
+
+  drawClouds(offset, world) {
+    let parallaxOffset = {x: offset[0]*this.PARALLAX_SCALE, y: offset[1]*this.PARALLAX_SCALE};
+    let height = 400;
+    let width = 800;
+    let cloudDetail = 6;
+    let scale = 0.008;
+    let waterRatio = 1-this.landRatio;
+    let cloudAlpha = 250+100*waterRatio;
+    let fill = {
+    //   blue color       brown color
+      r: 206*waterRatio + 255*this.landRatio,
+      g: 236*waterRatio + 200*this.landRatio, 
+      b: 255*waterRatio + 202*this.landRatio
+    }
+    
+    this.p.noStroke();
+    for (let y = 0; y < height+20; y += cloudDetail) {
+      for (let x = 0; x < width+20; x += cloudDetail) {
+        let n = world.p.noise((x+parallaxOffset.x+10000) * scale, (y-parallaxOffset.y+10000) * scale, this.t); // noise based on land and time
+        if (n > 0.5) {
+          world.p.fill(fill.r, fill.g, fill.b, cloudAlpha * (n - 0.5) * 2);
+          world.p.rect(x, y, cloudDetail, cloudDetail);
+        }
+      }
+    }
+   
+    this.t += 0.001; 
   }
 }

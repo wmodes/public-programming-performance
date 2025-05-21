@@ -177,7 +177,7 @@ class World {
   p3_tileClicked(i, j) {
     let key = [i, j];
     this.clicks[key] = 1 + (this.clicks[key] | 0);
-    this.soundEngine.tileClicked(this.tiles[i + ", " + j])
+    this.soundEngine.tileClicked(this.tiles[i, j])
   }
 
   /** This is called before the tile is drawn. */
@@ -188,14 +188,14 @@ class World {
 
   /** This draws the tile at that location */
   p3_drawTile(i, j) {
-    this.tiles[i + ", " + j] = this.island.drawTile(i, j, this);
-    if (this.tiles[i + ", " + j].getType() == "OCEAN") {
+    this.tiles[i, j] = this.island.drawTile(i, j, this);
+    if (this.tiles[i, j].getType() == "OCEAN") {
       this.oceanTiles++
     } else {
       this.landTiles++
     }
     //console.log("(" + i + ", " + j + ")  " + this.tiles[i + ", " + j]);
-    return this.tiles[(i, j)] && this.tiles[(i, j)].isLand();
+    return this.tiles[i, j];
   }
 
   /** draws outline around the tile. */
@@ -205,7 +205,7 @@ class World {
 
     // Added temp code for adjusting selected tile based on height, will improve later
     let y =
-      this.tiles[(i, j)] && this.tiles[(i, j)].getType() == "OCEAN" ? 8 : 0;
+      this.tiles[i, j] && this.tiles[i, j].getType() == "OCEAN" ? 8 : 0;
 
     // this draws the outline
     this.p.beginShape();
@@ -226,6 +226,7 @@ class World {
     this.npc_manager.update(this);
     this.npc_manager.draw(this.p, camera_offset);
     this.soundEngine.dynamicBackground(this.oceanTiles, this.landTiles);
+    this.island.drawClouds(camera_offset, this);
   }
 
   tileAt([i, j]) {

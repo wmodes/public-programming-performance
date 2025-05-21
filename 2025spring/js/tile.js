@@ -61,7 +61,7 @@ class Tile {
 
     isLand()
     {
-        return this.surface == "LAND" ? true : false;
+        return this.surface == "LAND";
     }
 
     setImage(image)
