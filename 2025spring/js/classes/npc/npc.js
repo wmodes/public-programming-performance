@@ -36,7 +36,9 @@ class NPC {
   
     // Move randomly in a cardinal direction
     wander() {
-      let arr = [[0,1],[0,-1],[1,0],[-1,0]]
+      let arr = [[1,0],[0,1],[-1,0],[0,-1]];
+      // let arr = [[1,-1], [1,1], [-1,-1], [-1,1]];
+
       let temp = get_random_int_between_inclusive(0,3)
       this.move(arr[temp]);
       return temp;

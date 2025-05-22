@@ -8,11 +8,13 @@ class AnimalNPC extends NPC{
         this.currentFrame = 0;
         this.direction = 0;
         this.updateImage();
+        //direction may not be accurately changed because it depends on wander.
     }
     wander(){
         let temp = super.wander();
         this.direction = temp;
         this.updateImage();
+        
     }
     draw(p, [camera_x, camera_y]){
         let [screen_x, screen_y] = p.worldToScreen(

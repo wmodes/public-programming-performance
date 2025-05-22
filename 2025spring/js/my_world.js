@@ -302,22 +302,19 @@ class World {
     ];
 
     this.bird1 = this.p.loadImage("./assets/npc/seagull.png");
-    this.bird2 = this.p.loadImage("./assets/npc/seagull2.png");
+    this.bird2 = this.p.loadImage("./assets/npc/seagull2.png")
+    
+    this.turtlesheet = this.p.loadImage("assets/npc/turtle_NPC_spritesheet.png")
+    this.seagullsheet = this.p.loadImage("assets/npc/seagull_NPC_spritesheet.png")
   }
 
   /** This is called on the p3 setup call */
   p3_setup() {
-    this.npc_manager.spawnEntity(new PathfindingTestNpc(0, 0, 5));
-    for (let i = 0; i < 100; i++) {
-      this.npc_manager.spawnEntity(
-        new AnimalNPC(0, 0, 5, [
-          [this.bird1, this.bird2],
-          [this.bird1, this.bird2],
-          [this.bird1, this.bird2],
-          [this.bird1, this.bird2],
-        ])
-      );
-    }
+    this.npc_manager.spawnEntity(new PathfindingTestNpc(0,0,5));
+    //for (let i = 0; i < 100; i++){
+    this.npc_manager.spawnEntity(new AnimalNPC(0,0,5,this.spriteSheetCutter(2,4,this.turtlesheet)));
+    this.npc_manager.spawnEntity(new AnimalNPC(0,0,5,this.spriteSheetCutter(2,4,this.seagullsheet)));
+    //}
   }
 
   /** This is called if someone changes the seed */
@@ -402,5 +399,23 @@ class World {
 
   tileAt([i, j]) {
     return this.tiles[i, j];
+  }
+
+  spriteSheetCutter(cols,rows, sheet){
+    let frameWidth = sheet.width / cols;
+    let frameHeight = sheet.height / rows;
+    let frameArr = [];
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        let frame = sheet.get(x * frameWidth, y * frameHeight, frameWidth, frameHeight);
+        frameArr.push(frame);
+      }
+    }
+    let temparr = []
+    for (let i = 0; i < frameArr.length; i+=2){
+      let temp = [frameArr[i], frameArr[i + 1]];
+      temparr.push(temp)
+    }
+    return temparr;
   }
 }
