@@ -156,24 +156,34 @@ class World {
           console.log("failed to boat_middle.png");
         }
       ),
+      this.p.loadImage(
+        "assets/decor/boat_butt.png",
+        () => {
+          console.log("loaded boat_butt.png");
+        },
+        () => {
+          console.log("failed to boat_butt.png");
+        }
+      ),
     ];
 
     this.bird1 = this.p.loadImage("./assets/npc/seagull.png");
-    this.bird2 = this.p.loadImage("./assets/npc/seagull2.png")
+    this.bird2 = this.p.loadImage("./assets/npc/seagull2.png");
   }
 
   /** This is called on the p3 setup call */
   p3_setup() {
-    this.npc_manager.spawnEntity(new PathfindingTestNpc(0,0,5));
-    for (let i = 0; i < 100; i++){
-    this.npc_manager.spawnEntity(new AnimalNPC(0,0,5,[
-      [this.bird1,this.bird2],
-      [this.bird1,this.bird2],
-      [this.bird1,this.bird2],
-      [this.bird1,this.bird2],
-      ]
-    ));
-  }
+    this.npc_manager.spawnEntity(new PathfindingTestNpc(0, 0, 5));
+    for (let i = 0; i < 100; i++) {
+      this.npc_manager.spawnEntity(
+        new AnimalNPC(0, 0, 5, [
+          [this.bird1, this.bird2],
+          [this.bird1, this.bird2],
+          [this.bird1, this.bird2],
+          [this.bird1, this.bird2],
+        ])
+      );
+    }
   }
 
   /** This is called if someone changes the seed */
@@ -198,9 +208,9 @@ class World {
     this.clicks[key] = 1 + (this.clicks[key] | 0);
     this.soundEngine.tileClicked(this.tiles[i + ", " + j].getType());
     if (this.clicks[[i, j]] % 2 == 1) {
-        // let boat = new Boat(this.p, this.boatParts, i, j, 1);
-        this.npc_manager.spawnEntity(new Boat(this.boatParts, i, j, 5));
-        // boat.draw();
+      // let boat = new Boat(this.p, this.boatParts, i, j, 1);
+      this.npc_manager.spawnEntity(new Boat(this.boatParts, i, j, 5));
+      // boat.draw();
     }
   }
 
@@ -214,7 +224,6 @@ class World {
   p3_drawTile(i, j) {
     this.tiles[i + ", " + j] = this.island.drawTile(i, j, this);
     if (this.tiles[i + ", " + j].getType() == "OCEAN") {
-      
       this.oceanTiles++;
     } else {
       this.landTiles++;
@@ -254,6 +263,6 @@ class World {
   }
 
   tileAt([i, j]) {
-    return this.tiles[i + ", " + j]
+    return this.tiles[i + ", " + j];
   }
 }

@@ -1,3 +1,5 @@
+const BUTT_OFFSET_X = 30;
+const BUTT_OFFSET_Y = -41;
 const SAIL_OFFSET_X = 14;
 const SAIL_OFFSET_Y = -32;
 class Boat extends PathfindingNPC {
@@ -7,13 +9,14 @@ class Boat extends PathfindingNPC {
     this.front = boatParts[0];
     this.midSail = boatParts[1];
     this.mid = boatParts[2];
+    this.butt = boatParts[3];
     this.level = 1;
     this.speed = speed;
 
     this.prevX = x;
     this.prevY = y;
   }
-
+  //
   pickObjective() {
     return [
       Math.floor(this.x) + get_random_int_between_inclusive(-20, 20),
@@ -52,6 +55,7 @@ class Boat extends PathfindingNPC {
     p.imageMode(p.CENTER);
 
     if (this.prevX > this.x || this.prevY < this.y) p.scale(-1, 1);
+    p.image(this.butt, BUTT_OFFSET_X, BUTT_OFFSET_Y + waveOffset);
     p.image(this.midSail, SAIL_OFFSET_X, SAIL_OFFSET_Y + waveOffset);
     p.image(this.front, 0, 0 + waveOffset);
 
