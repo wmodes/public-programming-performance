@@ -290,7 +290,7 @@ class World {
   p3_drawSelectedTile(i, j) {
     this.p.noFill();
     this.p.stroke(0, 255, 0, 128);
-
+    
     if (this.tiles[i, j] == undefined)
       return;
 
@@ -309,6 +309,7 @@ class World {
 
     // this adds the text above the tile
     this.p.text("tile " + [i, j], 0, 0);
+    this.p.text("tile type " + this.tiles[i, j].type, 0, 20);
   }
 
   p3_drawAfter(camera_offset) {
