@@ -135,7 +135,7 @@ class PathfindingTestNpc extends PathfindingNPC {
     }
 
     isTileTraversable(tile) {
-        return tile.isLand();
+        return !tile.isLand();
     }
 }
 
