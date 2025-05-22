@@ -94,7 +94,7 @@ class Boat extends PathfindingNPC {
     if (this.delete === true) world.npc_manager.removeEntity(this.id);
 
     if (
-      world.tiles[Math.round(this.x) + ", " + Math.round(this.y)].getType() !==
+      world.tiles[Math.round(this.x), Math.round(this.y)].getType() !==
       "OCEAN"
     ) {
       if (this.isExploding === false) world.soundEngine.playExplosion();
