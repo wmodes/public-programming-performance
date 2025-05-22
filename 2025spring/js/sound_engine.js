@@ -40,24 +40,28 @@ class SoundEngine {
     );
   }
 
-  tileClicked(tile) {
-    let tileType = "OCEAN";
-    if (tile) {
-      tileType = tile;
-    }
-    if (tileType == "OCEAN") {
-      this.waterClickSound.play(
-        0,
-        1,
-        1,
-        (this.waterClickSound.duration() * 2) / 7
-      );
-    } else if (tileType == "DIRT" || tileType == "GRASS") {
-      this.dirtClickSound.play(0, 1, 0.5);
-    } else if (tileType == "SAND") {
-      this.sandClickSound.play();
-    } else if (tileType == "SNOW") {
-      this.snowClickSound.play();
+  tileClicked(tileType) {
+    switch (tileType){
+      default:
+        this.waterClickSound.play(
+          0,
+          1,
+          1,
+          (this.waterClickSound.duration() * 2) / 7
+        );
+      break;
+      case("ROCK"):
+      break;
+      case("GRASS"):
+      case("DIRT"):
+        this.dirtClickSound.play(0, 1, 0.5);
+      break;
+      case("SAND"):
+        this.sandClickSound.play();
+      break;
+      case("SNOW"):
+        this.snowClickSound.play();
+      break;
     }
   }
 

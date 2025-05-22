@@ -74,6 +74,7 @@ var s = function (p) {
   p.setup = function () {
     let canvas = p.createCanvas(800, 400);
     canvas.parent("container");
+    canvas.style.imageRendering = "pixelated";
 
     // Disable default browser controls
     window.addEventListener("keydown", function (e) {
@@ -161,7 +162,7 @@ var s = function (p) {
 
     // Render all tiles (odd and even rows)
     let overdrawX = 0.1;
-    let overdrawY = 0.5;
+    let overdrawY = 0.8;
     let y0 = Math.floor((0 - overdrawY) * tile_rows);
     let y1 = Math.floor((1 + overdrawY) * tile_rows);
     let x0 = Math.floor((0 - overdrawX) * tile_columns);
@@ -173,25 +174,27 @@ var s = function (p) {
 
     for (let y = y0; y < y1; y++) {
       for (let x = x0; x < x1; x++) {
-        let isLand = p.drawTile(p.tileRenderingOrder([x + world_offset.x, y - world_offset.y]), [camera_offset.x, camera_offset.y]);
-        if (isLand) {
+        let tile = p.drawTile(p.tileRenderingOrder([x + world_offset.x, y - world_offset.y]), [camera_offset.x, camera_offset.y]);
+        if (tile.isLand()) {
           landNum++;
         } else {
           waterNum++;
         }
       }
       for (let x = x0; x < x1; x++) {
-        let isLand = p.drawTile(
+        let tile = p.drawTile(
           p.tileRenderingOrder([x + 0.5 + world_offset.x, y + 0.5 - world_offset.y]), 
           [camera_offset.x, camera_offset.y]
         );
-        if (isLand) {
+        if (tile.isLand()) {
           landNum++;
         } else {
           waterNum++;
         }
       }
     }
+
+    w.island.landRatio = landNum/(landNum+waterNum);
 
     p.describeMouseTile(world_pos, [camera_offset.x, camera_offset.y]);
 
@@ -227,11 +230,13 @@ var s = function (p) {
     );
     p.push();
     p.translate(0 - screen_x, screen_y);
+    let tile;
     if (w.p3_drawTile) {
-      w.p3_drawTile(world_x, world_y, -screen_x, screen_y);
+      tile = w.p3_drawTile(world_x, world_y, -screen_x, screen_y);
       
     }
     p.pop();
+    return tile;
   }
 }
 

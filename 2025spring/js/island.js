@@ -5,24 +5,35 @@
 
 "use strict";
 
+const BIOME_HEIGHT_SCALE = {
+  SAND: 0.5,
+  ROCK: 2.5,
+  GRASS: 1,
+  SNOW: 1
+}
+
 class Island {
   constructor(p) {
     this.p = p;
+    this.t = 0;
+    this.landRatio = 0;
     // Island & chunk properties
-    this.ISLAND_SIZE = 24; // tile units (not pixels)
+    this.ISLAND_SIZE = 32; // tile units (not pixels) default: 24
     this.CHUNK_GRID_SIZE = this.ISLAND_SIZE;
-    this.ISLAND_PRESENCE_THRESHOLD = 0.55;
+    this.ISLAND_PRESENCE_THRESHOLD = 0.55; // default: .55
+    this.ISLAND_HEIGHT_SCALER = 300;
 
     // Noise parameters
     this.NOISE_SCALE_ROUGH = 0.085;
     this.NOISE_SCALE_DETAIL = 0.18;
     this.CHUNK_PRESENCE_NOISE_SCALE = 0.1;
-    this.ISLAND_SHAPE_SEED_NOISE_SCALE = 0.05;
-    this.BIOME_NOISE_SCALE = 0.13; // New: scale for biome selection
+    this.ISLAND_SHAPE_SEED_NOISE_SCALE = 0.75; // default: .05
+    this.BIOME_NOISE_SCALE = 0.2; // default: .1
+    this.PARALLAX_SCALE = 1.5;
 
     // Thresholds for land formation
-    this.SAND_THRESHOLD = 0.18;
-    this.LAND_THRESHOLD = 0.28;
+    this.SAND_THRESHOLD = 0.075;  // default: .28
+    this.LAND_THRESHOLD = 0.15;   // default: .38
     this.DETAIL_THRESHOLD = 0.4;
   }
 
@@ -44,7 +55,7 @@ class Island {
       ) * 100000;
     let sy =
       this.p.noise(
-        cX * this.ISLAND_SHAPE_SEED_NOISE_SCALE + 30.5,
+        cX * this.ISLAND_SHAPE_SEED_NOISE_SCALE, + 30.5,
         cY * this.ISLAND_SHAPE_SEED_NOISE_SCALE + 40.1
       ) * 100000;
     return [sx, sy];
@@ -56,15 +67,15 @@ class Island {
     let n = this.p.noise(
       cX * this.BIOME_NOISE_SCALE + 100.1,
       cY * this.BIOME_NOISE_SCALE + 200.2
-    );
-    // if (n < 0.5) return "SNOW";
-    // if (n < 0.5) return "ROCK";
-    // if (n < 0.75) return "SAND";
-    return "GRASS";
+    ) * 4;
+    if (n < 1) return "SNOW";
+    if (n < 2) return "GRASS";
+    if (n < 3) return "ROCK";
+    return "SAND";
   }
 
   // Returns "water", "sand", or "land" for a given tile in an island
-  getIslandTileType(localX, localY, shapeSeedX, shapeSeedY) {
+  getIslandTileType(localX, localY, shapeSeedX, shapeSeedY, biome) {
     // Perlin Noise Pass 1: Rough Outline
     let n1X = localX * this.NOISE_SCALE_ROUGH + shapeSeedX;
     let n1Y = localY * this.NOISE_SCALE_ROUGH + shapeSeedY;
@@ -88,11 +99,11 @@ class Island {
 
     // Thresholding
     if (finalNoiseValue > this.LAND_THRESHOLD) {
-      return (noiseValueRough < this.DETAIL_THRESHOLD) ? "TREE" : "LAND";
+      return {id: (noiseValueRough % .2 > .16) ? "DECOR" : "LAND", n: finalNoiseValue};
     } else if (finalNoiseValue > this.SAND_THRESHOLD) {
-      return "SAND";
+      return {id: "SAND", n: finalNoiseValue};
     } else {
-      return "OCEAN";
+      return {id: "OCEAN", n: finalNoiseValue};
     }
   }
 
@@ -162,17 +173,21 @@ class Island {
     }
 
     // Determine tile type
-    let type = this.getIslandTileType(localX, localY, shapeSeedX, shapeSeedY);
+    let type = this.getIslandTileType(localX, localY, shapeSeedX, shapeSeedY, biome);
+    let mody = 16+(type.n-this.SAND_THRESHOLD)*this.ISLAND_HEIGHT_SCALER*BIOME_HEIGHT_SCALE[biome];
 
     // Draw based on biome and tile type
-    switch (type){
-      case ("TREE"):
-        tile.changeAttributes(biome, 1);
-        tile.draw({y:-138, cropOffsetY: 0,height:160,cropHeight:80});
+    switch (type.id){
+      case ("DECOR"):
+        tile.changeAttributes(biome, this.p.floor(mody));
+        if (biome == "GRASS")
+          tile.draw({y:-mody-116, cropOffsetY: 0,height:160,cropHeight:80});
+        else
+          tile.draw({y:-mody});
       break;
       case ("LAND"):
         tile.changeAttributes(biome);
-        tile.draw();
+        tile.draw({y:-mody});
         /*
         if (biome === "snow") {
           world.p.image(world.snow, -30, -24, 60, 50, 0, 80 - 24, 32, 24);
@@ -187,13 +202,13 @@ class Island {
       break;
       case ("SAND"):
         // Sand edge is always sand, regardless of biome
-        tile.changeAttributes(type);
-        tile.draw({y:-20});
+        tile.changeAttributes(type.id);
+        tile.draw({y:-mody});
         //world.p.image(world.sand, -30, -24, 60, 50, 0, 80 - 24, 32, 24);
       break;
       default:
         // Animated water fill
-        tile.changeAttributes(type);
+        tile.changeAttributes(type.id);
         let waveOffset = getWaterWaveOffset(i, j, this.p);
         let frame = getWaterFrame(i, j, this.p);
         tile.draw({y:-16 + waveOffset, cropOffsetX: frame === 0 ? 0 : 32, cropOffsetY: 8});
@@ -208,5 +223,34 @@ class Island {
     }
 
     return tile;
+  }
+
+  drawClouds(offset, world) {
+    let parallaxOffset = {x: offset[0]*this.PARALLAX_SCALE, y: offset[1]*this.PARALLAX_SCALE};
+    let height = 400;
+    let width = 800;
+    let cloudDetail = 6;
+    let scale = 0.008;
+    let waterRatio = 1-this.landRatio;
+    let cloudAlpha = 250+100*waterRatio;
+    let fill = {
+    //   blue color       brown color
+      r: 206*waterRatio + 255*this.landRatio,
+      g: 236*waterRatio + 200*this.landRatio, 
+      b: 255*waterRatio + 202*this.landRatio
+    }
+    
+    this.p.noStroke();
+    for (let y = 0; y < height+20; y += cloudDetail) {
+      for (let x = 0; x < width+20; x += cloudDetail) {
+        let n = world.p.noise((x+parallaxOffset.x+10000) * scale, (y-parallaxOffset.y+10000) * scale, this.t); // noise based on land and time
+        if (n > 0.5) {
+          world.p.fill(fill.r, fill.g, fill.b, cloudAlpha * (n - 0.5) * 2);
+          world.p.rect(x, y, cloudDetail, cloudDetail);
+        }
+      }
+    }
+   
+    this.t += 0.001; 
   }
 }

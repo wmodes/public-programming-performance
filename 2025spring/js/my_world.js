@@ -29,7 +29,7 @@ class World {
     [this.tw, this.th] = [TILE_WIDTH, TILE_HEIGHT]; // tw = tile width, th = tile height
     this.clicks = {};
     this.island = new Island(p); // Use the new Island class
-    this.tileTypes = { OCEAN: [], SAND: [], GRASS: [], DIRT: [], SNOW: [] };
+    this.tileTypes = { OCEAN: [], SAND: [], ROCK: [], GRASS: [], DIRT: [], SNOW: [], FILLER: []};
     this.tiles = {};
     this.landTiles = 0;
     this.oceanTiles = 0;
@@ -62,6 +62,39 @@ class World {
     );
     this.tileTypes.SAND.push(this.sand);
 
+    this.rock = this.p.loadImage(
+      "assets/tiles/rock_base_retouch.png",
+      () => {
+        console.log("loaded rock_base_retouch.png");
+      },
+      () => {
+        console.log("failed to rock_base_retouch.png");
+      }
+    );
+    this.tileTypes.ROCK.push(this.rock);
+
+    this.rock0 = this.p.loadImage(
+      "assets/tiles/rock_base.png",
+      () => {
+        console.log("loaded rock_base.png");
+      },
+      () => {
+        console.log("failed to rock_base.png");
+      }
+    );
+    this.tileTypes.ROCK.push(this.rock0);
+
+    this.rock1 = this.p.loadImage(
+      "assets/tiles/rock_base_retouch_rock0.png",
+      () => {
+        console.log("loaded rock_base_retouch_rock0.png");
+      },
+      () => {
+        console.log("failed to rock_base_retouch_rock0.png");
+      }
+    );
+    this.tileTypes.ROCK.push(this.rock1);
+
     this.grass = this.p.loadImage(
       "assets/tiles/xavier_grass.png",
       () => {
@@ -90,22 +123,55 @@ class World {
         console.log("loaded xavier_grass_tree1.png");
       },
       () => {
-        console.log("failed to load xavier_grass_tree0.png");
+        console.log("failed to load xavier_grass_tree1.png");
       }
     );
     this.tileTypes.GRASS.push(this.tree1);
-
+    
     this.tree2 = this.p.loadImage(
       "assets/decor/xavier_grass_tree2.png",
       () => {
-        console.log("loaded xavier_grass_tree0.png");
+        console.log("loaded xavier_grass_tree2.png");
       },
       () => {
         console.log("failed to load xavier_grass_tree2.png");
       }
     );
     this.tileTypes.GRASS.push(this.tree2);
-
+    
+    this.tree3 = this.p.loadImage(
+      "assets/decor/xavier_grass_tree3.png",
+      () => {
+        console.log("loaded xavier_grass_tree3.png");
+      },
+      () => {
+        console.log("failed to load xavier_grass_tree3.png");
+      }
+    );
+    this.tileTypes.GRASS.push(this.tree3);
+    /*
+    this.tree4 = this.p.loadImage(
+      "assets/decor/xavier_grass_tree4.png",
+      () => {
+        console.log("loaded xavier_grass_tree4.png");
+      },
+      () => {
+        console.log("failed to load xavier_grass_tree4.png");
+      }
+    );
+    this.tileTypes.GRASS.push(this.tree4);
+    
+    this.tree5 = this.p.loadImage(
+      "assets/decor/xavier_grass_tree5.png",
+      () => {
+        console.log("loaded xavier_grass_tree5.png");
+      },
+      () => {
+        console.log("failed to load xavier_grass_tree5.png");
+      }
+    );
+    this.tileTypes.GRASS.push(this.tree5);
+    */
     this.dirt = this.p.loadImage(
       "assets/tiles/dirt_base.png",
       () => {
@@ -128,6 +194,38 @@ class World {
     );
     this.tileTypes.SNOW.push(this.snow);
 
+    this.col0 = this.p.loadImage(
+      "assets/decor/dirt_column.png",
+      () => {
+        console.log("loaded dirt_column.png");
+      },
+      () => {
+        console.log("failed to load dirt_column.png");
+      }
+    );
+    this.tileTypes.FILLER.push(this.col0);
+
+    this.col1 = this.p.loadImage(
+      "assets/decor/sand_column.png",
+      () => {
+        console.log("loaded sand_column.png");
+      },
+      () => {
+        console.log("failed to load sand_column.png");
+      }
+    );
+    this.tileTypes.FILLER.push(this.col1);
+
+    this.col2 = this.p.loadImage(
+      "assets/decor/rock_column.png",
+      () => {
+        console.log("loaded rock_column.png");
+      },
+      () => {
+        console.log("failed to load rock_column.png");
+      }
+    );
+    this.tileTypes.FILLER.push(this.col2);
     this.boatParts = [
       this.p.loadImage(
         "assets/tiles/boat_front.png",
@@ -241,7 +339,8 @@ class World {
   /** this is called when the tile at i,j is clicked */
   p3_tileClicked(i, j) {
     let key = [i, j];
-    let type = this.tiles[i + ", " + j].getType();
+    this.clicks[key] = 1 + (this.clicks[key] | 0);
+    let type = this.tiles[i, j].getType();
     this.soundEngine.tileClicked(type);
     if (type == "OCEAN") {
       // let boat = new Boat(this.p, this.boatParts, i, j, 1);
@@ -258,24 +357,25 @@ class World {
 
   /** This draws the tile at that location */
   p3_drawTile(i, j) {
-    this.tiles[i + ", " + j] = this.island.drawTile(i, j, this);
-    if (this.tiles[i + ", " + j].getType() == "OCEAN") {
-      this.oceanTiles++;
+    this.tiles[i, j] = this.island.drawTile(i, j, this);
+    if (this.tiles[i, j].getType() == "OCEAN") {
+      this.oceanTiles++
     } else {
       this.landTiles++;
     }
     //console.log("(" + i + ", " + j + ")  " + this.tiles[i + ", " + j]);
-    return this.tiles[(i, j)] && this.tiles[(i, j)].isLand();
+    return this.tiles[i, j];
   }
 
   /** draws outline around the tile. */
   p3_drawSelectedTile(i, j) {
     this.p.noFill();
     this.p.stroke(0, 255, 0, 128);
+    
+    if (this.tiles[i, j] == undefined)
+      return;
 
-    // Added temp code for adjusting selected tile based on height, will improve later
-    let y =
-      this.tiles[(i, j)] && this.tiles[(i, j)].getType() == "OCEAN" ? 8 : 0;
+    let y = this.tiles[i, j].height;
 
     // this draws the outline
     this.p.beginShape();
@@ -290,15 +390,17 @@ class World {
 
     // this adds the text above the tile
     this.p.text("tile " + [i, j], 0, 0);
+    this.p.text("tile type " + this.tiles[i, j].type, 0, 20);
   }
 
   p3_drawAfter(camera_offset) {
     this.npc_manager.update(this);
     this.npc_manager.draw(this.p, camera_offset);
     this.soundEngine.dynamicBackground(this.oceanTiles, this.landTiles);
+    this.island.drawClouds(camera_offset, this);
   }
 
   tileAt([i, j]) {
-    return this.tiles[i + ", " + j];
+    return this.tiles[i, j];
   }
 }
