@@ -301,11 +301,10 @@ class World {
       ),
     ];
 
-    this.bird1 = this.p.loadImage("./assets/npc/seagull.png");
-    this.bird2 = this.p.loadImage("./assets/npc/seagull2.png")
     
     this.turtlesheet = this.p.loadImage("assets/npc/turtle_NPC_spritesheet.png")
     this.seagullsheet = this.p.loadImage("assets/npc/seagull_NPC_spritesheet.png")
+    this.whalesheet = this.p.loadImage("assets/npc/whale_NPC_spritesheet.png")
   }
 
   /** This is called on the p3 setup call */
@@ -314,6 +313,7 @@ class World {
     //for (let i = 0; i < 100; i++){
     this.npc_manager.spawnEntity(new AnimalNPC(0,0,5,this.spriteSheetCutter(2,4,this.turtlesheet)));
     this.npc_manager.spawnEntity(new AnimalNPC(0,0,5,this.spriteSheetCutter(2,4,this.seagullsheet)));
+    this.npc_manager.spawnEntity(new AnimalNPC(0,0,5,this.spriteSheetCutter(2,4,this.whalesheet)));
     //}
   }
 
