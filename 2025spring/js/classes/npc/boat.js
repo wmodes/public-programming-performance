@@ -10,6 +10,7 @@ class Boat extends PathfindingNPC {
     this.midSail = boatParts[1];
     this.mid = boatParts[2];
     this.butt = boatParts[3];
+    this.explosion = boatParts[4];
     this.level = 1;
     this.speed = speed;
 
@@ -72,9 +73,10 @@ class Boat extends PathfindingNPC {
       if (npc.type && npc.type == "boat") {
         let distance = Math.sqrt((this.x - npc.x) ** 2 + (this.y - npc.y) ** 2);
         if (distance <= 1 && this != npc) {
-          this.speed = 0;
-          npc.speed = 0;
+          world.npc_manager.removeEntity(npc.id);
+          world.npc_manager.removeEntity(this.id);
           world.soundEngine.playExplosion();
+          world.p.image(this.explosion, 0, 0); // image doesn't display properly when boat explodes
         }
       }
     });

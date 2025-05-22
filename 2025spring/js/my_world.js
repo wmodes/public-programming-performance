@@ -165,6 +165,15 @@ class World {
           console.log("failed to boat_butt.png");
         }
       ),
+      this.p.loadImage(
+        "assets/decor/explosion.png",
+        () => {
+          console.log("loaded explosion.png");
+        },
+        () => {
+          console.log("failed to explosion.png");
+        }
+      ),
     ];
 
     this.bird1 = this.p.loadImage("./assets/npc/seagull.png");
