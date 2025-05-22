@@ -33,7 +33,7 @@ class Boat extends PathfindingNPC {
   }
 
   isTileTraversable(tile) {
-    return tile.isLand();
+    return !tile.isLand();
   }
 
   draw(p, [camera_x, camera_y]) {
