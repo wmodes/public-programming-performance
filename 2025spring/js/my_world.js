@@ -291,9 +291,10 @@ class World {
     this.p.noFill();
     this.p.stroke(0, 255, 0, 128);
 
-    // Added temp code for adjusting selected tile based on height, will improve later
-    let y =
-      this.tiles[i, j] && this.tiles[i, j].getType() == "OCEAN" ? 8 : 0;
+    if (this.tiles[i, j] == undefined)
+      return;
+
+    let y = this.tiles[i, j].height;
 
     // this draws the outline
     this.p.beginShape();

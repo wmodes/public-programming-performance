@@ -9,7 +9,7 @@ class Tile {
     {
         this.p = p;
         this.world = world;
-        this.height;
+        this.height = 0;
         this.width;
         this.offsetY;
         this.sprite;
@@ -50,6 +50,7 @@ class Tile {
         if (this.sprite) {
             this.world.p.image(this.sprite, -30, -30 + defaults.y, 60, 60);
         }
+        this.height = defaults.y;
     }
     
 
