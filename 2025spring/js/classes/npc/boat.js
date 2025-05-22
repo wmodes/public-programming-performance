@@ -9,15 +9,20 @@ class Boat extends PathfindingNPC {
     this.mid = boatParts[2];
     this.level = 1;
     this.speed = speed;
+
+    this.prevX = x;
+    this.prevY = y;
   }
 
   pickObjective() {
-    return [Math.floor(this.x) + (get_random_int_between_inclusive(-20, 20)), Math.floor(this.y) + (get_random_int_between_inclusive(-20, 20))];
+    return [
+      Math.floor(this.x) + get_random_int_between_inclusive(-20, 20),
+      Math.floor(this.y) + get_random_int_between_inclusive(-20, 20),
+    ];
   }
 
-  
   isTileTraversable(tile) {
-      return tile.isLand();
+    return tile.isLand();
   }
 
   draw(p, [camera_x, camera_y]) {
@@ -37,33 +42,37 @@ class Boat extends PathfindingNPC {
     }
 
     let [screen_x, screen_y] = p.worldToScreen(
-        [this.x, this.y],
-        [camera_x, camera_y]
+      [this.x, this.y],
+      [camera_x, camera_y]
     );
     let waveOffset = getWaterWaveOffset(screen_x, screen_y, p);
 
     p.push();
     p.translate(0 - screen_x, screen_y);
     p.imageMode(p.CENTER);
-    
-    p.image(this.midSail,SAIL_OFFSET_X,SAIL_OFFSET_Y + waveOffset);
-    p.image(this.front,0, 0 + waveOffset);
+
+    if (this.prevX > this.x || this.prevY < this.y) p.scale(-1, 1);
+    p.image(this.midSail, SAIL_OFFSET_X, SAIL_OFFSET_Y + waveOffset);
+    p.image(this.front, 0, 0 + waveOffset);
 
     p.pop();
+
+    this.prevX = this.x;
+    this.prevY = this.y;
   }
 
   update(world) {
     super.update(world);
 
-    world.npcManager.forEachNPC((npc) => {
+    world.npc_manager.forEachNpc((npc) => {
       if (npc.type && npc.type == "boat") {
-        let distance = Math.sqrt((this.x - npc.x)**2 + (this.y-npc.y)**2);
+        let distance = Math.sqrt((this.x - npc.x) ** 2 + (this.y - npc.y) ** 2);
         if (distance <= 1 && this != npc) {
-          console.log("KABOOM!");
           this.speed = 0;
           npc.speed = 0;
+          world.soundEngine.playExplosion();
         }
       }
-    })
+    });
   }
 }
