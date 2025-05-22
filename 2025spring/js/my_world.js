@@ -174,6 +174,33 @@ class World {
           console.log("failed to explosion.png");
         }
       ),
+      this.p.loadImage(
+        "assets/decor/boat_debris1.png",
+        () => {
+          console.log("loaded boat_debris1.png");
+        },
+        () => {
+          console.log("failed to boat_debris1.png");
+        }
+      ),
+      this.p.loadImage(
+        "assets/decor/boat_debris2.png",
+        () => {
+          console.log("loaded boat_debris2.png");
+        },
+        () => {
+          console.log("failed to boat_debris2.png");
+        }
+      ),
+      this.p.loadImage(
+        "assets/decor/boat_debris3.png",
+        () => {
+          console.log("loaded boat_debris3.png");
+        },
+        () => {
+          console.log("failed to boat_debris3.png");
+        }
+      ),
     ];
 
     this.bird1 = this.p.loadImage("./assets/npc/seagull.png");

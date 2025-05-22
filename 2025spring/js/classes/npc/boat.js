@@ -11,8 +11,15 @@ class Boat extends PathfindingNPC {
     this.mid = boatParts[2];
     this.butt = boatParts[3];
     this.explosion = boatParts[4];
+    this.debris1 = boatParts[5];
+    this.debris2 = boatParts[6];
+    this.debris3 = boatParts[7];
     this.level = 1;
     this.speed = speed;
+    this.isExploding = false;
+    this.explodeTime = 0;
+    this.elapsedTime = 0;
+    this.delete = false;
 
     this.prevX = x;
     this.prevY = y;
@@ -55,10 +62,25 @@ class Boat extends PathfindingNPC {
     p.translate(0 - screen_x, screen_y);
     p.imageMode(p.CENTER);
 
-    if (this.prevX > this.x || this.prevY < this.y) p.scale(-1, 1);
-    p.image(this.butt, BUTT_OFFSET_X, BUTT_OFFSET_Y + waveOffset);
-    p.image(this.midSail, SAIL_OFFSET_X, SAIL_OFFSET_Y + waveOffset);
-    p.image(this.front, 0, 0 + waveOffset);
+    // if the boat is exploding, play the explosion animation
+    // and then set this.delete to true, to be used in update()
+    if (this.isExploding) {
+      this.elapsedTime += this.explodeTime;
+      if (this.elapsedTime > 2400000) this.delete = true;
+      else if (this.elapsedTime > 600000) p.image(this.debris3, 0, 0);
+      else if (this.elapsedTime > 400000) p.image(this.debris2, 0, 0);
+      else if (this.elapsedTime > 200000) p.image(this.debris1, 0, 0);
+      else {
+        p.image(this.explosion, 0, 0);
+      }
+      this.explodeTime = p.millis() - this.explodeTime;
+    } else {
+      // display boat as normal
+      if (this.prevX > this.x || this.prevY < this.y) p.scale(-1, 1); // flips image if moving right
+      p.image(this.butt, BUTT_OFFSET_X, BUTT_OFFSET_Y + waveOffset);
+      p.image(this.midSail, SAIL_OFFSET_X, SAIL_OFFSET_Y + waveOffset);
+      p.image(this.front, 0, 0 + waveOffset);
+    }
 
     p.pop();
 
@@ -69,14 +91,17 @@ class Boat extends PathfindingNPC {
   update(world) {
     super.update(world);
 
+    if (this.delete === true) world.npc_manager.removeEntity(this.id);
+
     world.npc_manager.forEachNpc((npc) => {
       if (npc.type && npc.type == "boat") {
         let distance = Math.sqrt((this.x - npc.x) ** 2 + (this.y - npc.y) ** 2);
         if (distance <= 1 && this != npc) {
-          world.npc_manager.removeEntity(npc.id);
-          world.npc_manager.removeEntity(this.id);
-          world.soundEngine.playExplosion();
-          world.p.image(this.explosion, 0, 0); // image doesn't display properly when boat explodes
+          if (this.isExploding === false) world.soundEngine.playExplosion();
+          this.isExploding = true;
+          this.speed = 0;
+          npc.speed = 0;
+          this.explodeTime = world.p.millis();
         }
       }
     });
