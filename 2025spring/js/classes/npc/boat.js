@@ -93,6 +93,15 @@ class Boat extends PathfindingNPC {
 
     if (this.delete === true) world.npc_manager.removeEntity(this.id);
 
+    if (
+      world.tiles[Math.round(this.x) + ", " + Math.round(this.y)].getType() !==
+      "OCEAN"
+    ) {
+      if (this.isExploding === false) world.soundEngine.playExplosion();
+      this.speed = 0;
+      this.isExploding = true;
+    }
+
     world.npc_manager.forEachNpc((npc) => {
       if (npc.type && npc.type == "boat") {
         let distance = Math.sqrt((this.x - npc.x) ** 2 + (this.y - npc.y) ** 2);

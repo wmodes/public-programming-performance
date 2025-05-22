@@ -241,9 +241,9 @@ class World {
   /** this is called when the tile at i,j is clicked */
   p3_tileClicked(i, j) {
     let key = [i, j];
-    this.clicks[key] = 1 + (this.clicks[key] | 0);
-    this.soundEngine.tileClicked(this.tiles[i + ", " + j].getType());
-    if (this.clicks[[i, j]] % 2 == 1) {
+    let type = this.tiles[i + ", " + j].getType();
+    this.soundEngine.tileClicked(type);
+    if (type == "OCEAN") {
       // let boat = new Boat(this.p, this.boatParts, i, j, 1);
       this.npc_manager.spawnEntity(new Boat(this.boatParts, i, j, 5));
       // boat.draw();
