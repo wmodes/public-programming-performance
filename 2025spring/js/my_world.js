@@ -128,22 +128,98 @@ class World {
     );
     this.tileTypes.SNOW.push(this.snow);
 
+    this.boatParts = [
+      this.p.loadImage(
+        "assets/tiles/boat_front.png",
+        () => {
+          console.log("loaded boat_front.png");
+        },
+        () => {
+          console.log("failed to boat_front.png");
+        }
+      ),
+      this.p.loadImage(
+        "assets/tiles/boat_middle_sail.png",
+        () => {
+          console.log("loaded boat_middle_sail.png");
+        },
+        () => {
+          console.log("failed to boat_middle_sail.png");
+        }
+      ),
+      this.p.loadImage(
+        "assets/tiles/boat_middle.png",
+        () => {
+          console.log("loaded boat_middle.png");
+        },
+        () => {
+          console.log("failed to boat_middle.png");
+        }
+      ),
+      this.p.loadImage(
+        "assets/decor/boat_butt.png",
+        () => {
+          console.log("loaded boat_butt.png");
+        },
+        () => {
+          console.log("failed to boat_butt.png");
+        }
+      ),
+      this.p.loadImage(
+        "assets/decor/explosion.png",
+        () => {
+          console.log("loaded explosion.png");
+        },
+        () => {
+          console.log("failed to explosion.png");
+        }
+      ),
+      this.p.loadImage(
+        "assets/decor/boat_debris1.png",
+        () => {
+          console.log("loaded boat_debris1.png");
+        },
+        () => {
+          console.log("failed to boat_debris1.png");
+        }
+      ),
+      this.p.loadImage(
+        "assets/decor/boat_debris2.png",
+        () => {
+          console.log("loaded boat_debris2.png");
+        },
+        () => {
+          console.log("failed to boat_debris2.png");
+        }
+      ),
+      this.p.loadImage(
+        "assets/decor/boat_debris3.png",
+        () => {
+          console.log("loaded boat_debris3.png");
+        },
+        () => {
+          console.log("failed to boat_debris3.png");
+        }
+      ),
+    ];
+
     this.bird1 = this.p.loadImage("./assets/npc/seagull.png");
-    this.bird2 = this.p.loadImage("./assets/npc/seagull2.png")
+    this.bird2 = this.p.loadImage("./assets/npc/seagull2.png");
   }
 
   /** This is called on the p3 setup call */
   p3_setup() {
-    this.npc_manager.spawnEntity(new PathfindingTestNpc(0,0,5));
-    for (let i = 0; i < 100; i++){
-    this.npc_manager.spawnEntity(new AnimalNPC(0,0,5,[
-      [this.bird1,this.bird2],
-      [this.bird1,this.bird2],
-      [this.bird1,this.bird2],
-      [this.bird1,this.bird2],
-      ]
-    ));
-  }
+    this.npc_manager.spawnEntity(new PathfindingTestNpc(0, 0, 5));
+    for (let i = 0; i < 100; i++) {
+      this.npc_manager.spawnEntity(
+        new AnimalNPC(0, 0, 5, [
+          [this.bird1, this.bird2],
+          [this.bird1, this.bird2],
+          [this.bird1, this.bird2],
+          [this.bird1, this.bird2],
+        ])
+      );
+    }
   }
 
   /** This is called if someone changes the seed */
@@ -165,8 +241,13 @@ class World {
   /** this is called when the tile at i,j is clicked */
   p3_tileClicked(i, j) {
     let key = [i, j];
-    this.clicks[key] = 1 + (this.clicks[key] | 0);
-    this.soundEngine.tileClicked(this.tiles[i + ", " + j])
+    let type = this.tiles[i + ", " + j].getType();
+    this.soundEngine.tileClicked(type);
+    if (type == "OCEAN") {
+      // let boat = new Boat(this.p, this.boatParts, i, j, 1);
+      this.npc_manager.spawnEntity(new Boat(this.boatParts, i, j, 5));
+      // boat.draw();
+    }
   }
 
   /** This is called before the tile is drawn. */
@@ -179,9 +260,9 @@ class World {
   p3_drawTile(i, j) {
     this.tiles[i + ", " + j] = this.island.drawTile(i, j, this);
     if (this.tiles[i + ", " + j].getType() == "OCEAN") {
-      this.oceanTiles++
+      this.oceanTiles++;
     } else {
-      this.landTiles++
+      this.landTiles++;
     }
     //console.log("(" + i + ", " + j + ")  " + this.tiles[i + ", " + j]);
     return this.tiles[(i, j)] && this.tiles[(i, j)].isLand();
@@ -218,6 +299,6 @@ class World {
   }
 
   tileAt([i, j]) {
-    return this.tiles[i + ", " + j]
+    return this.tiles[i + ", " + j];
   }
 }

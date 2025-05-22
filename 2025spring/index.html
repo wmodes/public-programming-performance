@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <!-- This title is used for tabs and bookmarks -->
     <title>Spring 2025 - Island Archipelago</title>
 
@@ -11,19 +10,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Include CSS file, including a site-wide CSS and for this particular page -->
-    <link rel="stylesheet" type="text/css" href="../css/site.css">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="../css/site.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
 
     <!-- Load jQuery library -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
     <!-- Load p5.js library -->
     <script src="https://cdn.jsdelivr.net/npm/p5"></script>
-    
 
     <!-- Link to javascript files - DEFER waits until all elements are rendered -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.2.0/p5.min.js" integrity="sha512-b/htz6gIyFi3dwSoZ0Uv3cuv3Ony7EeKkacgrcVg8CMzu90n777qveu0PBcbZUA7TzyENGtU+qZRuFAkfqgyoQ==" crossorigin="anonymous"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.2.0/p5.min.js"
+      integrity="sha512-b/htz6gIyFi3dwSoZ0Uv3cuv3Ony7EeKkacgrcVg8CMzu90n777qveu0PBcbZUA7TzyENGtU+qZRuFAkfqgyoQ=="
+      crossorigin="anonymous"
+    ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/addons/p5.sound.min.js"></script>
     <script src="js/xxhash.min.js" defer></script>
 
@@ -31,6 +36,7 @@
     <script src="js/classes/npc/npc_manager.js" defer></script>
     <script src="js/classes/npc/pathfinding_npc.js" defer></script>
     <script src="js/classes/npc/animal_npc.js" defer></script>
+    <script src="js/classes/npc/boat.js" defer></script>
 
     <script src="js/engine.js" defer></script>
     <script src="js/sound_engine.js" defer></script>
@@ -38,93 +44,114 @@
     <script src="js/config.js" defer></script>
     <script src="js/island.js" defer></script>
     <script src="js/tile.js" defer></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <!-- Style this page by changing the CSS in ../css/site.css or css/experiment.css -->
     <main id="content">
-        <section>
+      <section>
+        <h1 style="text-align: center">
+          Spring 2025 - "Boaty McLongBoat" &#8658; "Island Archipelago"
+        </h1>
 
-            <h1 style="text-align: center;">Spring 2025 - "Boaty McLongBoat" &#8658; "Island Archipelago"</h1>
-
-            <div class="minor-section">
-                <div id="container"></div>
-                <div class="fullscreen-box instructions">
-                    <div>
-                        Arrow keys and WASD scroll. Hold Space to stop boats and people. Hold shift to place boats with sails. Clicking changes tiles.
-                    </div>
-                    <div>
-                        World seed: <input type="text" id="world-seed" value="Boaty McLongBoat">
-                    </div>
-                    <!-- <button id="fullscreen">Fullscreen</button> -->
-                </div>
+        <div class="minor-section">
+          <div id="container"></div>
+          <div class="fullscreen-box instructions">
+            <div>
+              Arrow keys and WASD scroll. Hold Space to stop boats and people.
+              Hold shift to place boats with sails. Clicking changes tiles.
             </div>
-
-            <div class="minor-section two-columns">
-                <div class="showcase-img">
-                    <img src="img/ocean.png" alt="Open Ocean" />
-                    <!--<img src="img/xavier_grass.png" />-->
-                </div>
-                <div>
-                    <h2>Description</h2>
-                    <p>We're starting with a simple "Infinite Worlds" sketch derived from Experiment 04. <a
-                            href="https://glitch.com/~cmpm147-playful-public-programming" target="_new">Boaty
-                            McLongBoat</a> is an infinite boat in which users can rearrange the deck chairs.</p>
-
-                    <p>We'll be removing McLongBoat and creating an island archipelago. Features:</p>
-                    <ol>
-                        <li>Islands with colored geography</li>
-                        <li>Users can navigate this infinite world with arrow keys.</li>
-                        <li>Users can place boats in the water.</li>
-                        <li>The world seed affects the island placement</li>
-                    </ol>
-
-                    <p>Stretch goals:</p>
-                    <ol>
-                        <li>Islands have varrying geography?</li>
-                        <li>Boats move around on the water?</li>
-                        <li>Adjacent boats make longer, wider, bigger boats?</li>
-                        <li>People can be placed on the islands?</li>
-                        <li>People move around on the islands?</li>
-                        <li>Splash animations when boats are placed or removed?</li>
-                        <li>What happens when you click on an island?</li>
-                    </ol>
-                </div>
+            <div>
+              World seed:
+              <input type="text" id="world-seed" value="Boaty McLongBoat" />
             </div>
+            <!-- <button id="fullscreen">Fullscreen</button> -->
+          </div>
+        </div>
 
-            <div class="minor-section">
-                <h2>A little Organization</h2>
-                <p>Could we benefit from some kind of organization with out getting all hierarchical?</p>
-                <ul>
-                    <li>Do we need a few coordinators or project managers?</li>
-                    <li>Do we need to make a high level list of goals?</li>
-                    <li>How can we break up the code into smaller pieces so that we aren't killing each others edits? Breaking everything into Classes?</li>
-                    <li>Do we need a lower level punch list?</li>
-                    <li>Do we need a list of stretch goals?</li>
-                    <li>Code style guide so we are all on the same page?</li>
-                    <li>What other questions did we forget to ask?</li>
-                </ul>
-            </div>
+        <div class="minor-section two-columns">
+          <div class="showcase-img">
+            <img src="img/ocean.png" alt="Open Ocean" />
+            <!--<img src="img/xavier_grass.png" />-->
+          </div>
+          <div>
+            <h2>Description</h2>
+            <p>
+              We're starting with a simple "Infinite Worlds" sketch derived from
+              Experiment 04.
+              <a
+                href="https://glitch.com/~cmpm147-playful-public-programming"
+                target="_new"
+                >Boaty McLongBoat</a
+              >
+              is an infinite boat in which users can rearrange the deck chairs.
+            </p>
 
-            <div class="minor-section">
-                <h2>Technical</h2>
-                <p>It remains to be seen, but watch this space for technical details.</p>
-            </div>
+            <p>
+              We'll be removing McLongBoat and creating an island archipelago.
+              Features:
+            </p>
+            <ol>
+              <li>Islands with colored geography</li>
+              <li>Users can navigate this infinite world with arrow keys.</li>
+              <li>Users can place boats in the water.</li>
+              <li>The world seed affects the island placement</li>
+            </ol>
 
-            <div class="minor-section">
-                <h2>Reflection</h2>
-                <p>This is a total experiment. Will it work? Will it bomb? Teaching like programming is sometimes an
-                    experiment.</p>
-            </div>
+            <p>Stretch goals:</p>
+            <ol>
+              <li>Islands have varrying geography?</li>
+              <li>Boats move around on the water?</li>
+              <li>Adjacent boats make longer, wider, bigger boats?</li>
+              <li>People can be placed on the islands?</li>
+              <li>People move around on the islands?</li>
+              <li>Splash animations when boats are placed or removed?</li>
+              <li>What happens when you click on an island?</li>
+            </ol>
+          </div>
+        </div>
 
-        </section>
-        <nav id="links" class="minor-section">
-            <!-- Put link back to homepage here. -->
-            <ul>
-                <li><a href="../index.html">Home</a></li>
-            </ul>
-        </nav>
+        <div class="minor-section">
+          <h2>A little Organization</h2>
+          <p>
+            Could we benefit from some kind of organization with out getting all
+            hierarchical?
+          </p>
+          <ul>
+            <li>Do we need a few coordinators or project managers?</li>
+            <li>Do we need to make a high level list of goals?</li>
+            <li>
+              How can we break up the code into smaller pieces so that we aren't
+              killing each others edits? Breaking everything into Classes?
+            </li>
+            <li>Do we need a lower level punch list?</li>
+            <li>Do we need a list of stretch goals?</li>
+            <li>Code style guide so we are all on the same page?</li>
+            <li>What other questions did we forget to ask?</li>
+          </ul>
+        </div>
+
+        <div class="minor-section">
+          <h2>Technical</h2>
+          <p>
+            It remains to be seen, but watch this space for technical details.
+          </p>
+        </div>
+
+        <div class="minor-section">
+          <h2>Reflection</h2>
+          <p>
+            This is a total experiment. Will it work? Will it bomb? Teaching
+            like programming is sometimes an experiment.
+          </p>
+        </div>
+      </section>
+      <nav id="links" class="minor-section">
+        <!-- Put link back to homepage here. -->
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+        </ul>
+      </nav>
     </main>
-</body>
-
+  </body>
 </html>
