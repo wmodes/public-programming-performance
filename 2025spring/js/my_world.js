@@ -341,7 +341,25 @@ class World {
     this.soundEngine.tileClicked(type);
     if (type == "OCEAN") {
       // let boat = new Boat(this.p, this.boatParts, i, j, 1);
-      this.npc_manager.spawnEntity(new Boat(this.boatParts, i, j, 5));
+      
+      let temp = this.p.random([0,1,2,3])
+      switch(temp){
+        case 0:
+          this.npc_manager.spawnEntity(new Boat(this.boatParts, i, j, 5));
+          break;
+        case 1:
+          this.npc_manager.spawnEntity(new AnimalNPC(i,j,5,this.spriteSheetCutter(2,4,this.turtlesheet)));
+          break;
+        case 2:
+          this.npc_manager.spawnEntity(new AnimalNPC(i,j,5,this.spriteSheetCutter(2,4,this.seagullsheet)));
+          break
+        case 3:
+          this.npc_manager.spawnEntity(new AnimalNPC(i,j,5,this.spriteSheetCutter(2,4,this.whalesheet)));
+          break;
+      }
+      
+
+      
       // boat.draw();
     }
   }
