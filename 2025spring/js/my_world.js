@@ -405,9 +405,28 @@ class World {
     this.p.vertex(0, -this.th);
     this.p.endShape(this.p.CLOSE);
 
+    this.p.beginShape();
+    this.p.vertex(-this.tw, 0);
+    this.p.vertex(-this.tw, 0 + y);
+    this.p.vertex(0, -this.th + y);
+    this.p.vertex(0, -this.th);
+    this.p.endShape(this.p.CLOSE);
+
+    this.p.beginShape();
+    this.p.vertex(this.tw, 0);
+    this.p.vertex(this.tw, 0 + y);
+    this.p.vertex(0, -this.th + y);
+    this.p.vertex(0, -this.th);
+    this.p.endShape(this.p.CLOSE);
+
+    this.p.beginShape();
+    this.p.vertex(0, this.th + y);
+    this.p.vertex(0, this.th);
+    this.p.endShape(this.p.CLOSE);
+
     if (this.tiles[key].getType() == "OCEAN") this.p.translate(0, -24);
 
-    this.p.fill(255, 0, 0, 60);
+    this.p.fill(255, 0, 0, 30);
     this.p.beginShape();
     this.p.vertex(-this.tw, 0 + y);
     this.p.vertex(0, this.th + y);
@@ -419,8 +438,8 @@ class World {
     this.p.fill(0);
 
     // this adds the text above the tile
-    this.p.text("tile " + [i, j], 0, 0);
-    this.p.text("tile type " + this.tiles[key].type, 0, 20);
+    this.p.text("tile " + [i, j], 0, y+30);
+    this.p.text("tile type " + this.tiles[key].type, 0, y+50);
   }
 
   p3_drawAfter(camera_offset) {
