@@ -116,6 +116,8 @@ var s = function (p) {
   }
 
   p.mouseClicked = function () {
+    if (p.mouseX < 0 || p.mouseY < 0 || p.mouseX > p.width || p.mouseY > p.height)
+      return false;
     let world_pos = p.screenToWorld(
       [0 - p.mouseX, p.mouseY],
       [camera_offset.x, camera_offset.y]

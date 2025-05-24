@@ -26,7 +26,7 @@ class AnimalNPC extends NPC{
         p.translate(0 - screen_x, screen_y);
         //p.print(this.currImage);
 
-        p.image(this.currImage,0,0);
+        p.image(this.currImage,0,0,64,64);
 
         p.pop();
     

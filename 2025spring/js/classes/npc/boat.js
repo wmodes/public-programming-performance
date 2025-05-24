@@ -1,7 +1,7 @@
-const BUTT_OFFSET_X = 30;
-const BUTT_OFFSET_Y = -41;
-const SAIL_OFFSET_X = 14;
-const SAIL_OFFSET_Y = -32;
+const BUTT_OFFSET_X = 60;
+const BUTT_OFFSET_Y = -82;
+const SAIL_OFFSET_X = 28;
+const SAIL_OFFSET_Y = -64;
 class Boat extends PathfindingNPC {
   constructor(boatParts, x, y, speed) {
     super(x, y, speed);
@@ -67,19 +67,19 @@ class Boat extends PathfindingNPC {
     if (this.isExploding) {
       this.elapsedTime += this.explodeTime;
       if (this.elapsedTime > 2400000) this.delete = true;
-      else if (this.elapsedTime > 600000) p.image(this.debris3, 0, 0);
-      else if (this.elapsedTime > 400000) p.image(this.debris2, 0, 0);
-      else if (this.elapsedTime > 200000) p.image(this.debris1, 0, 0);
+      else if (this.elapsedTime > 600000) p.image(this.debris3, 0, 0, 64, 64);
+      else if (this.elapsedTime > 400000) p.image(this.debris2, 0, 0, 64, 64);
+      else if (this.elapsedTime > 200000) p.image(this.debris1, 0, 0, 64, 64);
       else {
-        p.image(this.explosion, 0, 0);
+        p.image(this.explosion, 0, 0, 64, 64);
       }
       this.explodeTime = p.millis() - this.explodeTime;
     } else {
       // display boat as normal
       if (this.prevX > this.x || this.prevY < this.y) p.scale(-1, 1); // flips image if moving right
-      p.image(this.butt, BUTT_OFFSET_X, BUTT_OFFSET_Y + waveOffset);
-      p.image(this.midSail, SAIL_OFFSET_X, SAIL_OFFSET_Y + waveOffset);
-      p.image(this.front, 0, 0 + waveOffset);
+      p.image(this.butt, BUTT_OFFSET_X, BUTT_OFFSET_Y + waveOffset, 64, 128);
+      p.image(this.midSail, SAIL_OFFSET_X, SAIL_OFFSET_Y + waveOffset, 64, 128);
+      p.image(this.front, 0, 0 + waveOffset, 64, 64);
     }
 
     p.pop();
