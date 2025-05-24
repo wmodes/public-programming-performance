@@ -20,6 +20,7 @@ class Boat extends PathfindingNPC {
     this.explodeTime = 0;
     this.elapsedTime = 0;
     this.delete = false;
+    this.world = null;
 
     this.prevX = x;
     this.prevY = y;
@@ -44,19 +45,27 @@ class Boat extends PathfindingNPC {
 
     // function getWaterWaveOffset was copied from island.js
     // which was written by WontonsofDMG
-    function getWaterWaveOffset(i, j, p) {
+    //function getWaterWaveOffset(i, j, p) {
       // Use frameCount if available, else fallback to millis
-      let t =
-        typeof p.frameCount !== "undefined" ? p.frameCount : p.millis() * 0.06;
+      //let t =
+      //  typeof p.frameCount !== "undefined" ? p.frameCount : p.millis() * 0.06;
       // Sine wave for smooth up/down motion
-      return Math.sin(t * 0.05 + i * 0.7 + j * 0.9) * 4;
-    }
+      //return Math.sin(t * 0.05 + i * 0.7 + j * 0.9) * 4;
+    //}
 
     let [screen_x, screen_y] = p.worldToScreen(
       [this.x, this.y],
       [camera_x, camera_y]
     );
-    let waveOffset = getWaterWaveOffset(screen_x, screen_y, p);
+    let tile;
+    let waveOffset = 0;
+    //console.log(this.world.tileAt(Math.round(screen_x), Math.round(screen_y)));
+    if (this.world){
+      tile = this.world.tileAt(this.x, this.y);
+      if (tile)
+        waveOffset = tile.height;
+    }
+    //let waveOffset = getWaterWaveOffset(screen_x, screen_y, p);
 
     p.push();
     p.translate(0 - screen_x, screen_y);
@@ -90,6 +99,7 @@ class Boat extends PathfindingNPC {
 
   update(world) {
     super.update(world);
+    this.world = world;
 
     if (this.delete === true) world.npc_manager.removeEntity(this.id);
 
