@@ -93,7 +93,7 @@ class Boat extends PathfindingNPC {
 
     if (this.delete === true) world.npc_manager.removeEntity(this.id);
 
-    let tile = world.tileAt([Math.round(this.x), Math.round(this.y)]);
+    let tile = world.tileAt(Math.round(this.x), Math.round(this.y));
     if (tile == undefined)
       return;
     

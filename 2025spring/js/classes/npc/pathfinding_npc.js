@@ -39,7 +39,7 @@ class PathfindingNPC extends NPC {
             if (Math.floor(this.x) == this.objective[0] && Math.floor(this.y) == this.objective[1]) return;
             // right now I'm assuming x,y as being tile position, but as floating point (since the sheared view makes it rather annoying to manage otherwise, if this needs to change we can change it)
             this.path = astar(([x, y]) => {
-                var tile = world.tileAt([x, y]);
+                var tile = world.tileAt(x, y);
                 return tile !== undefined && this.isTileTraversable(tile);
             }, [Math.floor(this.x), Math.floor(this.y)], this.objective);
         }
