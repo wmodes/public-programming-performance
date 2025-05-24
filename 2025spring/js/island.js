@@ -221,6 +221,7 @@ class Island {
         */
       break;
     }
+    tile.z = tile.getType() == "OCEAN" ? -16 + getWaterWaveOffset(i, j, this.p) : mody;
 
     return tile;
   }
