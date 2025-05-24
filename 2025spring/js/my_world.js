@@ -202,11 +202,12 @@ class World {
   p3_tileClicked(i, j) {
     let key = this.getTileKey(i, j);
     this.clicks[key] = 1 + (this.clicks[key] | 0);
-    let type = this.tiles[key].getType();
+    let type = "NONE";
+    let tile = this.tiles[key];
+    if (tile && tile.getType())
+      type = tile.getType();
     this.soundEngine.tileClicked(type);
     if (type == "OCEAN") {
-      // let boat = new Boat(this.p, this.boatParts, i, j, 1);
-      
       let temp = this.p.random([0,1,2,3])
       switch(temp){
         case 0:
@@ -222,10 +223,6 @@ class World {
           this.npc_manager.spawnEntity(new AnimalNPC(i,j,5,this.spriteSheetCutter(2,4,this.whalesheet)));
           break;
       }
-      
-
-      
-      // boat.draw();
     }
   }
 
@@ -257,51 +254,33 @@ class World {
     if (this.tiles[key] == undefined)
       return;
 
-    let y = -this.tiles[key].z+16;
+    let y = this.tiles[key].height;
 
     // this draws the outline
     this.p.beginShape();
-    this.p.vertex(-this.tw, 0);
-    this.p.vertex(0, this.th);
-    this.p.vertex(this.tw, 0);
-    this.p.vertex(0, -this.th);
+    this.p.vertex(-this.tw, this.th);
+    this.p.vertex(-this.tw, this.th + y);
+    this.p.vertex(0, y);
+    this.p.vertex(this.tw, this.th + y);
+    this.p.vertex(this.tw, this.th);
+    this.p.vertex(0, this.th*2);
     this.p.endShape(this.p.CLOSE);
 
-    this.p.beginShape();
-    this.p.vertex(-this.tw, 0);
-    this.p.vertex(-this.tw, 0 + y);
-    this.p.vertex(0, -this.th + y);
-    this.p.vertex(0, -this.th);
-    this.p.endShape(this.p.CLOSE);
+    this.p.fill(255, 0, 0, 50);
 
     this.p.beginShape();
-    this.p.vertex(this.tw, 0);
-    this.p.vertex(this.tw, 0 + y);
-    this.p.vertex(0, -this.th + y);
-    this.p.vertex(0, -this.th);
-    this.p.endShape(this.p.CLOSE);
-
-    this.p.beginShape();
-    this.p.vertex(0, this.th + y);
-    this.p.vertex(0, this.th);
-    this.p.endShape(this.p.CLOSE);
-
-    if (this.tiles[key].getType() == "OCEAN") this.p.translate(0, -24);
-
-    this.p.fill(255, 0, 0, 30);
-    this.p.beginShape();
-    this.p.vertex(-this.tw, 0 + y);
-    this.p.vertex(0, this.th + y);
-    this.p.vertex(this.tw, 0 + y);
-    this.p.vertex(0, -this.th + y);
+    this.p.vertex(-this.tw, this.th + y);
+    this.p.vertex(0, y);
+    this.p.vertex(this.tw, this.th + y);
+    this.p.vertex(0, this.th*2 + y);
     this.p.endShape(this.p.CLOSE);
 
     this.p.noStroke();
     this.p.fill(0);
 
     // this adds the text above the tile
-    this.p.text("tile " + [i, j], 0, y+30);
-    this.p.text("tile type " + this.tiles[key].type, 0, y+50);
+    this.p.text("tile " + [i, j], 0, 0);
+    this.p.text("tile type " + this.tiles[key].type, 0, 20);
   }
 
   p3_drawAfter(camera_offset) {

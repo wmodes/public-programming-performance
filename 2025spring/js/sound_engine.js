@@ -27,11 +27,7 @@ class SoundEngine{
     this.explosionSound = p5Instance.loadSound('sounds/Explosion - Sound Effects.mp3');
   }
 
-  tileClicked(tile) {
-    let tileType = "NONE"
-    if (tile && tile.getType())
-      tileType = tile.getType();
-
+  tileClicked(tileType) {
     switch(tileType){
       default:
       break;
