@@ -243,14 +243,15 @@ class World {
     if (this.tiles[key].getType() == "OCEAN") {
       this.oceanTiles++
     } else {
-      this.landTiles++;
+      this.landTiles++
     }
     return this.tiles[key];
   }
 
   /** draws outline around the tile. */
   p3_drawSelectedTile(i, j) {
-    this.p.noFill();
+    //this.p.noFill();
+    this.p.fill(0, 255, 0, 50);
     this.p.stroke(0, 255, 0, 128);
     let key = this.getTileKey(i, j);
     if (this.tiles[key] == undefined)
