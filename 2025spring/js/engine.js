@@ -176,25 +176,27 @@ var s = function (p) {
 
     for (let y = y0; y < y1; y++) {
       for (let x = x0; x < x1; x++) {
-        let isLand = p.drawTile(p.tileRenderingOrder([x + world_offset.x, y - world_offset.y]), [camera_offset.x, camera_offset.y]);
-        if (isLand) {
+        let tile = p.drawTile(p.tileRenderingOrder([x + world_offset.x, y - world_offset.y]), [camera_offset.x, camera_offset.y]);
+        if (tile.isLand()) {
           landNum++;
         } else {
           waterNum++;
         }
       }
       for (let x = x0; x < x1; x++) {
-        let isLand = p.drawTile(
+        let tile = p.drawTile(
           p.tileRenderingOrder([x + 0.5 + world_offset.x, y + 0.5 - world_offset.y]), 
           [camera_offset.x, camera_offset.y]
         );
-        if (isLand) {
+        if (tile.isLand()) {
           landNum++;
         } else {
           waterNum++;
         }
       }
     }
+
+    w.island.landRatio = landNum/(landNum+waterNum);
 
     p.describeMouseTile(world_pos, [camera_offset.x, camera_offset.y]);
 
@@ -231,11 +233,13 @@ var s = function (p) {
     );
     p.push();
     p.translate(0 - screen_x, screen_y);
+    let tile;
     if (w.p3_drawTile) {
-      w.p3_drawTile(world_x, world_y, -screen_x, screen_y);
+      tile = w.p3_drawTile(world_x, world_y, -screen_x, screen_y);
       
     }
     p.pop();
+    return tile;
   }
 }
 

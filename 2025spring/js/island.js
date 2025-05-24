@@ -68,9 +68,9 @@ class Island {
       cX * this.BIOME_NOISE_SCALE + 100.1,
       cY * this.BIOME_NOISE_SCALE + 200.2
     ) * 4;
-    if (n < 1) return "SNOW";
-    if (n < 2) return "GRASS";
-    if (n < 3) return "ROCK";
+    if (n < 1.2) return "SNOW";
+    if (n < 1.75) return "GRASS";
+    if (n < 2.5) return "ROCK";
     return "SAND";
   }
 

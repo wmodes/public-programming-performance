@@ -242,7 +242,7 @@ class World {
     } else {
       this.landTiles++
     }
-    return this.tiles[key];
+    return tile;
   }
 
   /** draws outline around the tile. */
