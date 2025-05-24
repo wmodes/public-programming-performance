@@ -38,194 +38,55 @@ class World {
     this.npc_manager = new NpcManager();
   }
 
+  quickLoad(asset,type,subdir="assets/tiles/"){
+
+    this.ocean = this.p.loadImage(
+      subdir+asset,
+      () => {
+        console.log("loaded "+asset);
+      },
+      () => {
+        console.log("failed to load "+asset);
+      }
+    );
+    this.tileTypes[type].push(this.ocean);
+  }
   /** This is called on p3 preload call */
   p3_preload() {
-    this.ocean = this.p.loadImage(
-      "assets/tiles/water_base.png",
-      () => {
-        console.log("loaded ocean.png");
-      },
-      () => {
-        console.log("failed to load ocean.png");
-      }
-    );
-    this.tileTypes.OCEAN.push(this.ocean);
+    this.quickLoad("water_base.png","OCEAN");
 
-    this.sand = this.p.loadImage(
-      "assets/tiles/xavier_sand.png",
-      () => {
-        console.log("loaded xavier_grass.png");
-      },
-      () => {
-        console.log("failed to xavier_grass.png");
-      }
-    );
-    this.tileTypes.SAND.push(this.sand);
+    this.quickLoad("xavier_sand.png","SAND");
 
-    this.rock = this.p.loadImage(
-      "assets/tiles/rock_base_retouch.png",
-      () => {
-        console.log("loaded rock_base_retouch.png");
-      },
-      () => {
-        console.log("failed to rock_base_retouch.png");
-      }
-    );
-    this.tileTypes.ROCK.push(this.rock);
+    this.quickLoad("rock_base_retouch.png","ROCK");
 
-    this.rock0 = this.p.loadImage(
-      "assets/tiles/rock_base.png",
-      () => {
-        console.log("loaded rock_base.png");
-      },
-      () => {
-        console.log("failed to rock_base.png");
-      }
-    );
-    this.tileTypes.ROCK.push(this.rock0);
+    this.quickLoad("rock_base.png","ROCK");
 
-    this.rock1 = this.p.loadImage(
-      "assets/tiles/rock_base_retouch_rock0.png",
-      () => {
-        console.log("loaded rock_base_retouch_rock0.png");
-      },
-      () => {
-        console.log("failed to rock_base_retouch_rock0.png");
-      }
-    );
-    this.tileTypes.ROCK.push(this.rock1);
+    this.quickLoad("rock_base_retouch_rock0.png","ROCK");
 
-    this.grass = this.p.loadImage(
-      "assets/tiles/xavier_grass.png",
-      () => {
-        console.log("loaded grass_tile.png");
-      },
-      () => {
-        console.log("failed to grass_tile.png");
-      }
-    );
-    this.tileTypes.GRASS.push(this.grass);
+    this.quickLoad("xavier_grass.png","GRASS");
 
-    this.tree0 = this.p.loadImage(
-      "assets/decor/xavier_grass_tree0.png",
-      () => {
-        console.log("loaded xavier_grass_tree0.png");
-      },
-      () => {
-        console.log("failed to load xavier_grass_tree0.png");
-      }
-    );
-    this.tileTypes.GRASS.push(this.tree0);
+    this.quickLoad("xavier_grass_tree0.png","GRASS","assets/decor/");
 
-    this.tree1 = this.p.loadImage(
-      "assets/decor/xavier_grass_tree1.png",
-      () => {
-        console.log("loaded xavier_grass_tree1.png");
-      },
-      () => {
-        console.log("failed to load xavier_grass_tree1.png");
-      }
-    );
-    this.tileTypes.GRASS.push(this.tree1);
+    this.quickLoad("xavier_grass_tree1.png","GRASS","assets/decor/");
     
-    this.tree2 = this.p.loadImage(
-      "assets/decor/xavier_grass_tree2.png",
-      () => {
-        console.log("loaded xavier_grass_tree2.png");
-      },
-      () => {
-        console.log("failed to load xavier_grass_tree2.png");
-      }
-    );
-    this.tileTypes.GRASS.push(this.tree2);
+    this.quickLoad("xavier_grass_tree2.png","GRASS","assets/decor/");
     
-    this.tree3 = this.p.loadImage(
-      "assets/decor/xavier_grass_tree3.png",
-      () => {
-        console.log("loaded xavier_grass_tree3.png");
-      },
-      () => {
-        console.log("failed to load xavier_grass_tree3.png");
-      }
-    );
-    this.tileTypes.GRASS.push(this.tree3);
-    /*
-    this.tree4 = this.p.loadImage(
-      "assets/decor/xavier_grass_tree4.png",
-      () => {
-        console.log("loaded xavier_grass_tree4.png");
-      },
-      () => {
-        console.log("failed to load xavier_grass_tree4.png");
-      }
-    );
-    this.tileTypes.GRASS.push(this.tree4);
+    this.quickLoad("xavier_grass_tree3.png","GRASS","assets/decor/");
+
+    //this.quickLoad("xavier_grass_tree4.png","GRASS","assets/decor/");
     
-    this.tree5 = this.p.loadImage(
-      "assets/decor/xavier_grass_tree5.png",
-      () => {
-        console.log("loaded xavier_grass_tree5.png");
-      },
-      () => {
-        console.log("failed to load xavier_grass_tree5.png");
-      }
-    );
-    this.tileTypes.GRASS.push(this.tree5);
-    */
-    this.dirt = this.p.loadImage(
-      "assets/tiles/dirt_base.png",
-      () => {
-        console.log("loaded dirt_tile.png");
-      },
-      () => {
-        console.log("failed to load dirt_tile.png");
-      }
-    );
-    this.tileTypes.DIRT.push(this.dirt);
+    //this.quickLoad("xavier_grass_tree5.png","GRASS","assets/decor/");
 
-    this.snow = this.p.loadImage(
-      "assets/tiles/snow_base.png",
-      () => {
-        console.log("loaded snow_base.png");
-      },
-      () => {
-        console.log("failed to load snow_base.png");
-      }
-    );
-    this.tileTypes.SNOW.push(this.snow);
+    this.quickLoad("dirt_base.png","DIRT");
 
-    this.col0 = this.p.loadImage(
-      "assets/decor/dirt_column.png",
-      () => {
-        console.log("loaded dirt_column.png");
-      },
-      () => {
-        console.log("failed to load dirt_column.png");
-      }
-    );
-    this.tileTypes.FILLER.push(this.col0);
+    this.quickLoad("snow_base.png","SNOW");
 
-    this.col1 = this.p.loadImage(
-      "assets/decor/sand_column.png",
-      () => {
-        console.log("loaded sand_column.png");
-      },
-      () => {
-        console.log("failed to load sand_column.png");
-      }
-    );
-    this.tileTypes.FILLER.push(this.col1);
+    this.quickLoad("dirt_column.png","FILLER","assets/decor/");
 
-    this.col2 = this.p.loadImage(
-      "assets/decor/rock_column.png",
-      () => {
-        console.log("loaded rock_column.png");
-      },
-      () => {
-        console.log("failed to load rock_column.png");
-      }
-    );
-    this.tileTypes.FILLER.push(this.col2);
+    this.quickLoad("sand_column.png","FILLER","assets/decor/");
+
+    this.quickLoad("rock_column.png","FILLER","assets/decor/");
+    
     this.boatParts = [
       this.p.loadImage(
         "assets/tiles/boat_front.png",
@@ -298,7 +159,7 @@ class World {
         () => {
           console.log("failed to boat_debris3.png");
         }
-      ),
+      )
     ];
 
     
