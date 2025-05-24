@@ -337,9 +337,8 @@ class World {
   p3_tileClicked(i, j) {
     let key = [i, j];
     this.clicks[key] = 1 + (this.clicks[key] | 0);
-    let type = this.tiles[i, j].getType();
-    this.soundEngine.tileClicked(type);
-    if (type == "OCEAN") {
+    this.soundEngine.tileClicked(this.tiles[i + ", " + j])
+    if (this.tiles[i + ", " + j].getType() == "OCEAN") {
       // let boat = new Boat(this.p, this.boatParts, i, j, 1);
       
       let temp = this.p.random([0,1,2,3])
@@ -372,40 +371,43 @@ class World {
 
   /** This draws the tile at that location */
   p3_drawTile(i, j) {
-    this.tiles[i, j] = this.island.drawTile(i, j, this);
-    if (this.tiles[i, j].getType() == "OCEAN") {
+    this.tiles[i + ", " + j] = this.island.drawTile(i, j, this);
+    if (this.tiles[i + ", " + j].getType() == "OCEAN") {
       this.oceanTiles++
     } else {
-      this.landTiles++;
+      this.landTiles++
     }
     //console.log("(" + i + ", " + j + ")  " + this.tiles[i + ", " + j]);
-    return this.tiles[i, j];
+    return this.tiles[(i, j)] && this.tiles[(i, j)].isLand();
   }
 
   /** draws outline around the tile. */
   p3_drawSelectedTile(i, j) {
-    this.p.noFill();
+    //this.p.noFill();
+    this.p.fill(0, 255, 0, 50);
     this.p.stroke(0, 255, 0, 128);
     
-    if (this.tiles[i, j] == undefined)
+    if (this.tiles[i + ", " + j] == undefined)
       return;
 
-    let y = this.tiles[i, j].height;
+    let y = this.tiles[i  + ", " + j].height;
 
     // this draws the outline
     this.p.beginShape();
-    this.p.vertex(-this.tw, 0 + y);
-    this.p.vertex(0, this.th + y);
-    this.p.vertex(this.tw, 0 + y);
-    this.p.vertex(0, -this.th + y);
+    this.p.vertex(-this.tw, this.th);
+    this.p.vertex(-this.tw, this.th + y);
+    this.p.vertex(0, y);
+    this.p.vertex(this.tw, this.th + y);
+    this.p.vertex(this.tw, this.th);
+    this.p.vertex(0, this.th*2);
     this.p.endShape(this.p.CLOSE);
 
     this.p.noStroke();
     this.p.fill(0);
 
     // this adds the text above the tile
-    this.p.text("tile " + [i, j], 0, 0);
-    this.p.text("tile type " + this.tiles[i, j].type, 0, 20);
+    this.p.text("tile " + [i + ", " + j], 0, 0);
+    this.p.text("tile type " + this.tiles[i + ", " + j].type, 0, 20);
   }
 
   p3_drawAfter(camera_offset) {
@@ -416,7 +418,7 @@ class World {
   }
 
   tileAt([i, j]) {
-    return this.tiles[i, j];
+    return this.tiles[i + ", " + j]
   }
 
   spriteSheetCutter(cols,rows, sheet){
