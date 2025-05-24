@@ -203,7 +203,7 @@ class World {
     let key = this.getTileKey(i, j);
     this.clicks[key] = 1 + (this.clicks[key] | 0);
     let type = this.tiles[key].getType();
-    this.soundEngine.tileClicked(type);
+    this.soundEngine.tileClicked(this.tiles[key]);
     if (type == "OCEAN") {
       // let boat = new Boat(this.p, this.boatParts, i, j, 1);
       
@@ -245,7 +245,7 @@ class World {
     } else {
       this.landTiles++
     }
-    return this.tiles[key];
+    return tile;
   }
 
   /** draws outline around the tile. */
