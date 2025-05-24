@@ -123,6 +123,7 @@ var s = function (p) {
     );
 
     if (w.p3_tileClicked) {
+      
       w.p3_tileClicked(world_pos[0], world_pos[1]);
     }
     return false;
@@ -210,6 +211,7 @@ var s = function (p) {
       [world_x, world_y],
       [camera_x, camera_y]
     );
+
     p.drawTileDescription([world_x, world_y], [0 - screen_x, screen_y]);
   }
 
