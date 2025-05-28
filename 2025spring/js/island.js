@@ -179,9 +179,12 @@ class Island {
     // Draw based on biome and tile type
     switch (type.id){
       case ("DECOR"):
-        tile.changeAttributes(biome, this.p.floor(mody));
+        let ind = this.p.floor(mody) % 3;
+        tile.changeAttributes(biome, ind);
         if (biome == "GRASS")
-          tile.draw({y:-mody-116, cropOffsetY: 0,height:160,cropHeight:80});
+          tile.draw({y:-mody-116, cropOffsetY: 0, height:160, cropHeight:80});
+        else if (biome == "SNOW" && ind)
+          tile.draw({y:-mody-84, cropOffsetY: 0, height:128, cropHeight:64});
         else
           tile.draw({y:-mody});
       break;
