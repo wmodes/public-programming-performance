@@ -74,6 +74,7 @@ var s = function (p) {
   p.setup = function () {
     let canvas = p.createCanvas(800, 400);
     canvas.parent("container");
+    p.select("canvas").elt.getContext("2d").imageSmoothingEnabled = false;
 
     // Disable default browser controls
     window.addEventListener("keydown", function (e) {

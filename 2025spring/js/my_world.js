@@ -85,6 +85,10 @@ class World {
 
     this.quickLoad("snow_snowmanMelted.png","SNOW","assets/decor/");
 
+    this.quickLoad("snow_tree0.png","SNOW","assets/decor/");
+
+    this.quickLoad("snow_tree1.png","SNOW","assets/decor/");
+
     this.quickLoad("dirt_column.png","FILLER","assets/decor/");
 
     this.quickLoad("sand_column.png","FILLER","assets/decor/");
